@@ -14,6 +14,9 @@ import requests
 
 GOOGLE_VOICE = os.environ.get("GOOGLE_TTS_VOICE", "ko-KR-Neural2-C")
 EDGE_VOICE = os.environ.get("EDGE_TTS_VOICE", "ko-KR-InJoonNeural")
+# 쇼츠는 빠르고 밝은 톤이 완주율이 높다
+EDGE_RATE = os.environ.get("EDGE_TTS_RATE", "+45%")
+EDGE_PITCH = os.environ.get("EDGE_TTS_PITCH", "+12Hz")
 
 
 def duration(path: Path) -> float:
@@ -28,14 +31,14 @@ def _google(text: str, out: Path, key: str) -> None:
         params={"key": key}, timeout=60,
         json={"input": {"text": text},
               "voice": {"languageCode": "ko-KR", "name": GOOGLE_VOICE},
-              "audioConfig": {"audioEncoding": "MP3", "speakingRate": 1.3}})
+              "audioConfig": {"audioEncoding": "MP3", "speakingRate": 1.45, "pitch": 2.0}})
     r.raise_for_status()
     out.write_bytes(base64.b64decode(r.json()["audioContent"]))
 
 
 def _edge(text: str, out: Path) -> None:
     import edge_tts
-    asyncio.run(edge_tts.Communicate(text, EDGE_VOICE, rate="+28%").save(str(out)))
+    asyncio.run(edge_tts.Communicate(text, EDGE_VOICE, rate=EDGE_RATE, pitch=EDGE_PITCH).save(str(out)))
 
 
 def _silence(text: str, out: Path) -> None:

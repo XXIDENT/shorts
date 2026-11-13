@@ -12,7 +12,7 @@ from .script import Scene, fmt
 from .tts import duration
 
 W, H, FPS = 1080, 1920, 30
-GAP = 0.12          # 문장 사이 쉬는 시간(초)
+GAP = 0.06          # 문장 사이 쉬는 시간(초)
 TAIL = 0.5          # 영상 끝 여유
 BG_TOP, BG_BOTTOM = (11, 18, 38), (30, 41, 66)
 FG, MUTED, ACCENT, KOREA = (245, 247, 250), (120, 134, 160), (255, 196, 0), (64, 156, 255)

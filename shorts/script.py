@@ -71,10 +71,10 @@ def build_script(r: Ranking, seed: int | None = None) -> list[Scene]:
     scenes = [Scene("hook", rnd.choice(HOOKS).format(title=t["title"]))]
     top = {e.rank: e for e in r.top}
 
-    # 10위~4위는 짧게 두 개씩 묶어 속도감을 준다
+    # 10위~4위는 세 개씩 묶어 빠르게 넘긴다 (쇼츠는 30초대가 완주율이 높음)
     low = [k for k in sorted(top, reverse=True) if k > 3]
-    for i in range(0, len(low), 2):
-        pair = low[i:i + 2]
+    for i in range(0, len(low), 3):
+        pair = low[i:i + 3]
         text = ", ".join(f"{k}위 {top[k].name}" for k in pair) + "."
         # 묶음의 장면들은 같은 문장을 공유하고, 음성 한 줄을 나눠 쓴다
         for k in pair:
@@ -112,8 +112,8 @@ def metadata(r: Ranking, scenes: list[Scene]) -> dict:
     lines = [f"{e.rank}. {e.name} - {fmt(e.value, t)}" for e in r.top]
     korea = f"\n한국: {r.korea.rank}위 ({fmt(r.korea.value, t)})" if r.korea else ""
     return {
-        "title": f"{t['title']} TOP 10 (한국은 몇 위?) #shorts",
-        "description": (f"{t['title']} 순위 ({r.year}년 기준)\n\n" + "\n".join(lines) + korea +
+        "title": f"{t['title']} TOP 10 (한국은 몇 위?) #Shorts",
+        "description": (f"#Shorts {t['title']} 순위 ({r.year}년 기준)\n\n" + "\n".join(lines) + korea +
                         f"\n\n출처: 세계은행(World Bank) 오픈데이터, 지표 {t['indicator']}\n#세계순위 #데이터 #shorts"),
         "tags": ["세계순위", "데이터", "통계", "랭킹", t["title"]],
         "first": first.name,

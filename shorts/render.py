@@ -12,8 +12,8 @@ from .script import Scene, fmt
 from .tts import duration
 
 W, H, FPS = 1080, 1920, 30
-GAP = 0.25          # 문장 사이 쉬는 시간(초)
-TAIL = 0.8          # 영상 끝 여유
+GAP = 0.12          # 문장 사이 쉬는 시간(초)
+TAIL = 0.5          # 영상 끝 여유
 BG_TOP, BG_BOTTOM = (11, 18, 38), (30, 41, 66)
 FG, MUTED, ACCENT, KOREA = (245, 247, 250), (120, 134, 160), (255, 196, 0), (64, 156, 255)
 BAR = (88, 110, 160)
@@ -165,7 +165,7 @@ def render(r: Ranking, scenes: list[Scene], groups, audio: list[Path], out: Path
     proc = subprocess.Popen(
         ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
          "-r", str(FPS), "-i", "-", "-i", str(wav), "-c:v", "libx264", "-preset", "veryfast", "-crf", "21",
-         "-pix_fmt", "yuv420p", "-c:a", "copy", "-shortest", "-movflags", "+faststart", str(out)],
+         "-vf", "setsar=1", "-pix_fmt", "yuv420p", "-c:a", "copy", "-shortest", "-movflags", "+faststart", str(out)],
         stdin=subprocess.PIPE)
     for i in range(n):
         proc.stdin.write(frame.draw(i / FPS, times).tobytes())

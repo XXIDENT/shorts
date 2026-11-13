@@ -6,6 +6,8 @@ from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 
+import time
+
 import requests
 from babel import Locale
 
@@ -33,10 +35,21 @@ class Ranking:
 
 
 def _get(path: str, **params) -> list:
+    """세계은행 API는 가끔 느리거나 끊겨서, 최대 4번까지 간격을 늘려가며 다시 시도한다."""
     params = {"format": "json", "per_page": 20000, **params}
-    r = requests.get(f"{API}/{path}", params=params, timeout=60)
-    r.raise_for_status()
-    body = r.json()
+    last: Exception | None = None
+    for attempt in range(4):
+        try:
+            r = requests.get(f"{API}/{path}", params=params, timeout=120)
+            r.raise_for_status()
+            body = r.json()
+            break
+        except (requests.RequestException, ValueError) as e:
+            last = e
+            print(f"[data] {path} 재시도 {attempt + 1}/4: {e}")
+            time.sleep(10 * (attempt + 1))
+    else:
+        raise RuntimeError(f"World Bank API 실패: {path}: {last}")
     if not isinstance(body, list) or len(body) < 2 or body[1] is None:
         raise RuntimeError(f"World Bank 응답 이상: {path} {str(body)[:200]}")
     return body[1]

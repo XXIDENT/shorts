@@ -12,7 +12,8 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
+# 업로드·수정·삭제 등 채널 관리 전체 권한
+SCOPES = ["https://www.googleapis.com/auth/youtube"]
 
 
 def configured() -> bool:

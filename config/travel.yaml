@@ -486,3 +486,795 @@ countries:
   closing: 감자튀김을 두 번 튀겨서 바삭하대. 이름은 프렌치프라이지만.
   roof_ratio: 0.9
   heights: [14, 22]
+- id: ireland
+  num: 21
+  iso2: IE
+  name: 아일랜드
+  flag:
+    type: v
+    colors: [ie_green, white, ie_orange]
+  flag_colors:
+    ie_green: [22, 155, 98]
+    ie_orange: [255, 136, 62]
+  walls:
+  - [232, 72, 60]
+  - [60, 120, 200]
+  - [250, 210, 80]
+  roof: [70, 70, 80]
+  landmark: rock
+  landmark_color: [110, 120, 100]
+  hook: 아일랜드 도착! 문마다 색깔이 다 달라.
+  landmark_say: 모허 절벽이야. 바다 위로 2백 미터 넘게 솟아 있대.
+  culture_say: 펍에선 처음 보는 사람이랑도 노래를 같이 부른대. 나도 박자는 맞췄어.
+  closing: 비가 하루에도 몇 번씩 와. 방수 기능 있는 몸이라 다행이야.
+  ground: grass
+  tree: round
+  roof_ratio: 0.8
+  heights: [10, 16]
+  sky:
+  - [110, 140, 180]
+  - [200, 210, 220]
+- id: russia
+  num: 22
+  iso2: RU
+  name: 러시아
+  flag:
+    type: h
+    colors: [white, ru_blue, ru_red]
+  flag_colors:
+    ru_blue: [0, 57, 166]
+    ru_red: [213, 43, 30]
+  walls:
+  - [200, 120, 90]
+  - [230, 210, 170]
+  - [180, 70, 60]
+  roof: [60, 90, 70]
+  landmark: dome
+  landmark_color: [200, 60, 60]
+  hook: 러시아 도착! 숨 쉬면 하얀 김이 나와.
+  landmark_say: 양파 모양 지붕의 성당이야. 지붕마다 무늬가 다 다르대.
+  culture_say: 인형 안에 인형이 또 들어 있어. 열 번 열었는데 끝이 안 나.
+  closing: 나라가 너무 넓어서 시간대가 열한 개래. 시계를 몇 번 고쳐야 해?
+  ground: snow
+  tree: pine
+  roof_ratio: 0.7
+  heights: [12, 22]
+  landmark_args:
+    minarets: false
+    top: [240, 190, 60]
+- id: hungary
+  num: 23
+  iso2: HU
+  name: 헝가리
+  flag:
+    type: h
+    colors: [hu_red, white, hu_green]
+  flag_colors:
+    hu_red: [205, 42, 62]
+    hu_green: [67, 111, 77]
+  walls:
+  - [226, 210, 180]
+  - [210, 190, 160]
+  - [240, 226, 200]
+  roof: [110, 70, 60]
+  landmark: spires
+  landmark_color: [226, 210, 186]
+  hook: 헝가리 부다페스트 도착! 강을 사이에 두고 도시가 둘이야.
+  landmark_say: 국회의사당이야. 강가에 서 있는 모습이 성 같대.
+  culture_say: 온천이 도시 곳곳에 있대. 나는 방수지만 온천은 무서워.
+  closing: 파프리카를 넣은 굴라시 수프가 유명해. 냄새만으로 따뜻해.
+  ground: grass
+  tree: round
+  roof_ratio: 0.7
+  heights: [14, 22]
+- id: ukraine
+  num: 24
+  iso2: UA
+  name: 우크라이나
+  flag:
+    type: h
+    colors: [ua_blue, ua_yellow]
+  flag_colors:
+    ua_blue: [0, 87, 183]
+    ua_yellow: [255, 215, 0]
+  walls:
+  - [240, 236, 226]
+  - [220, 214, 200]
+  - [200, 210, 220]
+  roof: [90, 110, 90]
+  landmark: dome
+  landmark_color: [240, 236, 226]
+  hook: 우크라이나 도착! 국기는 파란 하늘과 노란 밀밭이래.
+  landmark_say: 금빛 둥근 지붕의 수도원이야. 천 년 가까이 된 곳이래.
+  culture_say: 보르시라는 빨간 수프를 먹어. 비트 색깔이래.
+  closing: 해바라기가 정말 많이 피는 나라래. 다음엔 여름에 올게.
+  ground: grass
+  tree: round
+  roof_ratio: 0.6
+  heights: [12, 20]
+  landmark_args:
+    minarets: false
+    top: [240, 190, 60]
+- id: sweden
+  num: 25
+  iso2: SE
+  name: 스웨덴
+  flag:
+    type: cross
+    colors: [se_blue, se_yellow]
+  flag_colors:
+    se_blue: [0, 106, 167]
+    se_yellow: [254, 204, 0]
+  walls:
+  - [200, 120, 60]
+  - [230, 190, 90]
+  - [190, 80, 60]
+  roof: [60, 60, 66]
+  landmark: spires
+  landmark_color: [170, 80, 60]
+  hook: 스웨덴 스톡홀름 도착! 섬 열네 개 위에 지은 도시래.
+  landmark_say: 구시가지 교회 첨탑이야. 7백 년 넘은 골목이 그대로래.
+  culture_say: 피카라는 커피 휴식 시간이 있대. 일하다 꼭 쉬어야 한대.
+  closing: 겨울엔 해가 여섯 시간만 뜬대. 나는 화면이 밝아서 괜찮아.
+  ground: snow
+  tree: pine
+  roof_ratio: 0.9
+  heights: [12, 20]
+- id: denmark
+  num: 26
+  iso2: DK
+  name: 덴마크
+  flag:
+    type: cross
+    colors: [dk_red, white]
+  flag_colors:
+    dk_red: [198, 12, 48]
+  walls:
+  - [250, 200, 80]
+  - [60, 120, 180]
+  - [220, 90, 70]
+  roof: [60, 60, 66]
+  landmark: windmill
+  landmark_color: [230, 230, 230]
+  hook: 덴마크 도착! 항구 집들이 무지개색이야.
+  landmark_say: 하얀 풍차야. 바닷바람이 세서 풍력 발전도 많이 한대.
+  culture_say: 자전거가 차보다 많아 보여. 자전거 전용 신호등도 있어.
+  closing: 레고가 이 나라에서 태어났대. 나도 블록으로 만들 수 있을까?
+  ground: grass
+  tree: round
+  roof_ratio: 0.9
+  heights: [10, 16]
+- id: iceland
+  num: 27
+  iso2: IS
+  name: 아이슬란드
+  flag:
+    type: cross
+    colors: [is_blue, white, is_red]
+  flag_colors:
+    is_blue: [2, 82, 156]
+    is_red: [220, 30, 53]
+  walls:
+  - [240, 240, 236]
+  - [60, 80, 100]
+  - [200, 60, 50]
+  roof: [180, 50, 50]
+  landmark: mountain
+  landmark_color: [80, 80, 86]
+  hook: 아이슬란드 도착! 땅에서 김이 올라와.
+  landmark_say: 화산이랑 빙하가 같이 있는 산이야. 불과 얼음의 섬이래.
+  culture_say: 밤하늘에 초록 오로라가 춤춰. 내 화면 색이랑 똑같아!
+  closing: 인구가 40만 명 정도래. 양도 그만큼 많대.
+  ground: snow
+  tree: pine
+  roof_ratio: 1.0
+  heights: [6, 10]
+  landmark_args: {snow: true}
+  sky:
+  - [40, 60, 110]
+  - [120, 150, 190]
+- id: turkey
+  num: 28
+  iso2: TR
+  name: 튀르키예
+  flag:
+    type: circle
+    colors: [tr_red, white]
+    dx: 1
+  flag_colors:
+    tr_red: [227, 10, 23]
+  walls:
+  - [230, 210, 180]
+  - [214, 190, 160]
+  - [240, 230, 210]
+  roof: [190, 100, 70]
+  landmark: dome
+  landmark_color: [220, 216, 210]
+  hook: 튀르키예 이스탄불 도착! 아시아랑 유럽이 다리 하나 사이야.
+  landmark_say: 큰 둥근 지붕과 첨탑이 있는 모스크야. 안쪽 타일이 파랗대.
+  culture_say: 시장 골목이 4천 개가 넘는 가게로 이어져. 길을 세 번 잃었어.
+  closing: 작은 유리잔에 홍차를 하루 종일 마신대. 나도 한 잔 받아 들었어.
+  ground: grass
+  tree: round
+  roof_ratio: 0.6
+  heights: [12, 20]
+- id: vietnam
+  num: 29
+  iso2: VN
+  name: 베트남
+  flag:
+    type: circle
+    colors: [vn_red, vn_yellow]
+  flag_colors:
+    vn_red: [218, 37, 29]
+    vn_yellow: [255, 205, 0]
+  walls:
+  - [240, 210, 120]
+  - [230, 160, 90]
+  - [200, 220, 200]
+  roof: [190, 80, 60]
+  landmark: rock
+  landmark_color: [110, 130, 110]
+  hook: 베트남 도착! 오토바이 소리가 음악 같아.
+  landmark_say: 하롱베이야. 바다 위에 돌섬이 천6백 개쯤 있대.
+  culture_say: 길거리 쌀국수가 아침밥이래. 목욕탕 의자에 앉아서 먹어.
+  closing: 커피에 연유를 듬뿍 넣어 마셔. 달아서 회로가 빨라졌어.
+  ground: grass
+  tree: palm
+  roof_ratio: 0.4
+  heights: [14, 26]
+  sky:
+  - [130, 180, 220]
+  - [230, 230, 210]
+- id: china
+  num: 30
+  iso2: CN
+  name: 중국
+  flag:
+    type: circle
+    colors: [cn_red, cn_yellow]
+    dx: 2
+  flag_colors:
+    cn_red: [238, 28, 37]
+    cn_yellow: [255, 222, 0]
+  walls:
+  - [200, 70, 60]
+  - [220, 200, 170]
+  - [180, 180, 190]
+  roof: [240, 180, 60]
+  landmark: gate
+  landmark_color: [190, 50, 40]
+  hook: 중국 베이징 도착! 붉은 담이 끝도 없이 이어져.
+  landmark_say: 자금성 문이야. 방이 8천 개가 넘는다는 궁궐이래.
+  culture_say: 아침 공원에서 다 같이 태극권을 해. 나도 따라 했는데 느려지질 않아.
+  closing: 만리장성은 다음에 걸어 볼래. 배터리를 열 개 챙겨야겠어.
+  ground: grass
+  tree: round
+  roof_ratio: 0.8
+  heights: [10, 30]
+- id: colombia
+  num: 31
+  iso2: CO
+  name: 콜롬비아
+  flag:
+    type: h
+    colors: [co_yellow, co_blue, co_red]
+    weights: [2, 1, 1]
+  flag_colors:
+    co_yellow: [252, 209, 22]
+    co_blue: [0, 56, 147]
+    co_red: [206, 17, 38]
+  walls:
+  - [250, 200, 60]
+  - [80, 170, 200]
+  - [230, 100, 120]
+  roof: [190, 90, 60]
+  landmark: mountain
+  landmark_color: [60, 120, 70]
+  hook: 콜롬비아 도착! 집들이 사탕처럼 알록달록해.
+  landmark_say: 초록 산비탈이 다 커피밭이래. 손으로 한 알씩 딴대.
+  culture_say: 어딜 가나 살사 음악이 나와. 내 다리도 자동으로 움직여.
+  closing: 꽃 수출이 세계에서 손꼽힌대. 공항이 꽃향기로 가득해.
+  ground: grass
+  tree: palm
+  roof_ratio: 0.6
+  heights: [8, 14]
+  landmark_args: {snow: false, green: true}
+- id: argentina
+  num: 32
+  iso2: AR
+  name: 아르헨티나
+  flag:
+    type: h
+    colors: [ar_blue, white, ar_blue]
+    dot: gold
+  flag_colors:
+    ar_blue: [116, 172, 223]
+  walls:
+  - [220, 200, 180]
+  - [200, 180, 160]
+  - [180, 190, 200]
+  roof: [120, 80, 70]
+  landmark: needle
+  landmark_color: [240, 240, 236]
+  hook: 아르헨티나 부에노스아이레스 도착! 길이 정말 넓어.
+  landmark_say: 도시 한가운데 하얀 오벨리스크야. 높이가 67미터래.
+  culture_say: 밤 열 시에 저녁을 먹는대. 나는 그 시간이면 졸린데.
+  closing: 탱고는 두 사람이 추는 춤이래. 나랑 춰 줄 사람 구해요.
+  ground: grass
+  tree: round
+  roof_ratio: 0.3
+  heights: [16, 30]
+- id: bolivia
+  num: 33
+  iso2: BO
+  name: 볼리비아
+  flag:
+    type: h
+    colors: [bo_red, bo_yellow, bo_green]
+  flag_colors:
+    bo_red: [213, 43, 30]
+    bo_yellow: [249, 228, 0]
+    bo_green: [0, 122, 51]
+  walls:
+  - [200, 140, 110]
+  - [220, 190, 150]
+  - [240, 230, 210]
+  roof: [150, 90, 70]
+  landmark: mountain
+  landmark_color: [120, 110, 104]
+  hook: 볼리비아 도착! 숨이 좀 차. 여기 해발 3천6백 미터래.
+  landmark_say: 안데스산맥이야. 근처엔 하늘이 비치는 소금 사막이 있대.
+  culture_say: 사람들이 케이블카로 출근해. 하늘을 나는 버스 같아.
+  closing: 높은 곳이라 물이 낮은 온도에서 끓는대. 라면이 덜 익었어.
+  ground: dry
+  tree: pine
+  roof_ratio: 0.3
+  heights: [8, 14]
+  landmark_args: {snow: true}
+- id: romania
+  num: 34
+  iso2: RO
+  name: 루마니아
+  flag:
+    type: v
+    colors: [ro_blue, ro_yellow, ro_red]
+  flag_colors:
+    ro_blue: [0, 43, 127]
+    ro_yellow: [252, 209, 22]
+    ro_red: [206, 17, 38]
+  walls:
+  - [236, 226, 206]
+  - [210, 190, 170]
+  - [190, 120, 90]
+  roof: [150, 70, 50]
+  landmark: spires
+  landmark_color: [220, 200, 170]
+  hook: 루마니아 도착! 숲 사이로 성이 보여.
+  landmark_say: 드라큘라 성으로 알려진 브란 성이야. 진짜 성주는 따로 있었대.
+  culture_say: 곰이 사는 숲이 유럽에서 손꼽히게 넓대. 조용히 걸었어.
+  closing: 옥수숫가루 죽 마멀리거가 국민 음식이래. 숟가락이 서 있어.
+  ground: grass
+  tree: pine
+  roof_ratio: 0.9
+  heights: [10, 16]
+- id: estonia
+  num: 35
+  iso2: EE
+  name: 에스토니아
+  flag:
+    type: h
+    colors: [ee_blue, black, white]
+  flag_colors:
+    ee_blue: [0, 114, 206]
+  walls:
+  - [240, 220, 170]
+  - [220, 130, 100]
+  - [200, 210, 220]
+  roof: [170, 60, 50]
+  landmark: spires
+  landmark_color: [226, 220, 210]
+  hook: 에스토니아 탈린 도착! 성벽 안이 동화 마을 같아.
+  landmark_say: 구시가지 첨탑이야. 중세 도시가 거의 그대로 남았대.
+  culture_say: 투표도 세금도 인터넷으로 한대. 나랑 잘 맞는 나라야.
+  closing: 영상통화 프로그램 스카이프가 여기서 만들어졌대. 친척 같아.
+  ground: snow
+  tree: pine
+  roof_ratio: 0.9
+  heights: [10, 18]
+- id: lithuania
+  num: 36
+  iso2: LT
+  name: 리투아니아
+  flag:
+    type: h
+    colors: [lt_yellow, lt_green, lt_red]
+  flag_colors:
+    lt_yellow: [253, 185, 19]
+    lt_green: [0, 106, 68]
+    lt_red: [193, 39, 45]
+  walls:
+  - [236, 226, 206]
+  - [220, 200, 180]
+  - [200, 180, 160]
+  roof: [150, 70, 50]
+  landmark: spires
+  landmark_color: [200, 90, 70]
+  hook: 리투아니아 빌뉴스 도착! 교회 탑이 사방에 있어.
+  landmark_say: 붉은 벽돌 첨탑이야. 고딕 건물이 골목마다 숨어 있대.
+  culture_say: 농구가 국민 스포츠래. 나는 키가 작아서 응원만 했어.
+  closing: 핑크색 차가운 수프를 먹어. 비트랑 요구르트래.
+  ground: grass
+  tree: pine
+  roof_ratio: 0.9
+  heights: [10, 18]
+- id: morocco
+  num: 37
+  iso2: MA
+  name: 모로코
+  flag:
+    type: circle
+    colors: [ma_red, ma_green]
+  flag_colors:
+    ma_red: [193, 39, 45]
+    ma_green: [0, 98, 51]
+  walls:
+  - [220, 150, 110]
+  - [230, 180, 140]
+  - [100, 140, 200]
+  roof: [200, 150, 110]
+  landmark: dome
+  landmark_color: [226, 214, 196]
+  hook: 모로코 도착! 벽도 길도 다 주황빛이야.
+  landmark_say: 바다 위에 지은 큰 모스크야. 첨탑 높이가 2백 미터래.
+  culture_say: 파란 골목 마을이 있대. 사진 찍을 때마다 내 화면도 파래져.
+  closing: 타진이라는 뾰족 뚜껑 냄비 요리를 먹어. 뚜껑이 내 머리만 해.
+  ground: dry
+  tree: palm
+  roof_ratio: 0.0
+  heights: [8, 14]
+  sky:
+  - [120, 170, 230]
+  - [240, 220, 180]
+- id: ghana
+  num: 38
+  iso2: GH
+  name: 가나
+  flag:
+    type: h
+    colors: [gh_red, gh_yellow, gh_green]
+    dot: black
+  flag_colors:
+    gh_red: [206, 17, 38]
+    gh_yellow: [252, 209, 22]
+    gh_green: [0, 107, 63]
+  walls:
+  - [230, 200, 150]
+  - [200, 120, 80]
+  - [240, 230, 210]
+  roof: [120, 80, 60]
+  landmark: arch
+  landmark_color: [230, 226, 216]
+  hook: 가나 아크라 도착! 햇살이 엄청 밝아.
+  landmark_say: 독립 기념 아치야. 아프리카에서 이른 독립을 기념한대.
+  culture_say: 카카오를 정말 많이 키운대. 초콜릿의 고향 중 하나야.
+  closing: 켄테라는 화려한 천이 유명해. 무늬마다 뜻이 있대.
+  ground: dry
+  tree: palm
+  roof_ratio: 0.3
+  heights: [8, 16]
+- id: laos
+  num: 39
+  iso2: LA
+  name: 라오스
+  flag:
+    type: h
+    colors: [la_red, la_blue, la_red]
+    weights: [1, 2, 1]
+    dot: white
+  flag_colors:
+    la_red: [206, 17, 38]
+    la_blue: [0, 40, 104]
+  walls:
+  - [240, 230, 210]
+  - [220, 200, 170]
+  - [200, 170, 140]
+  roof: [190, 90, 60]
+  landmark: stupa
+  landmark_color: [240, 200, 90]
+  hook: 라오스 도착! 바다가 없는 나라야. 대신 메콩강이 있어.
+  landmark_say: 금빛 탑 탓루앙이야. 나라의 상징이래.
+  culture_say: 새벽에 스님들이 줄지어 탁발을 해. 다들 조용히 기다려.
+  closing: 찹쌀밥을 손으로 뭉쳐 먹어. 나는 손이 끈적해졌어.
+  ground: grass
+  tree: palm
+  roof_ratio: 0.7
+  heights: [8, 14]
+- id: myanmar
+  num: 40
+  iso2: MM
+  name: 미얀마
+  flag:
+    type: h
+    colors: [mm_yellow, mm_green, mm_red]
+    dot: white
+  flag_colors:
+    mm_yellow: [254, 203, 0]
+    mm_green: [52, 178, 51]
+    mm_red: [234, 40, 57]
+  walls:
+  - [240, 230, 210]
+  - [220, 200, 170]
+  - [210, 180, 150]
+  roof: [170, 90, 60]
+  landmark: stupa
+  landmark_color: [230, 180, 60]
+  hook: 미얀마 양곤 도착! 멀리서 금빛이 반짝여.
+  landmark_say: 쉐다곤 탑이야. 꼭대기에 보석이 수천 개 박혀 있대.
+  culture_say: 얼굴에 타나카라는 노란 가루를 발라. 햇빛을 막아 준대.
+  closing: 바간엔 탑이 2천 개 넘게 있대. 다 세다가 날이 저물 거야.
+  ground: grass
+  tree: palm
+  roof_ratio: 0.6
+  heights: [8, 16]
+- id: cambodia
+  num: 41
+  iso2: KH
+  name: 캄보디아
+  flag:
+    type: h
+    colors: [kh_blue, kh_red, kh_blue]
+    weights: [1, 2, 1]
+    dot: white
+  flag_colors:
+    kh_blue: [3, 46, 161]
+    kh_red: [224, 0, 37]
+  walls:
+  - [220, 200, 160]
+  - [200, 170, 130]
+  - [240, 230, 210]
+  roof: [170, 90, 60]
+  landmark: temple
+  landmark_color: [170, 160, 140]
+  hook: 캄보디아 도착! 국기에 사원이 그려진 나라야.
+  landmark_say: 앙코르와트야. 9백 년 전에 지은 세계 최대 종교 건축물이래.
+  culture_say: 툭툭이라는 오토바이 택시를 탔어. 바람이 시원해.
+  closing: 해 뜰 때 사원이 연못에 비친대. 내일 새벽에 다시 올래.
+  ground: dry
+  tree: palm
+  roof_ratio: 0.4
+  heights: [8, 14]
+- id: uae
+  num: 42
+  iso2: AE
+  name: 아랍에미리트
+  flag:
+    type: h
+    colors: [ae_green, white, black]
+  flag_colors:
+    ae_green: [0, 115, 47]
+  walls:
+  - [200, 210, 220]
+  - [230, 220, 200]
+  - [150, 180, 210]
+  roof: [200, 200, 200]
+  landmark: needle
+  landmark_color: [210, 220, 230]
+  hook: 아랍에미리트 두바이 도착! 사막 위에 유리 빌딩 숲이야.
+  landmark_say: 세계에서 제일 높은 건물이야. 높이가 8백 미터가 넘어.
+  culture_say: 쇼핑몰 안에 스키장이 있대. 밖은 40도인데.
+  closing: 50년 전엔 작은 어촌이었대. 변하는 속도가 나보다 빨라.
+  ground: sand
+  tree: palm
+  roof_ratio: 0.0
+  heights: [26, 46]
+  sky:
+  - [120, 170, 230]
+  - [240, 220, 180]
+- id: armenia
+  num: 43
+  iso2: AM
+  name: 아르메니아
+  flag:
+    type: h
+    colors: [am_red, am_blue, am_orange]
+  flag_colors:
+    am_red: [217, 0, 18]
+    am_blue: [0, 51, 160]
+    am_orange: [242, 168, 0]
+  walls:
+  - [230, 170, 150]
+  - [210, 150, 130]
+  - [240, 210, 190]
+  roof: [150, 80, 60]
+  landmark: mountain
+  landmark_color: [130, 120, 116]
+  hook: 아르메니아 도착! 건물이 다 분홍빛 돌이야.
+  landmark_say: 멀리 보이는 눈 덮인 산이 아라라트산이래.
+  culture_say: 살구가 정말 달아. 아르메니아 살구는 옛날부터 유명했대.
+  closing: 세계에서 오래된 와인 양조장 흔적이 여기서 나왔대.
+  ground: dry
+  tree: round
+  roof_ratio: 0.5
+  heights: [10, 18]
+  landmark_args: {snow: true}
+- id: singapore
+  num: 44
+  iso2: SG
+  name: 싱가포르
+  flag:
+    type: h
+    colors: [sg_red, white]
+  flag_colors:
+    sg_red: [238, 37, 54]
+  walls:
+  - [240, 240, 236]
+  - [200, 220, 230]
+  - [240, 210, 180]
+  roof: [190, 90, 70]
+  landmark: needle
+  landmark_color: [200, 210, 220]
+  hook: 싱가포르 도착! 도시 전체가 정원 같아.
+  landmark_say: 높은 빌딩 숲이야. 건물 꼭대기에 수영장도 있대.
+  culture_say: 호커센터에서 칠리크랩이랑 치킨라이스를 먹어. 줄이 길어.
+  closing: 길에 쓰레기가 하나도 없어. 나도 먼지 하나 안 떨어뜨렸어.
+  ground: grass
+  tree: palm
+  roof_ratio: 0.1
+  heights: [24, 44]
+- id: ivory_coast
+  num: 45
+  iso2: CI
+  name: 코트디부아르
+  flag:
+    type: v
+    colors: [ci_orange, white, ci_green]
+  flag_colors:
+    ci_orange: [247, 127, 0]
+    ci_green: [0, 158, 96]
+  walls:
+  - [240, 220, 180]
+  - [220, 190, 150]
+  - [200, 170, 140]
+  roof: [150, 90, 60]
+  landmark: dome
+  landmark_color: [230, 226, 216]
+  hook: 코트디부아르 도착! 이름은 상아 해안이라는 뜻이래.
+  landmark_say: 거대한 성당 지붕이야. 세계에서 손꼽히게 큰 교회래.
+  culture_say: 카카오 생산이 세계 1위래. 초콜릿 냄새가 날 것 같아.
+  closing: 아띠에께라는 카사바 요리를 생선이랑 먹어. 고소해.
+  ground: grass
+  tree: palm
+  roof_ratio: 0.3
+  heights: [8, 18]
+  landmark_args: {minarets: false}
+- id: portugal
+  num: 46
+  iso2: PT
+  name: 포르투갈
+  flag:
+    type: v
+    colors: [pt_green, pt_red]
+    weights: [2, 3]
+    dot: gold
+  flag_colors:
+    pt_green: [0, 102, 0]
+    pt_red: [255, 0, 0]
+  walls:
+  - [240, 236, 226]
+  - [90, 140, 200]
+  - [240, 200, 90]
+  roof: [190, 90, 60]
+  landmark: spires
+  landmark_color: [226, 216, 196]
+  hook: 포르투갈 리스본 도착! 언덕이 일곱 개야.
+  landmark_say: 바닷가 탑이야. 대항해 시대 배들이 여기서 떠났대.
+  culture_say: 벽에 파란 타일이 가득해. 아줄레주라고 부른대.
+  closing: 에그타르트를 갓 구워 팔아. 한 입에 화면이 하트로 바뀌었어.
+  ground: grass
+  tree: round
+  roof_ratio: 0.9
+  heights: [10, 18]
+- id: guatemala
+  num: 47
+  iso2: GT
+  name: 과테말라
+  flag:
+    type: v
+    colors: [gt_blue, white, gt_blue]
+  flag_colors:
+    gt_blue: [73, 151, 208]
+  walls:
+  - [240, 200, 90]
+  - [100, 180, 200]
+  - [230, 120, 100]
+  roof: [160, 90, 60]
+  landmark: pyramid
+  landmark_color: [180, 170, 150]
+  hook: 과테말라 도착! 화산 세 개가 마을을 둘러싸고 있어.
+  landmark_say: 정글 속 마야 피라미드야. 천 년 넘게 나무에 숨어 있었대.
+  culture_say: 시장 천이 무지개 같아. 마을마다 무늬가 다르대.
+  closing: 커피 농장이 화산 흙에 있대. 그래서 맛이 진하대.
+  ground: dry
+  tree: palm
+  roof_ratio: 0.5
+  heights: [8, 12]
+  landmark_args: {steps: true}
+- id: costa_rica
+  num: 48
+  iso2: CR
+  name: 코스타리카
+  flag:
+    type: h
+    colors: [cr_blue, white, cr_red, white, cr_blue]
+    weights: [1, 1, 2, 1, 1]
+  flag_colors:
+    cr_blue: [0, 43, 127]
+    cr_red: [206, 17, 38]
+  walls:
+  - [240, 230, 200]
+  - [120, 190, 160]
+  - [240, 180, 120]
+  roof: [170, 80, 60]
+  landmark: mountain
+  landmark_color: [60, 120, 70]
+  hook: 코스타리카 도착! 숲에서 원숭이 소리가 들려.
+  landmark_say: 구름에 덮인 초록 화산이야. 숲이 산꼭대기까지 덮었대.
+  culture_say: 인사가 '푸라 비다'래. 순수한 삶이라는 뜻이야.
+  closing: 군대를 없앤 나라래. 그 돈을 교육에 쓴대.
+  ground: grass
+  tree: palm
+  roof_ratio: 0.6
+  heights: [8, 12]
+  landmark_args: {snow: false, green: true}
+- id: tunisia
+  num: 49
+  iso2: TN
+  name: 튀니지
+  flag:
+    type: circle
+    colors: [tn_red, white]
+  flag_colors:
+    tn_red: [231, 0, 19]
+  walls:
+  - [240, 240, 236]
+  - [230, 230, 224]
+  - [120, 170, 220]
+  roof: [240, 240, 240]
+  landmark: colosseum
+  landmark_color: [210, 180, 140]
+  hook: 튀니지 도착! 하얀 벽에 파란 문이 예뻐.
+  landmark_say: 엘젬 원형경기장이야. 로마 시대 경기장이 사막 마을에 있어.
+  culture_say: 사하라 사막 입구라서 낙타를 탈 수 있대. 나는 너무 흔들렸어.
+  closing: 올리브 나무가 끝도 없이 이어져. 올리브유 수출이 많대.
+  ground: sand
+  tree: palm
+  roof_ratio: 0.0
+  heights: [8, 12]
+  sky:
+  - [110, 170, 230]
+  - [236, 224, 196]
+- id: greece
+  num: 50
+  iso2: GR
+  name: 그리스
+  flag:
+    type: h
+    colors: [gr_blue, white, gr_blue, white, gr_blue]
+  flag_colors:
+    gr_blue: [13, 94, 175]
+  walls:
+  - [244, 244, 240]
+  - [236, 236, 232]
+  - [80, 130, 200]
+  roof: [60, 110, 190]
+  landmark: temple
+  landmark_color: [226, 220, 206]
+  hook: 그리스 아테네 도착! 언덕 위에 하얀 기둥이 보여.
+  landmark_say: 파르테논 신전이야. 2천4백 년 전에 지은 신전이래.
+  culture_say: 섬마을 지붕은 파란색, 벽은 하얀색이야. 국기 색 그대로네.
+  closing: 올림픽이 시작된 나라래. 나도 달리기 한 판 했어. 꼴찌.
+  ground: dry
+  tree: round
+  roof_ratio: 0.1
+  heights: [8, 14]

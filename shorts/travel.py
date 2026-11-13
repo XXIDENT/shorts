@@ -43,6 +43,7 @@ W, H = 1080, 1920
 LW, LH = 180, 320                 # 3D를 그리는 해상도(6배 확대)
 FPS = int(os.environ.get("TRAVEL_FPS", "15"))
 GAP, TAIL = 0.12, 1.2
+MAX_BYTES = int(os.environ.get("TRAVEL_MAX_BYTES", str(4_500_000)))
 HERO = "모니"
 
 # 세계은행 지표: (라벨, 형식, 위가 '많다'의 뜻)
@@ -394,8 +395,8 @@ def render_video(fr: Frames, segs: list[Seg], audio: list[Path], total: float, o
     proc = subprocess.Popen(
         ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
          "-r", str(FPS), "-i", "-", "-i", str(voice), "-i", str(bgm),
-         "-filter_complex", "[0:v]fps=30[v];[2:a]volume=0.3[m];[1:a][m]amix=inputs=2:normalize=0:duration=first[a]",
-         "-map", "[v]", "-map", "[a]", "-c:v", "libx264", "-preset", "veryfast", "-crf", "25",
+         "-filter_complex", "[2:a]volume=0.3[m];[1:a][m]amix=inputs=2:normalize=0:duration=first[a]",
+         "-map", "0:v", "-map", "[a]", "-c:v", "libx264", "-preset", "medium", "-crf", "27",
          "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart",
          "-t", f"{total:.2f}", str(out)], stdin=subprocess.PIPE)
     procs = max(1, (os.cpu_count() or 2))
@@ -408,6 +409,16 @@ def render_video(fr: Frames, segs: list[Seg], audio: list[Path], total: float, o
     proc.stdin.close()
     if proc.wait() != 0:
         raise RuntimeError("ffmpeg 인코딩 실패")
+    # Make.com 무료 요금제 파일 크기 제한(5MB)을 넘지 않게 필요하면 다시 압축
+    crf = 27
+    while out.stat().st_size > MAX_BYTES and crf < 40:
+        crf += 4
+        tmp = out.with_suffix(".tmp.mp4")
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(out), "-c:v", "libx264", "-preset", "medium",
+                        "-crf", str(crf), "-pix_fmt", "yuv420p", "-c:a", "copy", "-movflags", "+faststart", str(tmp)],
+                       check=True)
+        tmp.replace(out)
+        print(f"[travel] 용량 줄이기: crf {crf}, {out.stat().st_size / 1e6:.1f}MB")
 
 
 # ---------------------------------------------------------------- 실행

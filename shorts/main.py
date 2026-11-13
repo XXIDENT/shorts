@@ -16,7 +16,7 @@ from pathlib import Path
 
 import yaml
 
-from . import upload_youtube
+from . import upload_make, upload_youtube
 from .data import get_ranking
 from .render import render
 from .script import build_script, metadata, narration_lines
@@ -90,7 +90,11 @@ def main(argv: list[str] | None = None) -> int:
     print(f"[main] 영상: {video} ({secs:.1f}초)")
 
     video_id = None
-    if not args.no_upload and upload_youtube.configured():
+    if not args.no_upload and upload_make.configured():
+        # 감사 전에는 Make.com(검증된 앱)으로 공개 업로드
+        video_id = f"make:{upload_make.upload(video, meta)}"
+        print(f"[main] Make.com으로 전송 완료 ({video_id})")
+    elif not args.no_upload and upload_youtube.configured():
         video_id = upload_youtube.upload(video, meta)
         print(f"[main] 업로드 완료: https://youtu.be/{video_id}")
     elif not args.no_upload:

@@ -15,6 +15,10 @@ on:
         description: "any | trend | ranking (주제 id가 없을 때만)"
         required: false
         default: any
+      no_upload:
+        description: "true면 영상만 만들고 업로드하지 않음 (테스트용)"
+        required: false
+        default: "false"
 
 permissions:
   contents: write
@@ -47,11 +51,15 @@ jobs:
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
           YT_PRIVACY: ${{ vars.YT_PRIVACY || 'private' }}
+          MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
+          MAKE_PRIVACY: ${{ vars.MAKE_PRIVACY || 'public' }}
         run: |
+          EXTRA=""
+          if [ "${{ github.event.inputs.no_upload }}" = "true" ]; then EXTRA="--no-upload"; fi
           if [ -n "${{ github.event.inputs.topic }}" ]; then
-            python -m shorts.main --topic "${{ github.event.inputs.topic }}"
+            python -m shorts.main $EXTRA --topic "${{ github.event.inputs.topic }}"
           elif [ -n "${{ github.event.inputs.kind }}" ]; then
-            python -m shorts.main --kind "${{ github.event.inputs.kind }}"
+            python -m shorts.main $EXTRA --kind "${{ github.event.inputs.kind }}"
           elif [ "${{ github.event.schedule }}" = "0 3 * * *" ]; then
             python -m shorts.main --kind trend
           else

@@ -57,6 +57,24 @@ python -m shorts.main --fixtures tests/fixtures --topic population --tts silent 
 python -m pytest -q
 ```
 
+## 공개 업로드: Make.com 경유 (감사 통과 전까지)
+Google 감사를 받기 전에는 API로 올린 영상이 "비공개 잠김"이 되어 공개할 수 없어요.
+그래서 Google 검증을 받은 Make.com을 거쳐 올립니다. 무료 플랜(월 1,000 크레딧)으로 충분해요(영상 1개당 2 크레딧).
+
+1. [make.com](https://www.make.com) 가입 → **Create a new scenario**
+2. 첫 모듈: **Webhooks → Custom webhook** → Add → 이름 `shorts` → Save → 나온 **주소 복사**
+3. GitHub 저장소 Secrets에 `MAKE_WEBHOOK_URL` = 복사한 주소 저장
+4. Actions → **매일 쇼츠 생성** → Run workflow → `no_upload`는 false로 한 번 실행
+   (Make가 데이터 구조를 배우도록 첫 전송이 필요해요. 이 첫 영상은 업로드되지 않아요)
+5. Make로 돌아가 **+** → **YouTube → Upload a Video** 추가 → 유튜브 계정 연결
+   - File: 웹훅의 `video` (파일 이름·데이터)
+   - Title: `title`, Description: `description`, Tags: `tags`
+   - Privacy status: `privacy` (public)
+   - Category: Education, Made for kids: No
+6. 오른쪽 아래 스위치를 켜서 시나리오를 **ON**, 스케줄은 **Immediately**
+
+감사 신청 방법은 [docs/api-audit.md](docs/api-audit.md)를 보세요.
+
 ## 채널 관리 (삭제·공개·제목 수정)
 Actions 탭 → **채널 관리** → Run workflow
 - `list`: 채널 영상 목록과 ID 보기

@@ -1,0 +1,84 @@
+name: 모니 세계여행 쇼츠 (픽셀 3D)
+
+on:
+  # 하루 1편, 한국 시간 19시 (기존 19시 세계 랭킹 자리를 대신함)
+  schedule:
+    - cron: "0 10 * * *"
+  workflow_dispatch:
+    inputs:
+      country:
+        description: "나라 id (비우면 다음 차례, config/travel.yaml 참고)"
+        required: false
+      no_upload:
+        description: "true면 영상만 만들고 업로드하지 않음"
+        required: false
+        default: "true"
+  # 대본이나 그림을 고치는 PR마다 샘플 영상을 만든다 (업로드 안 함)
+  pull_request:
+    paths:
+      - "shorts/travel.py"
+      - "shorts/pixel/voxel.py"
+      - "shorts/pixel/world.py"
+      - "config/travel.yaml"
+      - ".github/workflows/travel.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: travel-shorts-${{ github.event_name }}
+  cancel-in-progress: false
+
+jobs:
+  make:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: 픽셀 폰트(Unifont)·FFmpeg 설치
+        run: sudo apt-get update -q && sudo apt-get install -y -q fonts-unifont ffmpeg
+
+      - run: pip install -r requirements.txt
+
+      - name: 영상 만들기 (+ 업로드)
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          YT_PRIVACY: ${{ vars.YT_PRIVACY || 'private' }}
+          MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
+          MAKE_PRIVACY: ${{ vars.MAKE_PRIVACY || 'public' }}
+          JOB: ${{ github.event.inputs.country }}
+          NO_UPLOAD: ${{ github.event.inputs.no_upload }}
+        run: |
+          ARGS=""
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            ARGS="--no-upload --country ${JOB:-france}"
+          else
+            if [ "$NO_UPLOAD" = "true" ]; then ARGS="--no-upload"; fi
+            if [ -n "$JOB" ]; then ARGS="$ARGS --country $JOB"; fi
+          fi
+          python -m shorts.travel $ARGS
+
+      - name: 영상 파일 보관 (14일)
+        uses: actions/upload-artifact@v4
+        with:
+          name: travel-shorts-${{ github.run_id }}
+          path: out/*.*
+          retention-days: 14
+
+      - name: 다녀온 나라 기록 저장
+        if: github.event_name != 'pull_request'
+        run: |
+          git config user.name "shorts-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/travel_history.json 2>/dev/null || exit 0
+          git commit -m "기록: 세계여행 쇼츠 $(date -u +%F)" || exit 0
+          git pull --rebase
+          git push

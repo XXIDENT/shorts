@@ -1,0 +1,488 @@
+# '모니의 세계여행' 나라 목록. 말은 나라마다 직접 쓰고, 숫자 문장은 세계은행 최신값으로 자동 생성.
+# flag: type h(가로)/v(세로)/circle/cross(북유럽)/plus(스위스), colors는 flag_colors나 기본 팔레트 이름
+# landmark: lattice_tower, pyramid, pagoda, colosseum, dome, windmill, needle, mountain, temple, arch, spires, gate, stupa
+# ground: grass/sand/snow/dry, tree: round/palm/pine
+countries:
+- id: france
+  num: 1
+  iso2: FR
+  name: 프랑스
+  flag:
+    type: v
+    colors: [fr_blue, white, fr_red]
+  flag_colors:
+    fr_blue: [0, 60, 160]
+    fr_red: [220, 40, 50]
+  walls:
+  - [226, 214, 190]
+  - [214, 200, 176]
+  - [200, 192, 180]
+  roof: [80, 90, 110]
+  roof_ratio: 0.9
+  heights: [14, 22]
+  landmark: lattice_tower
+  landmark_color: [130, 108, 86]
+  hook: 모니의 세계여행 첫 번째 나라, 프랑스 파리에 도착했어!
+  landmark_say: 저기 끝에 에펠탑이 보여. 원래는 20년만 세워 두려던 탑이래.
+  culture_say: 빵집마다 바게트 냄새가 나. 나는 냄새를 못 맡지만 줄이 길어서 알 수 있어.
+  closing: 파리 사람들은 저녁을 두 시간씩 먹는대. 나도 충전을 두 시간 해 볼게.
+- id: japan
+  num: 2
+  iso2: JP
+  name: 일본
+  flag:
+    type: circle
+    colors: [white, jp_red]
+  flag_colors:
+    jp_red: [200, 20, 40]
+  walls:
+  - [236, 232, 224]
+  - [200, 196, 190]
+  - [150, 120, 96]
+  roof: [60, 62, 70]
+  landmark: pagoda
+  landmark_color: [196, 64, 52]
+  hook: 두 번째 여행지는 일본 교토야. 골목이 정말 조용해.
+  landmark_say: 저 오층탑은 지진이 와도 가운데 기둥이 흔들리며 버틴대.
+  culture_say: 편의점 도시락 종류가 내 데이터베이스보다 많아.
+  closing: 길에 쓰레기통이 별로 없대. 쓰레기는 집에 가져간대.
+  heights: [8, 16]
+- id: italy
+  num: 3
+  iso2: IT
+  name: 이탈리아
+  flag:
+    type: v
+    colors: [it_green, white, it_red]
+  flag_colors:
+    it_green: [0, 140, 70]
+    it_red: [205, 33, 42]
+  walls:
+  - [230, 190, 130]
+  - [214, 160, 110]
+  - [236, 214, 170]
+  roof: [180, 90, 60]
+  landmark: colosseum
+  landmark_color: [214, 186, 146]
+  hook: 이탈리아 로마 도착! 길바닥 돌 하나하나가 오래돼 보여.
+  landmark_say: 콜로세움이야. 거의 2천 년 전에 지은 원형 경기장이래.
+  culture_say: 피자를 한 사람이 한 판씩 먹더라. 나눠 먹는 건 나뿐이었어.
+  closing: 트레비 분수에 동전을 던지면 다시 온대. 나도 하나 던졌어.
+  roof_ratio: 0.8
+- id: egypt
+  num: 4
+  iso2: EG
+  name: 이집트
+  flag:
+    type: h
+    colors: [eg_red, white, black]
+    dot: gold
+  flag_colors:
+    eg_red: [206, 17, 38]
+  walls:
+  - [222, 196, 150]
+  - [206, 180, 136]
+  - [236, 220, 186]
+  roof: [200, 170, 120]
+  landmark: pyramid
+  landmark_color: [224, 194, 126]
+  hook: 이번엔 이집트! 모래바람에 화면이 좀 뿌예졌어.
+  landmark_say: 피라미드야. 4천5백 년 전에 돌을 하나하나 쌓아 만들었대.
+  culture_say: 시장에선 흥정이 기본이래. 정가로 샀다가 다들 웃었어.
+  closing: 나일강은 세계에서 손꼽히게 긴 강이래. 다음엔 배 타고 올래.
+  ground: sand
+  tree: palm
+  roof_ratio: 0.0
+  heights: [8, 16]
+  sky:
+  - [120, 170, 230]
+  - [236, 220, 190]
+- id: netherlands
+  num: 5
+  iso2: NL
+  name: 네덜란드
+  flag:
+    type: h
+    colors: [nl_red, white, nl_blue]
+  flag_colors:
+    nl_red: [174, 28, 40]
+    nl_blue: [33, 70, 139]
+  walls:
+  - [150, 70, 56]
+  - [120, 60, 50]
+  - [176, 96, 70]
+  roof: [50, 50, 58]
+  landmark: windmill
+  landmark_color: [120, 80, 60]
+  hook: 네덜란드 도착! 자전거가 자동차보다 많아 보여.
+  landmark_say: 풍차야. 옛날엔 물을 퍼내서 땅을 지키는 데 썼대.
+  culture_say: 여기 사람들 키가 커서 나는 무릎 높이야.
+  closing: 땅의 꽤 많은 부분이 바다보다 낮대. 그래서 둑이 정말 중요해.
+  roof_ratio: 0.9
+  heights: [12, 20]
+- id: india
+  num: 6
+  iso2: IN
+  name: 인도
+  flag:
+    type: h
+    colors: [in_saffron, white, in_green]
+    dot: navy
+  flag_colors:
+    in_saffron: [255, 153, 51]
+    in_green: [19, 136, 8]
+    navy: [0, 0, 128]
+  walls:
+  - [236, 200, 150]
+  - [220, 170, 170]
+  - [200, 210, 180]
+  roof: [160, 90, 70]
+  landmark: dome
+  landmark_color: [244, 240, 232]
+  hook: 인도 아그라에 왔어! 길에 소리도 색깔도 엄청 많아.
+  landmark_say: 타지마할이야. 황제가 세상을 떠난 왕비를 위해 지은 무덤이래.
+  culture_say: 카레가 지역마다 달라. 메뉴판만 읽다 배터리가 반 닳았어.
+  closing: 인도는 세계에서 인구가 제일 많은 나라야. 사람 구경만 해도 하루가 가.
+  ground: dry
+  roof_ratio: 0.2
+  heights: [8, 16]
+- id: mexico
+  num: 7
+  iso2: MX
+  name: 멕시코
+  flag:
+    type: v
+    colors: [mx_green, white, mx_red]
+    dot: mx_brown
+  flag_colors:
+    mx_green: [0, 104, 71]
+    mx_red: [206, 17, 38]
+    mx_brown: [140, 90, 50]
+  walls:
+  - [240, 150, 180]
+  - [250, 210, 90]
+  - [100, 170, 220]
+  roof: [180, 90, 60]
+  landmark: pyramid
+  landmark_color: [170, 140, 110]
+  hook: 멕시코 도착! 집들이 분홍, 노랑, 파랑이야.
+  landmark_say: 계단 피라미드야. 꼭대기에 오르면 도시가 한눈에 보인대.
+  culture_say: 타코에 매운 소스를 뿌렸더니 내 회로가 뜨거워졌어.
+  closing: 세상을 떠난 가족을 기억하는 축제가 있대. 무섭지 않고 알록달록해.
+  ground: dry
+  tree: palm
+  roof_ratio: 0.1
+  heights: [8, 14]
+  landmark_args: {steps: true}
+- id: germany
+  num: 8
+  iso2: DE
+  name: 독일
+  flag:
+    type: h
+    colors: [black, de_red, de_gold]
+  flag_colors:
+    de_red: [221, 0, 0]
+    de_gold: [255, 206, 0]
+  walls:
+  - [220, 214, 200]
+  - [180, 180, 184]
+  - [200, 190, 170]
+  roof: [90, 70, 60]
+  landmark: arch
+  landmark_color: [222, 208, 172]
+  hook: 독일 베를린에 왔어! 길이 반듯반듯해.
+  landmark_say: 브란덴부르크 문이야. 갈라졌던 독일이 하나가 된 상징이래.
+  culture_say: 빵 종류가 엄청 많아. 이름만 외우다 하루가 갔어.
+  closing: 분리수거가 엄격하대. 나도 내 부품을 종류별로 정리했어.
+  roof_ratio: 0.6
+  heights: [16, 26]
+- id: switzerland
+  num: 9
+  iso2: CH
+  name: 스위스
+  flag:
+    type: plus
+    colors: [ch_red, white]
+  flag_colors:
+    ch_red: [218, 41, 28]
+  walls:
+  - [240, 236, 226]
+  - [176, 124, 80]
+  - [226, 214, 190]
+  roof: [110, 70, 50]
+  landmark: mountain
+  landmark_color: [140, 136, 130]
+  hook: 스위스 알프스 마을이야! 공기가 깨끗해서 센서가 놀랐어.
+  landmark_say: 뒤에 보이는 게 알프스야. 여름에도 꼭대기엔 눈이 있대.
+  culture_say: 기차가 분 단위로 정확하게 와. 나보다 정확한 건 처음이야.
+  closing: 공식 언어가 네 개래. 그래서 인사를 네 번 했어.
+  tree: pine
+  roof_ratio: 1.0
+  heights: [8, 14]
+  landmark_args: {snow: true}
+- id: thailand
+  num: 10
+  iso2: TH
+  name: 태국
+  flag:
+    type: h
+    colors: [th_red, white, th_blue, white, th_red]
+    weights: [1, 1, 2, 1, 1]
+  flag_colors:
+    th_red: [165, 25, 49]
+    th_blue: [45, 42, 74]
+  walls:
+  - [236, 226, 200]
+  - [220, 200, 170]
+  - [200, 220, 210]
+  roof: [170, 60, 50]
+  landmark: stupa
+  landmark_color: [240, 232, 212]
+  hook: 태국 방콕 도착! 덥고 습해서 화면에 김이 서렸어.
+  landmark_say: 금빛 사원이야. 들어갈 땐 신발을 벗고 어깨를 가려야 한대.
+  culture_say: 길거리 음식 냄새가 가득해. 팟타이가 순식간에 나와.
+  closing: 미소의 나라라고 불린대. 나도 화면에 웃는 얼굴을 띄웠어.
+  tree: palm
+  roof_ratio: 0.5
+  heights: [10, 24]
+- id: indonesia
+  num: 11
+  iso2: ID
+  name: 인도네시아
+  flag:
+    type: h
+    colors: [id_red, white]
+  flag_colors:
+    id_red: [206, 17, 38]
+  walls:
+  - [226, 214, 190]
+  - [190, 170, 140]
+  - [210, 190, 160]
+  roof: [150, 80, 60]
+  landmark: stupa
+  landmark_color: [126, 120, 112]
+  hook: 인도네시아 자바섬에 왔어! 나무가 크고 초록초록해.
+  landmark_say: 보로부두르 사원이야. 세계에서 가장 큰 불교 사원 중 하나래.
+  culture_say: 섬이 만 칠천 개가 넘는대. 다 가 보려면 몇 년은 걸리겠어.
+  closing: 나시고렝 먹는 사람들을 구경했어. 볶음밥은 세계 공통인가 봐.
+  tree: palm
+  roof_ratio: 0.7
+  heights: [8, 16]
+- id: spain
+  num: 12
+  iso2: ES
+  name: 스페인
+  flag:
+    type: h
+    colors: [es_red, es_yellow, es_red]
+    weights: [1, 2, 1]
+  flag_colors:
+    es_red: [198, 11, 30]
+    es_yellow: [255, 196, 0]
+  walls:
+  - [236, 214, 170]
+  - [226, 190, 140]
+  - [240, 230, 210]
+  roof: [180, 96, 60]
+  landmark: spires
+  landmark_color: [206, 176, 136]
+  hook: 스페인 바르셀로나 도착! 햇볕이 쨍쨍해.
+  landmark_say: 저 성당은 1882년부터 백 년 넘게 짓고 있대.
+  culture_say: 저녁을 밤 아홉 시 넘어서 먹는대. 나는 그때 졸려.
+  closing: 낮잠 문화 시에스타로 유명하대. 나도 절전 모드로 쉴게.
+  tree: palm
+  roof_ratio: 0.6
+  heights: [14, 22]
+- id: canada
+  num: 13
+  iso2: CA
+  name: 캐나다
+  flag:
+    type: v
+    colors: [ca_red, white, ca_red]
+    weights: [1, 2, 1]
+    dot: ca_red
+  flag_colors:
+    ca_red: [216, 6, 33]
+  walls:
+  - [150, 190, 220]
+  - [120, 130, 150]
+  - [200, 206, 214]
+  roof: [70, 74, 90]
+  landmark: needle
+  landmark_color: [206, 206, 206]
+  hook: 캐나다 토론토 도착! 공기가 차가워서 팬이 조용해졌어.
+  landmark_say: CN 타워야. 높이가 550미터가 넘는대.
+  culture_say: 메이플 시럽을 듬뿍 뿌리더라. 회로에 쏟을까 봐 조심했어.
+  closing: 땅 크기가 세계 2위래. 걸어서는 절대 다 못 봐.
+  tree: pine
+  roof_ratio: 0.1
+  heights: [22, 40]
+- id: norway
+  num: 14
+  iso2: 'NO'
+  name: 노르웨이
+  flag:
+    type: cross
+    colors: [no_red, white, no_blue]
+  flag_colors:
+    no_red: [186, 12, 47]
+    no_blue: [0, 32, 91]
+  walls:
+  - [180, 40, 40]
+  - [240, 200, 80]
+  - [240, 240, 236]
+  roof: [60, 60, 66]
+  landmark: mountain
+  landmark_color: [100, 104, 112]
+  hook: 노르웨이 도착! 집들이 빨강, 노랑, 하양이야.
+  landmark_say: 저 산 사이가 피오르야. 빙하가 깎아 만든 깊은 골짜기래.
+  culture_say: 여름엔 밤에도 해가 안 지는 곳이 있대. 충전 시간을 놓쳤어.
+  closing: 전기차가 정말 많아. 나 같은 전기 로봇은 여기서 인기 많겠어.
+  ground: snow
+  tree: pine
+  roof_ratio: 1.0
+  heights: [8, 14]
+  landmark_args: {snow: true}
+- id: finland
+  num: 15
+  iso2: FI
+  name: 핀란드
+  flag:
+    type: cross
+    colors: [white, fi_blue]
+  flag_colors:
+    fi_blue: [0, 47, 108]
+  walls:
+  - [240, 236, 226]
+  - [230, 214, 170]
+  - [200, 210, 220]
+  roof: [70, 90, 80]
+  landmark: dome
+  landmark_color: [244, 244, 240]
+  hook: 핀란드 헬싱키 도착! 눈이 소복소복 쌓였어.
+  landmark_say: 하얀 대성당이야. 초록 지붕이 눈 속에서 더 잘 보여.
+  culture_say: 집집마다 사우나가 있을 정도래. 나는 방수가 안 돼서 구경만 했어.
+  closing: 호수가 엄청 많아서 호수의 나라라고 불린대.
+  ground: snow
+  tree: pine
+  roof_ratio: 0.8
+  heights: [12, 20]
+  landmark_args:
+    minarets: false
+    top: [90, 150, 120]
+- id: peru
+  num: 16
+  iso2: PE
+  name: 페루
+  flag:
+    type: v
+    colors: [pe_red, white, pe_red]
+  flag_colors:
+    pe_red: [217, 16, 35]
+  walls:
+  - [236, 226, 206]
+  - [210, 180, 140]
+  - [190, 170, 150]
+  roof: [170, 80, 60]
+  landmark: mountain
+  landmark_color: [120, 110, 96]
+  hook: 페루 안데스 산맥에 왔어! 높아서 숨이… 나는 숨을 안 쉬지만.
+  landmark_say: 저 산 위에 마추픽추가 있대. 잉카 사람들이 지은 공중 도시야.
+  culture_say: 알파카가 길을 막고 서 있었어. 나보다 털이 훨씬 많아.
+  closing: 감자 종류가 수천 가지래. 감자 덕후들의 천국이야.
+  roof_ratio: 0.8
+  heights: [6, 12]
+  landmark_args: {snow: false, green: true}
+- id: austria
+  num: 17
+  iso2: AT
+  name: 오스트리아
+  flag:
+    type: h
+    colors: [at_red, white, at_red]
+  flag_colors:
+    at_red: [200, 16, 46]
+  walls:
+  - [240, 230, 200]
+  - [230, 214, 226]
+  - [220, 226, 236]
+  roof: [90, 90, 100]
+  landmark: spires
+  landmark_color: [196, 186, 166]
+  hook: 오스트리아 빈 도착! 거리에서 음악 소리가 들려.
+  landmark_say: 슈테판 대성당이야. 뾰족한 탑이 하늘을 찌를 것 같아.
+  culture_say: 카페에서 커피 한 잔으로 몇 시간씩 앉아 있어도 된대.
+  closing: 모차르트가 활동한 도시래. 나도 작곡해 봤는데 삐빅 소리만 났어.
+  roof_ratio: 0.7
+  heights: [16, 24]
+- id: poland
+  num: 18
+  iso2: PL
+  name: 폴란드
+  flag:
+    type: h
+    colors: [white, pl_red]
+  flag_colors:
+    pl_red: [220, 20, 60]
+  walls:
+  - [240, 200, 160]
+  - [180, 200, 170]
+  - [236, 220, 150]
+  roof: [150, 60, 50]
+  landmark: spires
+  landmark_color: [156, 74, 60]
+  hook: 폴란드 크라쿠프 도착! 광장이 엄청 넓어.
+  landmark_say: 붉은 벽돌 성당이야. 탑에서 매시간 나팔 소리가 울린대.
+  culture_say: 피에로기라는 만두를 먹더라. 한국 만두랑 꽤 닮았어.
+  closing: 광장 비둘기들이 나를 동상인 줄 알았나 봐. 머리에 앉았어.
+  roof_ratio: 0.9
+  heights: [12, 18]
+- id: nigeria
+  num: 19
+  iso2: NG
+  name: 나이지리아
+  flag:
+    type: v
+    colors: [ng_green, white, ng_green]
+  flag_colors:
+    ng_green: [0, 135, 81]
+  walls:
+  - [230, 210, 170]
+  - [200, 190, 180]
+  - [180, 200, 220]
+  roof: [120, 80, 60]
+  landmark: rock
+  landmark_color: [150, 120, 96]
+  hook: 나이지리아 아부자 도착! 햇빛이 정말 강해.
+  landmark_say: 주마 바위야. 도시 옆에 거대한 바위산이 우뚝 서 있어.
+  culture_say: 나이지리아 영화 산업은 날리우드라고 불린대. 영화가 정말 많이 나와.
+  closing: 아프리카에서 인구가 가장 많은 나라래. 시장이 사람으로 꽉 찼어.
+  ground: dry
+  tree: palm
+  roof_ratio: 0.3
+  heights: [10, 22]
+- id: belgium
+  num: 20
+  iso2: BE
+  name: 벨기에
+  flag:
+    type: v
+    colors: [black, be_yellow, be_red]
+  flag_colors:
+    be_yellow: [253, 218, 36]
+    be_red: [239, 51, 64]
+  walls:
+  - [170, 90, 70]
+  - [220, 200, 160]
+  - [140, 70, 56]
+  roof: [60, 60, 66]
+  landmark: spires
+  landmark_color: [214, 186, 120]
+  hook: 벨기에 브뤼셀 도착! 초콜릿 가게가 줄지어 있어.
+  landmark_say: 광장의 시청 탑이야. 건물 장식이 금빛으로 반짝여.
+  culture_say: 와플을 들고 걸어 다니는 사람이 많아. 나는 손이 집게라 포기했어.
+  closing: 감자튀김을 두 번 튀겨서 바삭하대. 이름은 프렌치프라이지만.
+  roof_ratio: 0.9
+  heights: [14, 22]

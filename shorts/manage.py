@@ -5,6 +5,7 @@
   python -m shorts.manage delete VIDEO_ID [VIDEO_ID ...]
   python -m shorts.manage privacy VIDEO_ID public|unlisted|private
   python -m shorts.manage title VIDEO_ID "새 제목"
+  python -m shorts.manage info VIDEO_ID [VIDEO_ID ...]   (처리 상태·제한 사유 확인)
 """
 from __future__ import annotations
 
@@ -36,6 +37,16 @@ def main(argv: list[str]) -> int:
     yt, cmd, args = client(), argv[0], argv[1:]
     if cmd == "list":
         list_videos(yt)
+    elif cmd == "info":
+        import json
+        resp = yt.videos().list(part="status,processingDetails,contentDetails,snippet", id=",".join(args)).execute()
+        for v in resp.get("items", []):
+            print(json.dumps({"id": v["id"], "title": v["snippet"]["title"], "status": v.get("status"),
+                              "processing": v.get("processingDetails"),
+                              "duration": v["contentDetails"].get("duration"),
+                              "regionRestriction": v["contentDetails"].get("regionRestriction"),
+                              "contentRating": v["contentDetails"].get("contentRating")},
+                             ensure_ascii=False, indent=1))
     elif cmd == "delete":
         for vid in args:
             yt.videos().delete(id=vid).execute()

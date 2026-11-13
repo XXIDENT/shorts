@@ -34,6 +34,32 @@ def _font_path() -> str:
     raise RuntimeError("한글 폰트를 찾을 수 없어요. fonts-noto-cjk를 설치하거나 SHORTS_FONT를 지정하세요.")
 
 
+EMOJI_FONT = "/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf"
+CHANNEL_NAME = os.environ.get("CHANNEL_NAME", "1분 랭킹")
+_flag_cache: dict[str, Image.Image | None] = {}
+
+
+def flag(iso2: str, size: int = 58) -> Image.Image | None:
+    """국기 이모지를 이미지로. 폰트가 없거나 국가 코드가 아니면 None."""
+    if iso2 in _flag_cache:
+        return _flag_cache[iso2]
+    img = None
+    if len(iso2) == 2 and iso2.isalpha() and Path(EMOJI_FONT).exists():
+        try:
+            font = ImageFont.truetype(EMOJI_FONT, 109)  # Noto Color Emoji는 109px 고정
+            ch = "".join(chr(0x1F1E6 + ord(c) - ord("A")) for c in iso2.upper())
+            im = Image.new("RGBA", (160, 160), (0, 0, 0, 0))
+            ImageDraw.Draw(im).text((0, 0), ch, font=font, embedded_color=True)
+            box = im.getbbox()
+            if box:
+                im = im.crop(box)
+                img = im.resize((size, int(im.height * size / im.width)), Image.LANCZOS)
+        except Exception:
+            img = None
+    _flag_cache[iso2] = img
+    return img
+
+
 class Fonts:
     def __init__(self):
         path = _font_path()
@@ -102,7 +128,7 @@ class Frame:
         vals = [abs(e.value) for e in r.top] or [1]
         self.vmax = max(vals) or 1
 
-    def draw(self, t: float, times) -> Image.Image:
+    def draw(self, t: float, times, total: float = 0.0) -> Image.Image:
         cur = max((i for i, (s, _) in enumerate(times) if s <= t), default=0)
         scene, (s0, _) = self.scenes[cur], times[cur]
         revealed = {sc.reveal_rank: times[i][0] for i, sc in enumerate(self.scenes[:cur + 1]) if sc.reveal_rank}
@@ -111,6 +137,11 @@ class Frame:
         d = ImageDraw.Draw(img)
         F = self.fonts
         topic = self.r.topic
+
+        # 진행 막대 (끝까지 보게 만드는 장치) + 채널 이름
+        if total:
+            d.rectangle([0, 0, int(W * min(1.0, t / total)), 10], fill=ACCENT)
+        d.text((W // 2, 44), CHANNEL_NAME, font=F[34], fill=MUTED, anchor="mt")
 
         # 제목
         y = 120
@@ -130,7 +161,12 @@ class Frame:
             if e.rank in revealed:
                 p = _ease((t - revealed[e.rank]) / 0.6)
                 color = KOREA if e.iso2 == "KR" else FG
-                d.text((160, ry + 4), e.name, font=F[46], fill=color)
+                nx = 160
+                fl = flag(e.iso2)
+                if fl is not None:
+                    img.paste(fl, (160, ry + 8), fl)
+                    nx = 160 + fl.width + 16
+                d.text((nx, ry + 4), e.name, font=F[46], fill=color)
                 d.text((W - 70, ry + 4), fmt(e.value, topic), font=F[40], fill=color, anchor="ra")
                 bw = int((W - 230) * abs(e.value) / self.vmax * p)
                 d.rounded_rectangle([160, ry + 64, 160 + max(bw, 8), ry + 80], radius=8,
@@ -168,7 +204,7 @@ def render(r: Ranking, scenes: list[Scene], groups, audio: list[Path], out: Path
          "-vf", "setsar=1", "-pix_fmt", "yuv420p", "-c:a", "copy", "-shortest", "-movflags", "+faststart", str(out)],
         stdin=subprocess.PIPE)
     for i in range(n):
-        proc.stdin.write(frame.draw(i / FPS, times).tobytes())
+        proc.stdin.write(frame.draw(i / FPS, times, total).tobytes())
     proc.stdin.close()
     if proc.wait() != 0:
         raise RuntimeError("ffmpeg 인코딩 실패")

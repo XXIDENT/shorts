@@ -40,7 +40,7 @@ jobs:
           cache: pip
 
       - name: 한글 폰트·FFmpeg 설치
-        run: sudo apt-get update -q && sudo apt-get install -y -q fonts-noto-cjk ffmpeg
+        run: sudo apt-get update -q && sudo apt-get install -y -q fonts-noto-cjk fonts-noto-color-emoji ffmpeg
 
       - run: pip install -r requirements.txt
 

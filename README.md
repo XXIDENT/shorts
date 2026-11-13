@@ -89,3 +89,13 @@ Actions 탭 → **채널 관리** → Run workflow
 - 매 영상이 서로 다른 실제 데이터를 다루고, 문장도 여러 변형 중 골라 '반복·대량생산 콘텐츠'로 보이지 않게 했습니다.
 - 배경음악은 넣지 않았습니다 (저작권 위험 없음). 넣으려면 YouTube 오디오 라이브러리의 무료 음원을 쓰세요.
 - 조회수 구매, 봇, 타인 영상 재업로드는 하지 않습니다.
+
+## 픽셀 직업체험 시리즈 (AI 신입 '모니')
+
+모니터 머리 로봇 '모니'가 직업 하나를 골라 퀘스트 3개를 해 보고, 마지막에 Frey & Osborne(2013, 옥스퍼드대) 연구의 실제 자동화 확률과 모니의 체감 점수를 비교하는 40초대 쇼츠입니다. 그림, 음악, 효과음은 모두 코드로 만들고(외부 이미지 없음), 목소리는 edge-tts입니다.
+
+- 대본: `config/jobs.yaml` (편마다 직접 씀, 같은 문장 재사용 금지는 테스트로 검사)
+- 무대: `shorts/pixel/scenes.py`, 그림: `shorts/pixel/art.py`, 음악: `shorts/pixel/chiptune.py`
+- 실행: `python -m shorts.jobs --job barista --no-upload`, 정지 화면만: `--frames 1,10,30`
+- 워크플로: `.github/workflows/jobs.yml` (지금은 수동 실행과 PR 샘플만, 매일 자동 업로드는 승인 후 켬)
+- 로컬 폰트: `sudo apt install fonts-unifont`

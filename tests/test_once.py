@@ -10,9 +10,9 @@ def at(h, m=0, d=14):
 
 
 def test_late_schedule_after_backup_is_skipped():
-    assert uploaded_recently(HIST, at(0, 0))        # 5시간 뒤 또 돌면 건너뜀
+    assert uploaded_recently(HIST, at(21, 0, d=13))   # 1시간 반 뒤 또 돌면 건너뜀
 
 
 def test_next_slot_still_runs():
-    assert not uploaded_recently(HIST, at(12, 0))   # 그날 21시 KST 정시 편은 올라감
+    assert not uploaded_recently(HIST, at(3, 0))    # 7시간 뒤 다음 시간대 편은 올라감
     assert not uploaded_recently([], at(12, 0))

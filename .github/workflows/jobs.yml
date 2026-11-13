@@ -1,9 +1,7 @@
 name: 픽셀 직업체험 쇼츠
 
 on:
-  # 하루 1편, 한국 시간 21시 (사용자 결정 2026-11-13)
-  schedule:
-    - cron: "0 12 * * *"
+  # 예약 실행은 GitHub 지연(최대 몇 시간) 때문에 쓰지 않고, Claude 예약 작업이 정시에 workflow_dispatch로 실행함
   workflow_dispatch:
     inputs:
       job:
@@ -53,6 +51,8 @@ jobs:
           YT_PRIVACY: ${{ vars.YT_PRIVACY || 'private' }}
           MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
           MAKE_PRIVACY: ${{ vars.MAKE_PRIVACY || 'public' }}
+          MAKE_IG_WEBHOOK_URL: ${{ secrets.MAKE_IG_WEBHOOK_URL }}
+          GITHUB_TOKEN: ${{ github.token }}
           JOB: ${{ github.event.inputs.job }}
           NO_UPLOAD: ${{ github.event.inputs.no_upload }}
         run: |

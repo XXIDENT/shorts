@@ -60,7 +60,7 @@ def main(argv: list[str] | None = None) -> int:
         kind_of = {t["id"]: ("trend" if is_trend(t) else "ranking") for t in topics}
         same = [h for h in history if kind_of.get(h["topic"]) == args.kind]
         if uploaded_recently(same):
-            print(f"[main] 최근 12시간 안에 {args.kind} 영상을 이미 올렸어요. 건너뜁니다.")
+            print(f"[main] 최근 4시간 안에 {args.kind} 영상을 이미 올렸어요. 건너뜁니다.")
             return 0
     if args.topic:
         candidates = [next(t for t in topics if t["id"] == args.topic)]

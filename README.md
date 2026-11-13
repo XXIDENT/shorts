@@ -99,3 +99,11 @@ Actions 탭 → **채널 관리** → Run workflow
 - 실행: `python -m shorts.jobs --job barista --no-upload`, 정지 화면만: `--frames 1,10,30`
 - 워크플로: `.github/workflows/jobs.yml` (매일 21시 KST 1편 자동 업로드, PR에서는 샘플만 만듦)
 - 로컬 폰트: `sudo apt install fonts-unifont`
+
+## 모니 세계여행 (픽셀 3D, 매일 19시)
+
+모니가 나라 하나의 거리를 걸으며 세계은행 최신 데이터로 그 나라와 한국을 비교하는 쇼츠입니다. 마인크래프트 같은 복셀(3D 픽셀) 화면을 numpy 레이캐스터로 직접 그려서 별도 3D 프로그램이나 비용이 필요 없습니다. 카메라는 하늘에서 내려와 모니 뒤 3인칭으로 따라가고, 랜드마크는 모니 눈높이 1인칭, 문화 이야기는 셀카 시점으로 바뀝니다.
+
+- 나라와 대사: `config/travel.yaml` (20개국), 세계: `shorts/pixel/world.py`, 렌더러: `shorts/pixel/voxel.py`
+- 실행: `python -m shorts.travel --country france --no-upload`, 오프라인: `--offline --tts silent`
+- 워크플로: `.github/workflows/travel.yml` (기존 19시 세계 랭킹 자리)

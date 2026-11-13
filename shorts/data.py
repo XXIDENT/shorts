@@ -32,6 +32,8 @@ class Ranking:
     top: list[Entry]          # 1위부터 순서대로
     korea: Entry | None       # 한국 순위 (데이터가 있을 때)
     total: int                # 순위에 포함된 국가 수
+    label: str = ""           # 화면에 표시할 기준 시점 (예: "2025년", "11월 13일")
+    source: str = "세계은행 오픈데이터"
 
 
 def _get(path: str, **params) -> list:
@@ -98,11 +100,14 @@ def build_ranking(topic: dict, rows: list[dict], countries: set[str],
     entries = [Entry(r["country"]["id"], korean_name(r["country"]["id"], r["country"]["value"]),
                      float(r["value"]), i + 1) for i, r in enumerate(rows)]
     korea = next((e for e in entries if e.iso2 == "KR"), None)
-    return Ranking(topic, year, entries[:top_n], korea, len(entries))
+    return Ranking(topic, year, entries[:top_n], korea, len(entries), label=f"{year}년")
 
 
 def get_ranking(topic: dict, fixture_dir: Path | None = None) -> Ranking:
     """fixture_dir가 있으면 저장된 JSON으로 (오프라인 테스트용), 없으면 API로."""
+    if topic.get("source") in ("google_trends", "youtube_trending"):
+        from .trends import get_trend_ranking
+        return get_trend_ranking(topic, fixture_dir)
     if fixture_dir:
         fx = json.loads((fixture_dir / f"{topic['indicator']}.json").read_text())
         return build_ranking(topic, fx["rows"], set(fx["countries"]), fx.get("population"))

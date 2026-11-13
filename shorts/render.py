@@ -117,7 +117,7 @@ class Frame:
         for line in _wrap(d, topic["title"], F[76], W - 120):
             d.text((W // 2, y), line, font=F[76], fill=FG, anchor="mt")
             y += 92
-        d.text((W // 2, y + 14), f"TOP 10 · {self.r.year}년", font=F[46], fill=ACCENT, anchor="mt")
+        d.text((W // 2, y + 14), f"TOP 10 · {self.r.label or str(self.r.year) + '년'}", font=F[46], fill=ACCENT, anchor="mt")
 
         # 순위 행 (1위가 맨 위)
         top_y, row_h = 430, 100
@@ -152,7 +152,7 @@ class Frame:
         d.rounded_rectangle([50, sy - 24, W - 50, sy + 66 * len(lines) + 10], radius=22, fill=(0, 0, 0))
         for i, line in enumerate(lines):
             d.text((W // 2, sy + i * 66), line, font=F[52], fill=FG, anchor="mt")
-        d.text((W // 2, H - 70), "출처: 세계은행 오픈데이터", font=F[34], fill=MUTED, anchor="mt")
+        d.text((W // 2, H - 70), f"출처: {self.r.source}", font=F[34], fill=MUTED, anchor="mt")
         return img
 
 

@@ -20,12 +20,10 @@ def configured() -> bool:
     return all(os.environ.get(k) for k in ("YT_CLIENT_ID", "YT_CLIENT_SECRET", "YT_REFRESH_TOKEN"))
 
 
-def upload(video: Path, meta: dict) -> str:
+def credentials():
     from google.oauth2.credentials import Credentials
-    from googleapiclient.discovery import build
-    from googleapiclient.http import MediaFileUpload
 
-    creds = Credentials(
+    return Credentials(
         None,
         refresh_token=os.environ["YT_REFRESH_TOKEN"],
         client_id=os.environ["YT_CLIENT_ID"],
@@ -33,7 +31,13 @@ def upload(video: Path, meta: dict) -> str:
         token_uri="https://oauth2.googleapis.com/token",
         scopes=SCOPES,
     )
-    yt = build("youtube", "v3", credentials=creds, cache_discovery=False)
+
+
+def upload(video: Path, meta: dict) -> str:
+    from googleapiclient.discovery import build
+    from googleapiclient.http import MediaFileUpload
+
+    yt = build("youtube", "v3", credentials=credentials(), cache_discovery=False)
     body = {
         "snippet": {
             "title": meta["title"][:100],

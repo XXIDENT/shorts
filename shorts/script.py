@@ -28,6 +28,16 @@ def fmt(value: float, topic: dict) -> str:
         if value >= 1e4:
             return f"{value / 1e4:.1f}만 달러"
         return f"{value:,.0f}달러"
+    if f == "search_traffic":
+        if value >= 1e4:
+            return f"{value / 1e4:,.0f}만+ 검색"
+        return f"{value:,.0f}+ 검색"
+    if f == "views":
+        if value >= 1e8:
+            return f"{value / 1e8:.1f}억 회"
+        if value >= 1e4:
+            return f"{value / 1e4:,.0f}만 회"
+        return f"{value:,.0f}회"
     if f == "years":
         return f"{value:.1f}세"
     if f == "percent":
@@ -68,7 +78,7 @@ OUTROS = ["다음엔 어떤 순위가 궁금하세요? 댓글로 알려주세요
 def build_script(r: Ranking, seed: int | None = None) -> list[Scene]:
     rnd = random.Random(seed)
     t = r.topic
-    scenes = [Scene("hook", rnd.choice(HOOKS).format(title=t["title"]))]
+    scenes = [Scene("hook", rnd.choice(t.get("hooks") or HOOKS).format(title=t["title"]))]
     top = {e.rank: e for e in r.top}
 
     # 10위~4위는 세 개씩 묶어 빠르게 넘긴다 (쇼츠는 30초대가 완주율이 높음)
@@ -90,7 +100,7 @@ def build_script(r: Ranking, seed: int | None = None) -> list[Scene]:
         else:
             scenes.append(Scene("korea", rnd.choice(KOREA_OUT).format(
                 rank=r.korea.rank, total=r.total, value=fmt(r.korea.value, t))))
-    scenes.append(Scene("outro", rnd.choice(OUTROS)))
+    scenes.append(Scene("outro", rnd.choice(t.get("outros") or OUTROS)))
     return scenes
 
 
@@ -111,10 +121,19 @@ def metadata(r: Ranking, scenes: list[Scene]) -> dict:
     first = r.top[0]
     lines = [f"{e.rank}. {e.name} - {fmt(e.value, t)}" for e in r.top]
     korea = f"\n한국: {r.korea.rank}위 ({fmt(r.korea.value, t)})" if r.korea else ""
+    label = r.label or f"{r.year}년"
+    if t.get("source") in ("google_trends", "youtube_trending"):
+        title = f"{t['title']} TOP 10 ({label}) #Shorts"
+        source = f"출처: {r.source}"
+        tags = ["트렌드", "실시간", "급상승", "랭킹", t["title"]]
+    else:
+        title = f"{t['title']} TOP 10 (한국은 몇 위?) #Shorts"
+        source = f"출처: 세계은행(World Bank) 오픈데이터, 지표 {t['indicator']}"
+        tags = ["세계순위", "데이터", "통계", "랭킹", t["title"]]
     return {
-        "title": f"{t['title']} TOP 10 (한국은 몇 위?) #Shorts",
-        "description": (f"#Shorts {t['title']} 순위 ({r.year}년 기준)\n\n" + "\n".join(lines) + korea +
-                        f"\n\n출처: 세계은행(World Bank) 오픈데이터, 지표 {t['indicator']}\n#세계순위 #데이터 #shorts"),
-        "tags": ["세계순위", "데이터", "통계", "랭킹", t["title"]],
+        "title": title,
+        "description": (f"#Shorts {t['title']} 순위 ({label} 기준)\n\n" + "\n".join(lines) + korea +
+                        f"\n\n{source}\n#랭킹 #트렌드 #shorts"),
+        "tags": tags,
         "first": first.name,
     }

@@ -2,14 +2,19 @@ name: 매일 쇼츠 생성
 
 on:
   schedule:
-    # 한국 시간 오전 8시, 오후 6시 (UTC 23시, 9시)
+    # 하루 3개 (한국 시간): 08시 세계 랭킹, 12시 실시간 트렌드, 19시 세계 랭킹
     - cron: "0 23 * * *"
-    - cron: "0 9 * * *"
+    - cron: "0 3 * * *"
+    - cron: "0 10 * * *"
   workflow_dispatch:
     inputs:
       topic:
         description: "주제 id (비우면 자동 선택, config/topics.yaml 참고)"
         required: false
+      kind:
+        description: "any | trend | ranking (주제 id가 없을 때만)"
+        required: false
+        default: any
 
 permissions:
   contents: write
@@ -45,8 +50,12 @@ jobs:
         run: |
           if [ -n "${{ github.event.inputs.topic }}" ]; then
             python -m shorts.main --topic "${{ github.event.inputs.topic }}"
+          elif [ -n "${{ github.event.inputs.kind }}" ]; then
+            python -m shorts.main --kind "${{ github.event.inputs.kind }}"
+          elif [ "${{ github.event.schedule }}" = "0 3 * * *" ]; then
+            python -m shorts.main --kind trend
           else
-            python -m shorts.main
+            python -m shorts.main --kind ranking
           fi
 
       - name: 영상 파일 보관 (Actions 실행 화면에서 다운로드 가능, 14일)

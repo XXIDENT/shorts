@@ -5,6 +5,7 @@
   python -m shorts.manage delete VIDEO_ID [VIDEO_ID ...]
   python -m shorts.manage privacy VIDEO_ID public|unlisted|private
   python -m shorts.manage title VIDEO_ID "새 제목"
+  python -m shorts.manage branding        (채널 설명·키워드·배너 적용)
   python -m shorts.manage info VIDEO_ID [VIDEO_ID ...]   (처리 상태·제한 사유 확인)
 """
 from __future__ import annotations
@@ -30,6 +31,30 @@ def list_videos(yt) -> None:
         print(f"{vid}  [{it['status']['privacyStatus']}]  {it['snippet']['title']}")
 
 
+CHANNEL_DESCRIPTION = """세계 순위와 오늘의 트렌드를 1분 안에 보여 드려요.
+
+매일 오전 8시, 낮 12시, 저녁 7시에 새 TOP 10이 올라와요.
+- 세계은행 공식 통계로 보는 나라별 순위 (한국은 몇 위?)
+- 오늘 한국 급상승 검색어, 유튜브 인기 급상승
+
+궁금한 순위가 있으면 댓글로 알려 주세요."""
+CHANNEL_KEYWORDS = '랭킹 순위 TOP10 세계순위 통계 데이터 트렌드 급상승 "1분 랭킹"'
+
+
+def branding(yt, banner: str = "assets/banner.png") -> None:
+    from googleapiclient.http import MediaFileUpload
+    ch = yt.channels().list(part="brandingSettings", mine=True).execute()["items"][0]
+    bs = ch["brandingSettings"]
+    bs.setdefault("channel", {})
+    bs["channel"]["description"] = CHANNEL_DESCRIPTION
+    bs["channel"]["keywords"] = CHANNEL_KEYWORDS
+    bs["channel"]["defaultLanguage"] = "ko"
+    url = yt.channelBanners().insert(media_body=MediaFileUpload(banner, mimetype="image/png")).execute()["url"]
+    bs.setdefault("image", {})["bannerExternalUrl"] = url
+    yt.channels().update(part="brandingSettings", body={"id": ch["id"], "brandingSettings": bs}).execute()
+    print("채널 설명·키워드·배너 적용 완료")
+
+
 def main(argv: list[str]) -> int:
     if not argv:
         print(__doc__)
@@ -37,6 +62,8 @@ def main(argv: list[str]) -> int:
     yt, cmd, args = client(), argv[0], argv[1:]
     if cmd == "list":
         list_videos(yt)
+    elif cmd == "branding":
+        branding(yt)
     elif cmd == "info":
         import json
         resp = yt.videos().list(part="status,processingDetails,contentDetails,snippet", id=",".join(args)).execute()

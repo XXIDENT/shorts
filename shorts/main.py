@@ -16,6 +16,7 @@ from pathlib import Path
 
 import yaml
 
+from .once import uploaded_recently
 from . import upload_make, upload_youtube
 from .data import get_ranking
 from .render import render
@@ -54,12 +55,18 @@ def main(argv: list[str] | None = None) -> int:
     topics = load_topics()
     history = load_history()
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
+    is_trend = lambda t: t.get("source") in ("google_trends", "youtube_trending")
+    if not args.no_upload and not args.topic and args.kind in ("trend", "ranking"):
+        kind_of = {t["id"]: ("trend" if is_trend(t) else "ranking") for t in topics}
+        same = [h for h in history if kind_of.get(h["topic"]) == args.kind]
+        if uploaded_recently(same):
+            print(f"[main] 최근 12시간 안에 {args.kind} 영상을 이미 올렸어요. 건너뜁니다.")
+            return 0
     if args.topic:
         candidates = [next(t for t in topics if t["id"] == args.topic)]
     else:
         # 데이터를 못 받은 주제는 건너뛰고 다음 주제로 (최대 3개 시도)
         last = {h["topic"]: h["at"] for h in history}
-        is_trend = lambda t: t.get("source") in ("google_trends", "youtube_trending")
         pool = [t for t in topics if args.kind == "any" or (args.kind == "trend") == is_trend(t)]
         candidates = sorted(pool, key=lambda t: last.get(t["id"], ""))[:3]
     ranking = None

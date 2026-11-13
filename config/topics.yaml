@@ -1,0 +1,116 @@
+# 세계은행(World Bank) 무료 API 지표 목록.
+# order: desc = 큰 값이 1위, asc = 작은 값이 1위
+# scale/unit: 화면·음성에 표시할 단위 변환 (값 / scale + unit)
+# min_pop: 비율 지표에서 초소형 국가를 빼기 위한 최소 인구
+topics:
+  - id: population
+    indicator: SP.POP.TOTL
+    title: 인구가 가장 많은 나라
+    order: desc
+    format: count_people
+  - id: gdp
+    indicator: NY.GDP.MKTP.CD
+    title: GDP가 가장 큰 나라
+    order: desc
+    format: usd_big
+  - id: gdp_per_capita
+    indicator: NY.GDP.PCAP.CD
+    title: 1인당 GDP가 가장 높은 나라
+    order: desc
+    format: usd
+    min_pop: 1000000
+  - id: life_expectancy
+    indicator: SP.DYN.LE00.IN
+    title: 기대수명이 가장 긴 나라
+    order: desc
+    format: years
+    min_pop: 1000000
+  - id: fertility_low
+    indicator: SP.DYN.TFRT.IN
+    title: 출산율이 가장 낮은 나라
+    order: asc
+    format: ratio2
+    unit: 명
+    min_pop: 1000000
+  - id: fertility_high
+    indicator: SP.DYN.TFRT.IN
+    title: 출산율이 가장 높은 나라
+    order: desc
+    format: ratio2
+    unit: 명
+    min_pop: 1000000
+  - id: aging
+    indicator: SP.POP.65UP.TO.ZS
+    title: 65세 이상 노인 비율이 가장 높은 나라
+    order: desc
+    format: percent
+    min_pop: 1000000
+  - id: internet
+    indicator: IT.NET.USER.ZS
+    title: 인터넷 사용률이 가장 높은 나라
+    order: desc
+    format: percent
+    min_pop: 1000000
+  - id: urban
+    indicator: SP.URB.TOTL.IN.ZS
+    title: 도시에 사는 사람 비율이 가장 높은 나라
+    order: desc
+    format: percent
+    min_pop: 1000000
+  - id: forest
+    indicator: AG.LND.FRST.ZS
+    title: 숲이 가장 많은 나라
+    order: desc
+    format: percent
+    min_pop: 1000000
+  - id: military
+    indicator: MS.MIL.XPND.CD
+    title: 국방비를 가장 많이 쓰는 나라
+    order: desc
+    format: usd_big
+  - id: tourism
+    indicator: ST.INT.ARVL
+    title: 외국인 관광객이 가장 많이 오는 나라
+    order: desc
+    format: count_people
+  - id: unemployment
+    indicator: SL.UEM.TOTL.ZS
+    title: 실업률이 가장 높은 나라
+    order: desc
+    format: percent
+    min_pop: 1000000
+  - id: exports
+    indicator: NE.EXP.GNFS.CD
+    title: 수출을 가장 많이 하는 나라
+    order: desc
+    format: usd_big
+  - id: health_spend
+    indicator: SH.XPD.CHEX.PC.CD
+    title: 1인당 의료비를 가장 많이 쓰는 나라
+    order: desc
+    format: usd
+    min_pop: 1000000
+  - id: birth_rate_low
+    indicator: SP.DYN.CBRT.IN
+    title: 아기가 가장 적게 태어나는 나라
+    order: asc
+    format: per_1000
+    min_pop: 1000000
+  - id: education_spend
+    indicator: SE.XPD.TOTL.GD.ZS
+    title: GDP 대비 교육비를 가장 많이 쓰는 나라
+    order: desc
+    format: percent
+    min_pop: 1000000
+  - id: population_growth
+    indicator: SP.POP.GROW
+    title: 인구가 가장 빨리 늘어나는 나라
+    order: desc
+    format: percent
+    min_pop: 1000000
+  - id: population_shrink
+    indicator: SP.POP.GROW
+    title: 인구가 가장 빨리 줄어드는 나라
+    order: asc
+    format: percent
+    min_pop: 1000000

@@ -29,6 +29,7 @@ import numpy as np
 import yaml
 from PIL import Image, ImageDraw
 
+from .once import uploaded_recently
 from . import upload_make, upload_youtube
 from .jobs import Fonts, josa, mix_voice, pixel_panel, synthesize, text, wrap
 from .pixel import chiptune
@@ -443,6 +444,9 @@ def main(argv: list[str] | None = None) -> int:
 
     countries = load_countries()
     history = load_history()
+    if not args.no_upload and not args.country and uploaded_recently(history):
+        print("[travel] 최근 12시간 안에 이미 올렸어요. 하루 한 편이라 건너뜁니다.")
+        return 0
     if args.country:
         ct = next(c for c in countries if c["id"] == args.country)
     else:

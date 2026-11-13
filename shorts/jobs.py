@@ -27,6 +27,7 @@ from pathlib import Path
 import yaml
 from PIL import Image, ImageDraw, ImageFont
 
+from .once import uploaded_recently
 from . import upload_make, upload_youtube
 from .pixel import art, chiptune
 from .pixel.art import C, FLOOR, SH, SW
@@ -528,6 +529,9 @@ def main(argv: list[str] | None = None) -> int:
 
     episodes = load_episodes()
     history = load_history()
+    if not args.no_upload and not args.job and uploaded_recently(history):
+        print("[jobs] 최근 12시간 안에 이미 올렸어요. 하루 한 편이라 건너뜁니다.")
+        return 0
     if args.list:
         done = {h["job"] for h in history}
         for e in sorted(episodes, key=lambda e: e["num"]):

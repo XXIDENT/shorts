@@ -82,9 +82,31 @@ Actions 탭 → **채널 관리** → Run workflow
 - `privacy` + `영상ID public`: 공개로 전환
 - `title` + `영상ID 새 제목`: 제목 수정
 
+## 업로드 시간표 (2026-11-14부터)
+
+| KST | 시리즈 |
+|---|---|
+| 08:00 | 직업체험 |
+| 12:00 | 세계여행 |
+| 19:00 | 세계여행 |
+| 21:00 | 직업체험 |
+
+GitHub 예약 실행은 몇 시간씩 늦어서 쓰지 않고, Claude 예약 작업이 각 시각 8분 전에 workflow_dispatch로 실행합니다. 같은 시리즈를 4시간 안에 두 번 올리지 않도록 막아 둡니다(`shorts/once.py`). 세계 랭킹·트렌드(`daily.yml`)는 수동 실행 전용이에요.
+
 ## 조회수 리포트 (매일 22:30)
 
 `.github/workflows/stats.yml`이 채널 전체 조회수, 어제보다 늘어난 조회수, 최근 90일 조회수(수익화 기준 대비), 시리즈별(올라간 시각 기준) 합계, TOP 5를 모아 **"📊 조회수 리포트" 이슈에 댓글**로 남깁니다. 이슈를 구독하면 알림으로 받아요. 기록은 `data/views.json`(120일치). Actions에서 '조회수 리포트'를 수동 실행하면 바로 볼 수 있습니다.
+
+## 인스타그램 릴스 같이 올리기 (Make.com, 0원)
+
+직업체험·세계여행 영상은 유튜브에 올린 뒤 같은 영상을 인스타 릴스로도 보냅니다. `MAKE_IG_WEBHOOK_URL` 시크릿이 없으면 인스타는 건너뛰어요.
+
+1. 인스타 계정을 **프로페셔널(크리에이터 또는 비즈니스)** 으로 바꾸고 **페이스북 페이지에 연결**합니다(인스타 API 조건).
+2. Make.com에서 새 시나리오: **Webhooks > Custom webhook** → **Instagram for Business > Create a Reel Post**
+   - Video URL: `video_url`, Caption: `caption`
+3. 웹훅 주소를 GitHub Secrets에 `MAKE_IG_WEBHOOK_URL`로 저장하고 시나리오를 켭니다.
+
+인스타 API는 파일 대신 공개 주소의 영상을 가져가서, 영상을 이 저장소의 `reels-media` 릴리스에 임시로 올립니다(최근 40개만 남김). 인스타 전송이 실패해도 유튜브 업로드는 그대로예요.
 
 ## 주제 추가
 `config/topics.yaml`에 [세계은행 지표 코드](https://data.worldbank.org/indicator)와 제목을 추가하면 됩니다.

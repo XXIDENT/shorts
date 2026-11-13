@@ -28,7 +28,7 @@ import yaml
 from PIL import Image, ImageDraw, ImageFont
 
 from .once import uploaded_recently
-from . import upload_make, upload_youtube
+from . import upload_instagram, upload_make, upload_youtube
 from .pixel import art, chiptune
 from .pixel.art import C, FLOOR, SH, SW
 from .pixel.scenes import SCENES
@@ -530,7 +530,7 @@ def main(argv: list[str] | None = None) -> int:
     episodes = load_episodes()
     history = load_history()
     if not args.no_upload and not args.job and uploaded_recently(history):
-        print("[jobs] 최근 12시간 안에 이미 올렸어요. 하루 한 편이라 건너뜁니다.")
+        print("[jobs] 최근 4시간 안에 이미 올렸어요. 하루 한 편이라 건너뜁니다.")
         return 0
     if args.list:
         done = {h["job"] for h in history}
@@ -579,6 +579,8 @@ def main(argv: list[str] | None = None) -> int:
         print(f"[jobs] 업로드 완료: https://youtu.be/{video_id}")
     elif not args.no_upload:
         print("[jobs] 업로드 설정이 없어 건너뜀")
+    if not args.no_upload:
+        upload_instagram.try_upload(video, meta, "jobs")
 
     if not args.no_upload:
         history.append({"job": ep["id"], "at": stamp, "video_id": video_id})

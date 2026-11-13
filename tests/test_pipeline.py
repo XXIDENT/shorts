@@ -37,3 +37,15 @@ def test_fmt():
     assert fmt(1.43e9, {"format": "count_people"}) == "14.3억 명"
     assert fmt(2.74e13, {"format": "usd_big"}) == "27.4조 달러"
     assert fmt(0.72, {"format": "ratio2", "unit": "명"}) == "0.72명"
+
+
+def test_google_trends_parse_and_script():
+    from shorts.trends import get_trend_ranking, parse_traffic, short
+    assert parse_traffic("200K+") == 200000
+    assert parse_traffic("500,000+") == 500000
+    assert len(short("프로야구 한국시리즈 결과 하이라이트 다시보기")) <= 14
+    topic = {"id": "g", "source": "google_trends", "title": "오늘 급상승 검색어", "format": "search_traffic"}
+    r = get_trend_ranking(topic, FX.parent)
+    assert r.top[0].name == "수능" and len(r.top) == 10 and r.korea is None
+    scenes = build_script(r, seed=1)
+    assert sorted(s.reveal_rank for s in scenes if s.reveal_rank) == list(range(1, 11))

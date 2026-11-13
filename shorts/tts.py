@@ -28,14 +28,14 @@ def _google(text: str, out: Path, key: str) -> None:
         params={"key": key}, timeout=60,
         json={"input": {"text": text},
               "voice": {"languageCode": "ko-KR", "name": GOOGLE_VOICE},
-              "audioConfig": {"audioEncoding": "MP3", "speakingRate": 1.15}})
+              "audioConfig": {"audioEncoding": "MP3", "speakingRate": 1.3}})
     r.raise_for_status()
     out.write_bytes(base64.b64decode(r.json()["audioContent"]))
 
 
 def _edge(text: str, out: Path) -> None:
     import edge_tts
-    asyncio.run(edge_tts.Communicate(text, EDGE_VOICE, rate="+12%").save(str(out)))
+    asyncio.run(edge_tts.Communicate(text, EDGE_VOICE, rate="+28%").save(str(out)))
 
 
 def _silence(text: str, out: Path) -> None:

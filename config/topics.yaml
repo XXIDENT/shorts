@@ -114,3 +114,27 @@ topics:
     order: asc
     format: percent
     min_pop: 1000000
+
+  # ── 실시간 트렌드 (매일 내용이 바뀜) ──
+  - id: google_trends_kr
+    source: google_trends
+    title: 오늘 한국 급상승 검색어
+    format: search_traffic
+    hooks:
+      - "{title}, 오늘 사람들은 뭘 검색했을까요?"
+      - "{title} TOP 10, 1위는 뭘까요?"
+      - "지금 한국에서 제일 핫한 검색어, 바로 보여드릴게요."
+    outros:
+      - "몇 개나 알고 계셨나요? 댓글로 알려주세요."
+      - "내일 급상승 순위도 구독하고 확인하세요."
+  - id: youtube_trending_kr
+    source: youtube_trending
+    title: 오늘 유튜브 인기 급상승
+    format: views
+    hooks:
+      - "{title} TOP 10, 1위는 어떤 영상일까요?"
+      - "요즘 한국 사람들이 제일 많이 본 영상은?"
+      - "{title}, 몇 개나 보셨는지 세어 보세요."
+    outros:
+      - "이 중에 몇 개 보셨어요? 댓글로 알려주세요."
+      - "매일 인기 순위가 궁금하면 구독해 주세요."

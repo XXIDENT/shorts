@@ -47,6 +47,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--tts", choices=["google", "edge", "silent"])
     ap.add_argument("--out", type=Path, default=ROOT / "out")
     ap.add_argument("--no-upload", action="store_true")
+    ap.add_argument("--kind", choices=["any", "trend", "ranking"], default="any",
+                    help="trend=실시간 트렌드 주제만, ranking=세계 순위 주제만")
     args = ap.parse_args(argv)
 
     topics = load_topics()
@@ -57,7 +59,9 @@ def main(argv: list[str] | None = None) -> int:
     else:
         # 데이터를 못 받은 주제는 건너뛰고 다음 주제로 (최대 3개 시도)
         last = {h["topic"]: h["at"] for h in history}
-        candidates = sorted(topics, key=lambda t: last.get(t["id"], ""))[:3]
+        is_trend = lambda t: t.get("source") in ("google_trends", "youtube_trending")
+        pool = [t for t in topics if args.kind == "any" or (args.kind == "trend") == is_trend(t)]
+        candidates = sorted(pool, key=lambda t: last.get(t["id"], ""))[:3]
     ranking = None
     for topic in candidates:
         print(f"[main] 주제: {topic['id']} ({topic['title']})")
@@ -81,7 +85,7 @@ def main(argv: list[str] | None = None) -> int:
     meta = metadata(ranking, scenes)
     (args.out / f"{stamp}-{topic['id']}.json").write_text(
         json.dumps({**meta, "script": [g[0] for g in groups], "seconds": round(secs, 1),
-                    "year": ranking.year, "tts": engine}, ensure_ascii=False, indent=2))
+                    "label": ranking.label, "tts": engine}, ensure_ascii=False, indent=2))
     shutil.rmtree(work, ignore_errors=True)
     print(f"[main] 영상: {video} ({secs:.1f}초)")
 
@@ -93,7 +97,7 @@ def main(argv: list[str] | None = None) -> int:
         print("[main] YouTube Secrets가 없어 업로드는 건너뜀")
 
     if not args.fixtures:
-        history.append({"topic": topic["id"], "at": stamp, "year": ranking.year, "video_id": video_id})
+        history.append({"topic": topic["id"], "at": stamp, "label": ranking.label, "video_id": video_id})
         HISTORY.parent.mkdir(parents=True, exist_ok=True)
         HISTORY.write_text(json.dumps(history, ensure_ascii=False, indent=2))
     return 0

@@ -12,7 +12,7 @@
 6. YouTube에 **비공개**로 업로드 → YouTube Studio에서 확인 후 공개 (= 사람 검수 단계)
 7. `data/history.json`에 기록
 
-GitHub Actions가 매일 한국 시간 오전 8시, 오후 6시에 실행합니다. Actions 탭에서 "Run workflow"로 바로 실행할 수도 있어요.
+GitHub Actions가 매일 한국 시간 08시(세계 랭킹), 12시(실시간 트렌드: 구글 급상승 검색어 / 유튜브 인기 급상승), 19시(세계 랭킹)에 실행합니다. Actions 탭에서 "Run workflow"로 바로 실행할 수도 있어요.
 
 ## 처음 설정 (한 번만)
 
@@ -56,6 +56,13 @@ python -m shorts.main --topic gdp --no-upload           # 주제 지정
 python -m shorts.main --fixtures tests/fixtures --topic population --tts silent --no-upload   # 오프라인
 python -m pytest -q
 ```
+
+## 채널 관리 (삭제·공개·제목 수정)
+Actions 탭 → **채널 관리** → Run workflow
+- `list`: 채널 영상 목록과 ID 보기
+- `delete` + `영상ID`: 영상 삭제
+- `privacy` + `영상ID public`: 공개로 전환
+- `title` + `영상ID 새 제목`: 제목 수정
 
 ## 주제 추가
 `config/topics.yaml`에 [세계은행 지표 코드](https://data.worldbank.org/indicator)와 제목을 추가하면 됩니다.

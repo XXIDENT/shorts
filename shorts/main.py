@@ -51,11 +51,23 @@ def main(argv: list[str] | None = None) -> int:
 
     topics = load_topics()
     history = load_history()
-    topic = next(t for t in topics if t["id"] == args.topic) if args.topic else pick_topic(topics, history)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
-    print(f"[main] 주제: {topic['id']} ({topic['title']})")
-
-    ranking = get_ranking(topic, args.fixtures)
+    if args.topic:
+        candidates = [next(t for t in topics if t["id"] == args.topic)]
+    else:
+        # 데이터를 못 받은 주제는 건너뛰고 다음 주제로 (최대 3개 시도)
+        last = {h["topic"]: h["at"] for h in history}
+        candidates = sorted(topics, key=lambda t: last.get(t["id"], ""))[:3]
+    ranking = None
+    for topic in candidates:
+        print(f"[main] 주제: {topic['id']} ({topic['title']})")
+        try:
+            ranking = get_ranking(topic, args.fixtures)
+            break
+        except Exception as e:
+            print(f"[main] 데이터 실패, 다음 주제로: {e}")
+    if ranking is None:
+        raise SystemExit("[main] 모든 후보 주제의 데이터를 받지 못했어요")
     scenes = build_script(ranking, seed=hash((topic["id"], stamp)) & 0xFFFF)
     groups = narration_lines(scenes)
 

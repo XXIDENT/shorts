@@ -12,7 +12,8 @@ from pathlib import Path
 
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
+# 업로드·수정·삭제 등 채널 관리 전체 권한
+SCOPES = ["https://www.googleapis.com/auth/youtube"]
 secret = Path(__file__).resolve().parent / "client_secret.json"
 flow = InstalledAppFlow.from_client_secrets_file(str(secret), SCOPES)
 creds = flow.run_local_server(port=0, access_type="offline", prompt="consent")

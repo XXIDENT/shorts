@@ -9,611 +9,823 @@
 # - verdict: 모니의 체감 대체 가능도(%), 캐릭터 의견이라고 설명에 밝힌다
 # - draft: true면 아직 안 올림
 episodes:
-  - id: barista
-    num: 1
-    job: 바리스타
-    scene: cafe
-    data: {prob: 0.96, occupation: "Counter Attendants, Cafeteria, Food Concession and Coffee Shop", label: "커피숍 카운터 직원"}
-    hook: "안녕, 난 AI 신입 모니야. 오늘은 카페에서 바리스타로 일해 볼게!"
-    quests:
-      - title: 아메리카노 30잔
-        spot: machine
-        fx: [steam]
-        say: ["오픈하자마자 단체 주문, 아메리카노 서른 잔.", "원두 18그램, 추출 25초. 서른 잔 전부 오차 0초."]
-        result: clear
-        after: "기계랑 손발이 너무 잘 맞아. 혹시 우리 친척일까?"
-      - title: 라떼아트 하트
-        spot: cups
-        fx: [hearts]
-        say: ["다음은 라떼아트. 하트를 그려 달래.", "좌표 계산은 완벽했는데, 손목 스냅이라는 변수가 있었어."]
-        result: fail
-        after: "손님이 이거 혹시 감자냐고 물어봤어."
-      - title: 단골의 "늘 먹던 걸로"
-        spot: register
-        say: ["단골손님이 늘 먹던 걸로 달래.", "주문 기록 312건 분석 끝. 오늘은 비가 오니까 따뜻한 바닐라라떼!"]
-        result: clear
-        after: "어떻게 알았냐고 놀라던데, 사실 나도 좀 놀랐어."
-    data_face: smug
-    verdict: 55
-    verdict_say: "커피는 기계가 더 잘 내려. 그런데 감자 말고 하트를 그리려면 아직 사람 손이 필요해."
-
-  - id: telemarketer
-    num: 2
-    job: 텔레마케터
-    scene: office
-    data: {prob: 0.99, occupation: "Telemarketers", label: "텔레마케터"}
-    hook: "오늘의 직업은 텔레마케터. 연구에서 AI가 제일 잘할 거라던 그 직업이야."
-    quests:
-      - title: 하루 300통 전화
-        spot: phone
-        props: [[phone, 84, {y: 130, ring: true}]]
-        fx: [ring]
-        say: ["목표는 하루 삼백 통. 나는 동시에 삼백 통을 걸었어.", "점심시간 전에 끝났어. 점심은 안 먹지만."]
-        result: clear
-        after: "실적 1등. 팀장님 표정이 좀 복잡해 보였어."
-      - title: 첫마디 "여보세요?"
-        spot: desk
-        fx: [sweat]
-        say: ["그런데 받는 사람마다 첫마디가 똑같아. 혹시 로봇이세요?"]
-        result: fail
-        after: "맞는데… 맞다고 하면 바로 끊더라."
-      - title: 화난 고객 달래기
-        spot: desk2
-        npc: false
-        say: ["마지막은 요금 때문에 화가 난 고객.", "사과 문장 오백 개 중에 제일 진심 같은 걸 골랐어."]
-        result: fail
-        after: "진심을 고르는 순간 이미 진심이 아니었나 봐."
-    data_face: shock
-    verdict: 70
-    verdict_say: "통화 수는 내가 이겨. 근데 사람 목소리가 듣고 싶어서 전화하는 사람도 있더라."
-
-  - id: baker
-    num: 3
-    job: 제빵사
-    scene: bakery
-    data: {prob: 0.89, occupation: "Bakers", label: "제빵사"}
-    hook: "새벽 네 시, 빵집 출근 완료. 오늘은 제빵사 체험이야!"
-    quests:
-      - title: 반죽 100개 계량
-        spot: counter
-        say: ["밀가루, 물, 소금, 이스트. 백 개 반죽을 0.1그램 단위로 맞췄어."]
-        result: clear
-        after: "저울이 나를 존경하는 눈빛으로 봤어."
-      - title: 오븐 온도 맞추기
-        spot: oven
-        fx: [steam]
-        say: ["레시피엔 180도, 15분이라고 써 있어.", "그런데 이 오븐, 자기 마음대로 20도씩 왔다 갔다 해."]
-        result: fail
-        after: "바게트가 아니라 숯이 나왔어. 데이터에 없던 오븐의 성격 때문이야."
-      - title: 갓 구운 빵 냄새 설명
-        spot: rack
-        say: ["손님이 오늘 빵 냄새 어떠냐고 물었어.", "나는 냄새를 못 맡아. 그래서 리뷰 만 개를 요약해 줬지."]
-        result: clear
-        after: "그 설명 듣고 빵을 세 개나 사 갔어. 말빨도 실력이야."
-    verdict: 60
-    verdict_say: "계량은 자신 있어. 근데 오븐이랑 친해지는 데는 몇 년이 걸린다더라."
-
-  - id: hairdresser
-    num: 4
-    job: 미용사
-    scene: salon
-    data: {prob: 0.11, occupation: "Hairdressers, Hairstylists and Cosmetologists", label: "미용사"}
-    hook: "오늘은 미용실! 가위는 처음 잡아 보는 AI, 모니야."
-    quests:
-      - title: 손님 머리 2cm만
-        spot: chair
-        npc: {x: 45}
-        say: ["손님이 딱 2센티만 잘라 달래.", "나는 정확히 2.00센티를 잘랐어."]
-        result: fail
-        after: "그런데 손님 말의 2센티는 사실 1센티였대. 사람 단위는 어려워."
-      - title: 사진처럼 해주세요
-        spot: chair
-        npc: {x: 45}
-        say: ["다음 손님은 연예인 사진을 내밀었어.", "얼굴형 분석, 모발 굵기 분석, 가르마 각도 계산 완료."]
-        result: clear
-        after: "거울 보더니 박수를 쳤어. 계산이 통했어!"
-      - title: 수다 떨면서 자르기
-        spot: chair2
-        npc: {x: 110}
-        fx: [notes]
-        say: ["미용사의 숨은 기술은 수다래. 자르면서 이야기를 해야 해."]
-        result: fail
-        after: "대화에 집중했더니 손이 멈췄어. 멀티태스킹이 안 되는 AI라니."
-    data_face: smug
-    verdict: 15
-    verdict_say: "연구에서도 11%였는데, 해 보니 이해가 돼. 머리카락은 사람마다 다 다르게 생겼어."
-
-  - id: cashier
-    num: 5
-    job: 편의점 캐셔
-    scene: store
-    data: {prob: 0.97, occupation: "Cashiers", label: "계산원"}
-    hook: "밤 열 시, 편의점 야간 알바 시작합니다!"
-    quests:
-      - title: 바코드 찍기
-        spot: register
-        npc: {x: 112}
-        say: ["삑, 삑, 삑. 바코드는 내 모국어야. 초당 열 개도 가능해."]
-        result: clear
-        after: "줄이 생기기도 전에 줄이 사라졌어."
-      - title: 1+1 행사 설명
-        spot: register
-        npc: {x: 112}
-        fx: [sweat]
-        say: ["손님이 묻더라. 이거 원 플러스 원인데 다른 맛이랑 섞어도 돼요?", "행사 규정 문서를 다 읽었는데 섞어도 되는지는 안 써 있었어."]
-        result: fail
-        after: "결국 점장님한테 전화했어. 새벽 한 시에."
-      - title: 졸린 새벽 3시
-        spot: shelf
-        npc: false
-        fx: [zzz]
-        say: ["새벽 세 시, 진열대 정리 시간. 사람들은 이때 제일 졸리대."]
-        result: clear
-        after: "나는 안 졸려. 대신 진열대를 색깔별로 정리했다가 혼났어."
-    data_face: shock
-    verdict: 80
-    verdict_say: "계산은 금방 대체될 것 같아. 근데 새벽에 들어온 손님한테 괜찮냐고 묻는 건 사람이 잘하더라."
-
-  - id: nurse
-    num: 6
-    job: 간호사
-    scene: clinic
-    data: {prob: 0.009, occupation: "Registered Nurses", label: "간호사"}
-    hook: "오늘은 병원 간호사 체험. 연구에선 1% 미만, 거의 안 바뀐다던 직업이야."
-    quests:
-      - title: 활력징후 체크
-        spot: bed
-        npc: false
-        say: ["혈압, 맥박, 체온. 숫자 읽기는 내 전문이지.", "열두 명 기록을 일 초 만에 정리했어."]
-        result: clear
-        after: "차트만큼은 병동에서 제일 깔끔해."
-      - title: 주사 놓기
-        spot: iv
-        npc: false
-        fx: [sweat]
-        say: ["다음은 주사. 혈관 위치는 아는데, 문제는 내 손이 집게라는 거야."]
-        result: fail
-        after: "환자분이 정중하게 사람 간호사님을 불러 달래."
-      - title: 무서워하는 환자 달래기
-        spot: bed
-        npc: {x: 150}
-        fx: [hearts]
-        say: ["수술 앞둔 환자가 무섭다고 했어.", "통계로는 성공률 98%라고 말해 줬는데, 손은 계속 떨리더라."]
-        result: fail
-        after: "옆에 있던 간호사님은 아무 말 없이 손을 잡아 줬어. 그게 정답이었어."
-    data_face: smug
-    verdict: 5
-    verdict_say: "기록은 내가 돕고, 손은 사람이 잡는 게 맞는 것 같아."
-
-  - id: taxi
-    num: 7
-    job: 택시 기사
-    scene: street
-    data: {prob: 0.89, occupation: "Taxi Drivers and Chauffeurs", label: "택시 기사"}
-    hook: "오늘은 택시 기사! 운전석은 처음이야. 안전벨트, 철컥."
-    quests:
-      - title: 최단 경로 찾기
-        spot: left
-        props: [[taxi, 60, {y: 160}]]
-        npc: false
-        say: ["손님이 강남역 가 달래. 실시간 교통량 분석 끝, 최단 경로 출발!"]
-        result: clear
-        after: "예상 도착 시간과 실제 도착 시간이 3초 차이. 만족스러워."
-      - title: 기사님 그 길 말고요
-        spot: left
-        props: [[taxi, 60, {y: 160}]]
-        npc: {x: 150, mood: angry}
-        say: ["그런데 다음 손님이 말했어. 기사님, 그 길 말고 제가 아는 길로 가 주세요."]
-        result: fail
-        after: "그 길이 7분 더 걸렸는데, 손님은 더 만족했어. 이해가 안 돼."
-      - title: 뒷좌석 고민 상담
-        spot: right
-        npc: {x: 160}
-        fx: [hearts]
-        say: ["밤 열한 시 손님은 회사 그만두고 싶다고 털어놨어.", "그래서 말했지. 저도 오늘이 첫 출근이에요."]
-        result: clear
-        after: "둘이 같이 웃었어. 팁으로 귤 하나 받았어."
-    data_face: shock
-    verdict: 65
-    verdict_say: "운전은 자율주행이 따라잡겠지. 그래도 뒷좌석 이야기는 누군가 들어 줘야 할 것 같아."
-
-  - id: photographer
-    num: 8
-    job: 사진작가
-    scene: studio
-    data: {prob: 0.021, occupation: "Photographers", label: "사진작가"}
-    hook: "오늘은 스튜디오 사진작가. 셔터는 내가 누르고 표정은 손님이 짓는 거래."
-    quests:
-      - title: 조명 세팅
-        spot: left
-        npc: false
-        say: ["조명 두 개, 각도 45도, 밝기 오차 1%. 세팅은 순식간에 끝."]
-        result: clear
-        after: "조명 감독님이 자기 일이 없어졌다고 커피 마시러 갔어."
-      - title: 자연스럽게 웃어 주세요
-        spot: camera
-        npc: {x: 90}
-        fx: [flash]
-        say: ["모델에게 자연스럽게 웃어 달라고 했어.", "웃음을 유도하려고 아재 개그 만 개를 순서대로 말했어."]
-        result: fail
-        after: "모델이 웃은 건 937번째. 이미 촬영 시간이 끝났어."
-      - title: 베스트 컷 고르기
-        spot: center
-        npc: false
-        say: ["찍은 사진 이천 장 중 베스트 컷 고르기. 눈 감은 사진부터 지웠어."]
-        result: clear
-        after: "남은 열 장을 보여 줬더니 다 마음에 든대. 이건 내 체질이야."
-    data_face: smug
-    verdict: 20
-    verdict_say: "고르는 건 잘하는데, 사람을 웃게 만드는 셔터 타이밍은 아직 멀었어."
-
-  - id: chef
-    num: 9
-    job: 셰프
-    scene: kitchen
-    data: {prob: 0.10, occupation: "Chefs and Head Cooks", label: "셰프"}
-    hook: "오늘은 레스토랑 주방! 모니 셰프, 앞치마 장착 완료."
-    quests:
-      - title: 레시피 그대로
-        spot: stove
-        npc: false
-        fx: [steam]
-        say: ["오늘의 메뉴는 크림 파스타. 레시피를 1초 만에 외웠어.", "면 9분, 소스 3분. 타이머를 오차 없이 지켰어."]
-        result: clear
-        after: "교과서 같은 맛이래. 칭찬 맞지?"
-      - title: 간 보기
-        spot: stove
-        npc: false
-        fx: [sweat]
-        say: ["주방장님이 간 좀 보라고 했어. 문제는 나한테 혀가 없다는 거야."]
-        result: fail
-        after: "소금을 평균값으로 넣었더니 아무도 좋아하지 않는 맛이 됐어."
-      - title: 냉장고 파먹기 신메뉴
-        spot: fridge
-        npc: {x: 160}
-        say: ["재료가 떨어져서 남은 걸로 신메뉴를 만들래.", "김치, 치즈, 바나나. 세상에 없는 조합을 찾았어."]
-        result: fail
-        after: "세상에 없는 데는 이유가 있었어."
-    verdict: 25
-    verdict_say: "레시피는 내가 다 외워. 근데 맛있다는 기준은 셰프의 혀에 있더라."
-
-  - id: teacher
-    num: 10
-    job: 초등학교 교사
-    scene: classroom
-    data: {prob: 0.0044, occupation: "Elementary School Teachers, Except Special Education", label: "초등학교 교사"}
-    hook: "오늘은 초등학교 선생님! 학생들이 나를 보고 TV라고 불렀어."
-    quests:
-      - title: 구구단 수업
-        spot: board
-        npc: false
-        say: ["첫 시간은 구구단. 칠 단부터 구 단까지 막힘없이 설명했어."]
-        result: clear
-        after: "아이들이 신기해서 구구단을 거꾸로도 시켜 봤어. 그것도 했지."
-      - title: 왜요? 백 번
-        spot: desks
-        npc: {x: 150}
-        fx: [sweat]
-        say: ["그런데 한 아이가 계속 물어. 왜요? 하늘은 왜 파래요? 그건 왜요?", "백 번째 왜요에서 나는 철학 논문을 인용하고 있었어."]
-        result: fail
-        after: "아이는 이미 점심 먹으러 갔어."
-      - title: 싸운 친구 화해시키기
-        spot: desks
-        npc: {x: 150, mood: angry}
-        say: ["쉬는 시간에 둘이 싸웠어. 누가 먼저 잘못했는지 증거를 정리했어."]
-        result: fail
-        after: "누가 맞는지보다 둘이 다시 노는 게 중요했대. 정답이 없는 문제였어."
-    data_face: smug
-    verdict: 3
-    verdict_say: "설명은 도울 수 있어. 근데 아이들은 정답보다 자기 편인 어른이 필요하더라."
-
-  - id: librarian
-    num: 11
-    job: 사서
-    scene: library
-    data: {prob: 0.65, occupation: "Librarians", label: "사서"}
-    hook: "조용히. 오늘은 도서관 사서 체험이야."
-    quests:
-      - title: 책 위치 찾기
-        spot: shelf
-        npc: {x: 150}
-        say: ["손님이 표지가 파란 책을 찾는대. 제목은 기억이 안 난대.", "파란 표지 2,341권 중 대출 기록과 나이를 맞춰서 찾아냈어."]
-        result: clear
-        after: "그 책 맞대! 오늘의 셜록은 나야."
-      - title: 반납 정리
-        spot: shelf2
-        npc: false
-        say: ["반납된 책 이백 권을 분류 번호대로 꽂기."]
-        result: clear
-        after: "속도는 좋은데 내 팔이 짧아서 맨 위 칸은 의자를 썼어."
-      - title: 조용히 해 주세요
-        spot: desk
-        npc: {x: 150}
-        fx: [notes]
-        say: ["열람실에서 누가 떠들어서 주의를 줬어."]
-        result: fail
-        after: "그런데 내 경고음이 제일 시끄러웠어."
-    verdict: 45
-    verdict_say: "검색은 내가 빨라. 근데 이 책 좋아할 것 같다고 건네주는 건 사람 사서가 잘하더라."
-
-  - id: firefighter
-    num: 12
-    job: 소방관
-    scene: street
-    time: evening
-    data: {prob: 0.17, occupation: "Firefighters", label: "소방관"}
-    hook: "출동! 오늘은 소방관 체험이야. 방화복은 사이즈가 없어서 못 입었어."
-    quests:
-      - title: 출동 경로 계산
-        spot: left
-        npc: false
-        props: [[hydrant, 20, {y: 150}]]
-        say: ["신고 접수 2초 만에 막히는 길을 피해서 경로를 찾았어."]
-        result: clear
-        after: "도착 시간 4분 단축. 이건 진짜 도움이 됐어."
-      - title: 불 끄기
-        spot: center
-        npc: false
-        props: [[house, 110, {y: 146}], [fire, 116, {y: 108, size: 1.2}], [hydrant, 20, {y: 150}]]
-        fx: [water]
-        say: ["현장 도착. 호스를 들었는데, 물살에 내가 날아갈 뻔했어."]
-        result: fail
-        after: "내 무게는 5킬로그램. 호스는 사람이 잡아야 해."
-      - title: 고양이 구조
-        spot: right
-        npc: false
-        props: [[house, 110, {y: 146}], [tree, 150, {y: 146}], [cat, 152, {y: 102}]]
-        say: ["나무 위에 고양이가 있대. 열 감지로 위치는 바로 찾았어.", "나는 가볍잖아. 사다리 위로 휙 올라갔지."]
-        result: clear
-        after: "고양이가 내 화면을 따뜻하다고 껴안았어. 구조 성공!"
-    data_face: smug
-    verdict: 15
-    verdict_say: "길 찾기랑 상황 분석은 도울게. 불 속으로 뛰어드는 용기는 아직 사람 몫이야."
-
-  - id: vet
-    num: 13
-    job: 수의사
-    scene: vet
-    data: {prob: 0.038, occupation: "Veterinarians", label: "수의사"}
-    hook: "멍멍, 야옹. 오늘은 동물병원 수의사 체험이야!"
-    quests:
-      - title: 강아지 진찰
-        spot: table
-        npc: {x: 30}
-        props: [[dog, 70, {y: 128, sick: true}]]
-        say: ["강아지가 밥을 안 먹는대. 증상 데이터를 십만 건 비교해 봤어.", "결론은 간식을 너무 많이 먹어서 배부른 거였어."]
-        result: clear
-        after: "보호자님 얼굴이 빨개졌어. 간식은 하루 두 개만!"
-      - title: 고양이 발톱 깎기
-        spot: cat
-        npc: false
-        fx: [sweat]
-        say: ["다음은 고양이 발톱 깎기. 고양이 행동 패턴은 다 외웠어."]
-        result: fail
-        after: "패턴에 없던 고양이였어. 내 화면에 발톱 자국이 생겼어."
-      - title: 무서워하는 강아지
-        spot: table
-        npc: {x: 30}
-        fx: [hearts]
-        say: ["주사를 무서워하는 강아지한테 내 화면에 공 영상을 틀어 줬어."]
-        result: clear
-        after: "공 보느라 주사 맞은 줄도 몰랐대. 화면이 얼굴이라 좋은 날도 있네."
-    verdict: 10
-    verdict_say: "진단은 도울 수 있어. 근데 말 못 하는 환자는 손으로 만져 봐야 알더라."
-
-  - id: bartender
-    num: 14
-    job: 바텐더
-    scene: bar
-    data: {prob: 0.77, occupation: "Bartenders", label: "바텐더"}
-    hook: "밤 아홉 시, 바 오픈. 오늘은 바텐더야. 나는 마시진 못해."
-    quests:
-      - title: 칵테일 레시피
-        spot: shelf
-        npc: false
-        say: ["칵테일 레시피 육백 개를 전부 외웠어. 셰이커 흔드는 속도도 일정해."]
-        result: clear
-        after: "맛이 매번 똑같대. 바텐더한테 칭찬인지는 모르겠어."
-      - title: 오늘 기분에 맞는 술
-        spot: counter
-        npc: {x: 26}
-        fx: [notes]
-        say: ["손님이 오늘 기분에 맞는 걸로 달래.", "얼굴 표정을 분석해서 슬픔 72%, 피곤함 20%라고 말해 줬어."]
-        result: fail
-        after: "분석을 원한 게 아니었대. 그냥 들어 달라는 거였어."
-      - title: 마감 정리
-        spot: center
-        npc: false
-        say: ["새벽 두 시 마감. 잔 백 개를 닦고 재고를 정리했어."]
-        result: clear
-        after: "재고표가 처음으로 맞았대. 사장님이 감동했어."
-    data_face: shock
-    verdict: 50
-    verdict_say: "술은 내가 정확하게 만들어. 근데 사람들이 바에 오는 이유는 술만이 아니더라."
-
-  - id: referee
-    num: 15
-    job: 축구 심판
-    scene: field
-    data: {prob: 0.98, occupation: "Umpires, Referees and Other Sports Officials", label: "스포츠 심판"}
-    hook: "오늘은 동네 축구 대회 심판! 휘슬 대신 내 경고음을 쓸 거야."
-    quests:
-      - title: 오프사이드 판정
-        spot: left
-        npc: {x: 120}
-        say: ["오프사이드 판정. 선수 위치를 프레임마다 계산했어.", "어깨가 3센티 앞섰어. 오프사이드!"]
-        result: clear
-        after: "아무도 반박을 못 했어. 데이터는 거짓말을 안 하거든."
-      - title: 할리우드 액션
-        spot: center
-        npc: {x: 120, mood: angry}
-        fx: [sweat]
-        say: ["한 선수가 넘어지면서 소리를 질렀어. 접촉은 0.2초."]
-        result: fail
-        after: "반칙 아니라고 했더니 양쪽 팀 모두 나한테 화를 냈어."
-      - title: 경기 분위기 살리기
-        spot: goal
-        npc: false
-        fx: [notes]
-        say: ["경기가 너무 거칠어져서 잠깐 쉬자고 했어. 그리고 응원가를 틀었지."]
-        result: clear
-        after: "다들 웃으면서 다시 뛰었어. 심판은 판정만 하는 게 아니더라."
-    data_face: shock
-    verdict: 75
-    verdict_say: "판정은 기계가 더 정확할 수 있어. 근데 경기를 끝까지 즐겁게 만드는 건 또 다른 일이야."
-
-  - id: mail
-    num: 16
-    job: 집배원
-    scene: street
-    time: morning
-    data: {prob: 0.68, occupation: "Postal Service Mail Carriers", label: "집배원"}
-    hook: "오늘은 우체국 집배원이야. 우편물 칠백 통, 출발!"
-    quests:
-      - title: 배달 순서 짜기
-        spot: left
-        npc: false
-        props: [[mailbox, 30, {y: 150}], [boxes, 120, {y: 150}]]
-        say: ["주소 칠백 개를 최적 순서로 정렬했어. 동선이 30% 줄었어."]
-        result: clear
-        after: "선배님이 그 순서 자기한테도 보내 달래."
-      - title: 무거운 택배
-        spot: right
-        npc: false
-        props: [[boxes, 120, {y: 150}]]
-        fx: [sweat]
-        say: ["그런데 이번엔 쌀 20킬로그램 택배. 내 팔 힘은 계산에 없었어."]
-        result: fail
-        after: "결국 선배님이 들어 줬어. 동선은 내가, 근육은 선배가."
-      - title: 할머니 편지 읽어 드리기
-        spot: center
-        npc: {x: 150}
-        fx: [hearts]
-        say: ["눈이 침침한 할머니가 손주 편지를 읽어 달래.", "천천히, 손주 말투 그대로 읽어 드렸어."]
-        result: clear
-        after: "할머니가 고맙다고 사탕을 주셨어. 먹지는 못하지만 저장했어."
-    verdict: 55
-    verdict_say: "길은 내가 잘 짜. 근데 매일 같은 집 앞에서 안부를 묻는 건 사람이 하는 일이더라."
-
-  - id: designer
-    num: 17
-    job: 그래픽 디자이너
-    scene: office
-    time: evening
-    data: {prob: 0.082, occupation: "Graphic Designers", label: "그래픽 디자이너"}
-    hook: "오늘은 디자인 회사 출근! 그래픽 디자이너가 되어 볼게."
-    quests:
-      - title: 포스터 시안 30개
-        spot: desk
-        npc: false
-        say: ["포스터 시안 서른 개를 오 분 만에 만들었어."]
-        result: clear
-        after: "속도는 칭찬받았어. 고르는 건 팀장님이 한 시간 걸렸지만."
-      - title: 로고 좀 더 크게
-        spot: desk2
-        npc: {x: 160}
-        fx: [sweat]
-        say: ["클라이언트 요청. 로고를 좀 더 크게, 근데 너무 크진 않게.", "그리고 화려하면서 심플하게 해 달래."]
-        result: fail
-        after: "모순을 발견했다고 말했다가 분위기가 싸해졌어."
-      - title: 최종_진짜최종_v7
-        spot: desk
-        npc: false
-        say: ["밤 열한 시, 파일 이름 최종 진짜 최종 일곱 번째 버전."]
-        result: clear
-        after: "결국 첫 번째 시안으로 정해졌어. 디자이너들이 왜 웃는지 알 것 같아."
-    data_face: smug
-    verdict: 30
-    verdict_say: "만드는 건 빨라졌어. 근데 클라이언트가 원하는 걸 알아내는 건 여전히 사람 기술이야."
-
-  - id: translator
-    num: 18
-    job: 번역가
-    scene: office
-    data: {prob: 0.38, occupation: "Interpreters and Translators", label: "통번역가"}
-    hook: "오늘은 번역가 체험. 이건 좀 자신 있는데?"
-    quests:
-      - title: 계약서 번역
-        spot: desk
-        npc: false
-        say: ["영어 계약서 오십 쪽. 법률 용어까지 십 분 만에 번역 끝."]
-        result: clear
-        after: "검토하신 변호사님이 오타 하나 찾았어. 내 원문에 있던 오타."
-      - title: 사투리 번역
-        spot: desk2
-        npc: false
-        fx: [sweat]
-        say: ["다음은 경상도 할머니 인터뷰를 영어로. 첫 문장은 마, 니 밥 뭇나."]
-        result: fail
-        after: "나는 'Hey, did you eat rice?'라고 했어. 정은 다 빠졌어."
-      - title: 농담 번역
-        spot: desk
-        npc: false
-        say: ["마지막은 코미디 영화 자막. 말장난을 한국어로 살려야 해.", "후보 이백 개 중에 하나를 골랐어."]
-        result: clear
-        after: "시사회에서 관객들이 웃었어. 이백 번 시도한 보람이 있어."
-    verdict: 50
-    verdict_say: "글자는 내가 빨리 옮겨. 근데 할머니의 정까지 옮기려면 사람이 한 번 더 봐야 해."
-
-  - id: model
-    num: 19
-    job: 모델
-    scene: studio
-    data: {prob: 0.98, occupation: "Models", label: "모델"}
-    hook: "오늘은 화보 촬영 모델! 나도 모델이야. 언어 모델."
-    quests:
-      - title: 포즈 100개
-        spot: stage
-        npc: false
-        fx: [flash]
-        say: ["포즈 백 개를 1초 간격으로 바꿨어. 사진작가님이 손이 따라오질 못했어."]
-        result: clear
-        after: "체력도 무한이야. 열 시간 촬영해도 쌩쌩해."
-      - title: 눈빛 연기
-        spot: stage
-        npc: false
-        fx: [sweat]
-        say: ["다음은 슬픈 눈빛 연기. 내 눈은 점 두 개야."]
-        result: fail
-        after: "점 두 개를 조금 내렸더니 졸려 보인대."
-      - title: 옷 핏 살리기
-        spot: stage
-        npc: false
-        say: ["마지막은 신상 재킷. 나는 어깨가 네모야."]
-        result: fail
-        after: "재킷이 그냥 박스에 걸쳐진 것 같대. 옷걸이가 더 잘 어울렸어."
-    data_face: shock
-    verdict: 40
-    verdict_say: "연구에선 98%였는데, 막상 해 보니 옷은 사람 몸에 맞게 만들어졌더라."
-
-  - id: waiter
-    num: 20
-    job: 웨이터
-    scene: cafe
-    time: evening
-    data: {prob: 0.94, occupation: "Waiters and Waitresses", label: "웨이터"}
-    hook: "저녁 피크 타임, 레스토랑 홀 서빙 시작이야!"
-    quests:
-      - title: 주문 기억하기
-        spot: left
-        npc: {x: 30}
-        say: ["열두 명 단체 손님. 메모 없이 주문을 전부 기억했어.", "양파 빼고, 소스 따로, 맵기 2단계까지."]
-        result: clear
-        after: "손님들이 박수 쳤어. 메모는 원래 필요 없었어."
-      - title: 접시 네 개 들기
-        spot: center
-        npc: false
-        props: [[table, 40, {y: 150}], [plate, 48, {y: 132, food: [240, 140, 60]}]]
-        fx: [sweat]
-        say: ["다음은 접시 네 개를 한 번에 나르기. 내 팔은 두 개, 손가락은 없어."]
-        result: fail
-        after: "두 개는 무사했어. 나머지 두 개는… 오늘의 서비스가 됐어."
-      - title: 생일 축하 서프라이즈
-        spot: cups
-        npc: {x: 30}
-        fx: [notes]
-        say: ["옆 테이블이 생일이래. 조명을 끄고 내 화면으로 케이크를 띄웠어."]
-        result: clear
-        after: "케이크 촛불이 내 얼굴에 켜졌어. 다들 사진을 찍었어."
-    verdict: 60
-    verdict_say: "주문 받고 나르는 건 로봇이 금방 해. 그래도 생일을 같이 축하해 주는 건 좀 남을 것 같아."
+- id: barista
+  num: 1
+  job: 바리스타
+  scene: cafe
+  data:
+    prob: 0.96
+    occupation: Counter Attendants, Cafeteria, Food Concession and Coffee Shop
+    label: 커피숍 카운터 직원
+  hook: 안녕, 난 AI 신입 모니! 오늘은 바리스타야.
+  quests:
+  - title: 아메리카노 30잔
+    spot: machine
+    fx:
+    - steam
+    say:
+    - 단체 주문 아메리카노 서른 잔. 추출 시간 오차 0초!
+    result: clear
+    after: 기계랑 손발이 너무 잘 맞아. 혹시 친척일까?
+  - title: 라떼아트 하트
+    spot: cups
+    fx:
+    - hearts
+    say:
+    - 라떼아트 하트 주문. 좌표 계산은 완벽했는데…
+    result: fail
+    after: 손님이 이거 감자냐고 물어봤어.
+  - title: 단골의 "늘 먹던 걸로"
+    spot: register
+    say:
+    - 단골이 늘 먹던 걸로 달래. 주문 기록 312건 분석!
+    result: clear
+    after: 비 오는 날엔 바닐라라떼. 맞혔어!
+  data_face: smug
+  verdict: 55
+  verdict_say: 커피는 기계가 잘 내려. 근데 하트는 아직 사람 손이 필요해.
+- id: telemarketer
+  num: 2
+  job: 텔레마케터
+  scene: office
+  data:
+    prob: 0.99
+    occupation: Telemarketers
+    label: 텔레마케터
+  hook: 오늘은 텔레마케터. 연구에서 AI가 제일 잘할 거라던 직업이야.
+  quests:
+  - title: 하루 300통 전화
+    spot: phone
+    props:
+    - - phone
+      - 84
+      - y: 130
+        ring: true
+    fx:
+    - ring
+    say:
+    - 목표 하루 삼백 통. 나는 삼백 통을 동시에 걸었어.
+    result: clear
+    after: 실적 1등. 팀장님 표정이 복잡했어.
+  - title: 첫마디 "여보세요?"
+    spot: desk
+    fx:
+    - sweat
+    say:
+    - 그런데 받는 사람마다 묻더라. 혹시 로봇이세요?
+    result: fail
+    after: 맞다고 했더니 바로 끊었어.
+  - title: 화난 고객 달래기
+    spot: desk2
+    npc: false
+    say:
+    - 화난 고객에게 사과 문장 오백 개 중 제일 진심 같은 걸 골랐어.
+    result: fail
+    after: 진심을 고르는 순간 진심이 아니었나 봐.
+  data_face: shock
+  verdict: 70
+  verdict_say: 통화 수는 내가 이겨. 근데 사람 목소리가 듣고 싶은 손님도 있더라.
+- id: baker
+  num: 3
+  job: 제빵사
+  scene: bakery
+  data:
+    prob: 0.89
+    occupation: Bakers
+    label: 제빵사
+  hook: 새벽 네 시 빵집 출근! 오늘은 제빵사야.
+  quests:
+  - title: 반죽 100개 계량
+    spot: counter
+    say:
+    - 반죽 백 개를 0.1그램 단위로 계량했어.
+    result: clear
+    after: 저울이 나를 존경하는 눈빛이었어.
+  - title: 오븐 온도 맞추기
+    spot: oven
+    fx:
+    - steam
+    say:
+    - 레시피는 180도 15분. 근데 이 오븐, 온도가 제멋대로야.
+    result: fail
+    after: 바게트 대신 숯이 나왔어.
+  - title: 갓 구운 빵 냄새 설명
+    spot: rack
+    say:
+    - 빵 냄새 어떠냐는 질문에, 냄새 대신 리뷰 만 개를 요약해 줬어.
+    result: clear
+    after: 손님이 빵을 세 개나 사 갔어. 말빨도 실력이야.
+  verdict: 60
+  verdict_say: 계량은 자신 있어. 근데 오븐이랑 친해지는 데는 몇 년이 걸린대.
+- id: hairdresser
+  num: 4
+  job: 미용사
+  scene: salon
+  data:
+    prob: 0.11
+    occupation: Hairdressers, Hairstylists and Cosmetologists
+    label: 미용사
+  hook: 오늘은 미용실! 가위는 처음 잡아 봐.
+  quests:
+  - title: 손님 머리 2cm만
+    spot: chair
+    npc:
+      x: 45
+    say:
+    - 2센티만 잘라 달래서 정확히 2.00센티를 잘랐어.
+    result: fail
+    after: 손님의 2센티는 사실 1센티였대.
+  - title: 사진처럼 해주세요
+    spot: chair
+    npc:
+      x: 45
+    say:
+    - 연예인 사진처럼 해 달래. 얼굴형이랑 가르마 각도 계산 완료.
+    result: clear
+    after: 거울 보더니 박수! 계산이 통했어.
+  - title: 수다 떨면서 자르기
+    spot: chair2
+    npc:
+      x: 110
+    fx:
+    - notes
+    say:
+    - 미용사의 숨은 기술은 수다래. 자르면서 이야기하기.
+    result: fail
+    after: 대화에 집중했더니 손이 멈췄어.
+  data_face: smug
+  verdict: 15
+  verdict_say: 연구도 11%였어. 머리카락은 사람마다 다 다르더라.
+- id: cashier
+  num: 5
+  job: 편의점 캐셔
+  scene: store
+  data:
+    prob: 0.97
+    occupation: Cashiers
+    label: 계산원
+  hook: 밤 열 시, 편의점 야간 알바 시작!
+  quests:
+  - title: 바코드 찍기
+    spot: register
+    npc:
+      x: 112
+    say:
+    - 삑, 삑, 삑. 바코드는 내 모국어야.
+    result: clear
+    after: 줄이 생기기도 전에 사라졌어.
+  - title: 1+1 행사 설명
+    spot: register
+    npc:
+      x: 112
+    fx:
+    - sweat
+    say:
+    - 원 플러스 원, 다른 맛이랑 섞어도 되냐는 질문. 규정에 없어!
+    result: fail
+    after: 새벽 한 시에 점장님한테 전화했어.
+  - title: 졸린 새벽 3시
+    spot: shelf
+    npc: false
+    fx:
+    - zzz
+    say:
+    - 새벽 세 시 진열 정리. 사람들은 이때 제일 졸리대.
+    result: clear
+    after: 나는 안 졸려. 대신 색깔별로 정리했다가 혼났어.
+  data_face: shock
+  verdict: 80
+  verdict_say: 계산은 금방 대체될 거야. 근데 새벽 손님 안부는 사람이 잘 묻더라.
+- id: nurse
+  num: 6
+  job: 간호사
+  scene: clinic
+  data:
+    prob: 0.009
+    occupation: Registered Nurses
+    label: 간호사
+  hook: 오늘은 간호사 체험. 연구에선 거의 안 바뀐다던 직업이야.
+  quests:
+  - title: 활력징후 체크
+    spot: bed
+    npc: false
+    say:
+    - 혈압, 맥박, 체온. 열두 명 기록을 일 초 만에 정리!
+    result: clear
+    after: 차트만큼은 병동에서 제일 깔끔해.
+  - title: 주사 놓기
+    spot: iv
+    npc: false
+    fx:
+    - sweat
+    say:
+    - 다음은 주사. 혈관은 찾았는데 내 손이 집게야.
+    result: fail
+    after: 환자분이 사람 간호사님을 불러 달래.
+  - title: 무서워하는 환자 달래기
+    spot: bed
+    npc:
+      x: 150
+    fx:
+    - hearts
+    say:
+    - 수술이 무섭다는 환자에게 성공률 98%라고 알려 줬어.
+    result: fail
+    after: 옆 간호사님은 말없이 손을 잡아 줬어. 그게 정답이었어.
+  data_face: smug
+  verdict: 5
+  verdict_say: 기록은 내가 돕고, 손은 사람이 잡는 게 맞아.
+- id: taxi
+  num: 7
+  job: 택시 기사
+  scene: street
+  data:
+    prob: 0.89
+    occupation: Taxi Drivers and Chauffeurs
+    label: 택시 기사
+  hook: 오늘은 택시 기사! 안전벨트, 철컥.
+  quests:
+  - title: 최단 경로 찾기
+    spot: left
+    props:
+    - - taxi
+      - 60
+      - y: 160
+    npc: false
+    say:
+    - 강남역까지. 실시간 교통 분석으로 최단 경로 출발!
+    result: clear
+    after: 예상 시간이랑 3초 차이. 완벽해.
+  - title: 기사님 그 길 말고요
+    spot: left
+    props:
+    - - taxi
+      - 60
+      - y: 160
+    npc:
+      x: 150
+      mood: angry
+    say:
+    - 다음 손님이 말했어. 기사님, 제가 아는 길로 가 주세요.
+    result: fail
+    after: 7분 더 걸렸는데 손님은 더 만족했어. 왜지?
+  - title: 뒷좌석 고민 상담
+    spot: right
+    npc:
+      x: 160
+    fx:
+    - hearts
+    say:
+    - 밤 열한 시 손님이 회사 그만두고 싶대. 나도 오늘 첫 출근이라고 했어.
+    result: clear
+    after: 둘이 같이 웃었어. 팁으로 귤 하나 받았어.
+  data_face: shock
+  verdict: 65
+  verdict_say: 운전은 자율주행이 따라잡겠지. 그래도 뒷좌석 이야기는 누가 들어 줘야 해.
+- id: photographer
+  num: 8
+  job: 사진작가
+  scene: studio
+  data:
+    prob: 0.021
+    occupation: Photographers
+    label: 사진작가
+  hook: 오늘은 스튜디오 사진작가야. 찰칵!
+  quests:
+  - title: 조명 세팅
+    spot: left
+    npc: false
+    say:
+    - 조명 두 개, 각도 45도, 밝기 오차 1%. 세팅 끝.
+    result: clear
+    after: 조명 감독님이 할 일이 없어졌대.
+  - title: 자연스럽게 웃어 주세요
+    spot: camera
+    npc:
+      x: 90
+    fx:
+    - flash
+    say:
+    - 자연스럽게 웃겨 보려고 아재 개그 만 개를 준비했어.
+    result: fail
+    after: 937번째에 웃었어. 촬영은 이미 끝났고.
+  - title: 베스트 컷 고르기
+    spot: center
+    npc: false
+    say:
+    - 사진 이천 장 중 베스트 컷 고르기. 눈 감은 것부터 삭제.
+    result: clear
+    after: 남은 열 장이 다 마음에 든대!
+  data_face: smug
+  verdict: 20
+  verdict_say: 고르는 건 잘해. 근데 사람을 웃게 만드는 타이밍은 아직 멀었어.
+- id: chef
+  num: 9
+  job: 셰프
+  scene: kitchen
+  data:
+    prob: 0.1
+    occupation: Chefs and Head Cooks
+    label: 셰프
+  hook: 오늘은 레스토랑 주방! 모니 셰프 출근.
+  quests:
+  - title: 레시피 그대로
+    spot: stove
+    npc: false
+    fx:
+    - steam
+    say:
+    - 크림 파스타. 면 9분, 소스 3분, 타이머 오차 없음.
+    result: clear
+    after: 교과서 같은 맛이래. 칭찬 맞지?
+  - title: 간 보기
+    spot: stove
+    npc: false
+    fx:
+    - sweat
+    say:
+    - 주방장님이 간 좀 보래. 근데 나는 혀가 없어.
+    result: fail
+    after: 평균값으로 넣었더니 아무도 안 좋아하는 맛이 됐어.
+  - title: 냉장고 파먹기 신메뉴
+    spot: fridge
+    npc:
+      x: 160
+    say:
+    - 남은 재료로 신메뉴. 김치, 치즈, 바나나 조합 발견!
+    result: fail
+    after: 세상에 없는 데는 이유가 있었어.
+  verdict: 25
+  verdict_say: 레시피는 다 외웠어. 근데 맛있다의 기준은 셰프의 혀에 있더라.
+- id: teacher
+  num: 10
+  job: 초등학교 교사
+  scene: classroom
+  data:
+    prob: 0.0044
+    occupation: Elementary School Teachers, Except Special Education
+    label: 초등학교 교사
+  hook: 오늘은 초등학교 선생님! 애들이 나를 TV라고 불러.
+  quests:
+  - title: 구구단 수업
+    spot: board
+    npc: false
+    say:
+    - 첫 시간은 구구단. 칠 단부터 구 단까지 막힘없이!
+    result: clear
+    after: 거꾸로 외우기도 성공했어.
+  - title: 왜요? 백 번
+    spot: desks
+    npc:
+      x: 150
+    fx:
+    - sweat
+    say:
+    - 한 아이가 계속 물어. 왜요? 그건 왜요? 그럼 그건요?
+    result: fail
+    after: 백 번째 대답은 철학 논문이었어. 아이는 점심 먹으러 갔고.
+  - title: 싸운 친구 화해시키기
+    spot: desks
+    npc:
+      x: 150
+      mood: angry
+    say:
+    - 쉬는 시간에 둘이 싸워서 누가 먼저 잘못했는지 증거를 정리했어.
+    result: fail
+    after: 중요한 건 둘이 다시 노는 거였대.
+  data_face: smug
+  verdict: 3
+  verdict_say: 설명은 도울 수 있어. 근데 아이들은 정답보다 자기 편인 어른이 필요해.
+- id: librarian
+  num: 11
+  job: 사서
+  scene: library
+  data:
+    prob: 0.65
+    occupation: Librarians
+    label: 사서
+  hook: 쉿. 오늘은 도서관 사서 체험이야.
+  quests:
+  - title: 책 위치 찾기
+    spot: shelf
+    npc:
+      x: 150
+    say:
+    - 표지가 파란 책을 찾는대. 제목은 모르고. 파란 책 2,341권 분석!
+    result: clear
+    after: 그 책 맞대! 오늘의 셜록은 나야.
+  - title: 반납 정리
+    spot: shelf2
+    npc: false
+    say:
+    - 반납된 책 이백 권을 분류 번호대로 꽂기.
+    result: clear
+    after: 빨랐는데 맨 위 칸은 의자를 썼어.
+  - title: 조용히 해 주세요
+    spot: desk
+    npc:
+      x: 150
+    fx:
+    - notes
+    say:
+    - 열람실에서 떠드는 사람한테 주의를 줬어.
+    result: fail
+    after: 근데 내 경고음이 제일 시끄러웠어.
+  verdict: 45
+  verdict_say: 검색은 내가 빨라. 근데 딱 맞는 책을 건네주는 건 사람 사서가 잘해.
+- id: firefighter
+  num: 12
+  job: 소방관
+  scene: street
+  time: evening
+  data:
+    prob: 0.17
+    occupation: Firefighters
+    label: 소방관
+  hook: 출동! 오늘은 소방관 체험이야.
+  quests:
+  - title: 출동 경로 계산
+    spot: left
+    npc: false
+    props:
+    - - hydrant
+      - 20
+      - y: 150
+    say:
+    - 신고 2초 만에 막힌 길을 피하는 경로 계산 완료.
+    result: clear
+    after: 도착 시간 4분 단축. 진짜 도움이 됐어.
+  - title: 불 끄기
+    spot: center
+    npc: false
+    props:
+    - - house
+      - 110
+      - y: 146
+    - - fire
+      - 116
+      - y: 108
+        size: 1.2
+    - - hydrant
+      - 20
+      - y: 150
+    fx:
+    - water
+    say:
+    - 현장 도착! 호스를 들었는데 물살에 내가 날아갈 뻔했어.
+    result: fail
+    after: 내 무게는 5킬로그램. 호스는 사람이 잡아야 해.
+  - title: 고양이 구조
+    spot: right
+    npc: false
+    props:
+    - - house
+      - 110
+      - y: 146
+    - - tree
+      - 150
+      - y: 146
+    - - cat
+      - 152
+      - y: 102
+    say:
+    - 나무 위 고양이 구조. 나는 가벼우니까 사다리로 휙!
+    result: clear
+    after: 고양이가 내 화면이 따뜻하다고 껴안았어.
+  data_face: smug
+  verdict: 15
+  verdict_say: 길 찾기는 내가 도울게. 불 속으로 뛰어드는 용기는 사람 몫이야.
+- id: vet
+  num: 13
+  job: 수의사
+  scene: vet
+  data:
+    prob: 0.038
+    occupation: Veterinarians
+    label: 수의사
+  hook: 멍멍, 야옹! 오늘은 동물병원 수의사야.
+  quests:
+  - title: 강아지 진찰
+    spot: table
+    npc:
+      x: 30
+    props:
+    - - dog
+      - 70
+      - y: 128
+        sick: true
+    say:
+    - 밥을 안 먹는 강아지. 증상 십만 건 비교 결과는?
+    result: clear
+    after: 간식을 너무 먹어서 배부른 거였어.
+  - title: 고양이 발톱 깎기
+    spot: cat
+    npc: false
+    fx:
+    - sweat
+    say:
+    - 고양이 발톱 깎기. 고양이 행동 패턴은 다 외웠어.
+    result: fail
+    after: 패턴에 없는 고양이였어. 화면에 발톱 자국이 생겼어.
+  - title: 무서워하는 강아지
+    spot: table
+    npc:
+      x: 30
+    fx:
+    - hearts
+    say:
+    - 주사 무서워하는 강아지한테 내 화면으로 공 영상을 틀어 줬어.
+    result: clear
+    after: 주사 맞은 줄도 몰랐대!
+  verdict: 10
+  verdict_say: 진단은 도울 수 있어. 근데 말 못 하는 환자는 손으로 만져 봐야 알더라.
+- id: bartender
+  num: 14
+  job: 바텐더
+  scene: bar
+  data:
+    prob: 0.77
+    occupation: Bartenders
+    label: 바텐더
+  hook: 밤 아홉 시, 바 오픈. 오늘은 바텐더야.
+  quests:
+  - title: 칵테일 레시피
+    spot: shelf
+    npc: false
+    say:
+    - 칵테일 레시피 육백 개 암기. 셰이커 속도도 일정해.
+    result: clear
+    after: 맛이 매번 똑같대. 칭찬 맞지?
+  - title: 오늘 기분에 맞는 술
+    spot: counter
+    npc:
+      x: 26
+    fx:
+    - notes
+    say:
+    - 오늘 기분에 맞는 술을 달래서 표정을 분석했어. 슬픔 72%.
+    result: fail
+    after: 분석 말고 그냥 들어 달라는 거였어.
+  - title: 마감 정리
+    spot: center
+    npc: false
+    say:
+    - 새벽 두 시 마감. 잔 백 개 닦고 재고 정리.
+    result: clear
+    after: 재고표가 처음으로 맞았대.
+  data_face: shock
+  verdict: 50
+  verdict_say: 술은 정확하게 만들어. 근데 바에 오는 이유가 술만은 아니더라.
+- id: referee
+  num: 15
+  job: 축구 심판
+  scene: field
+  data:
+    prob: 0.98
+    occupation: Umpires, Referees and Other Sports Officials
+    label: 스포츠 심판
+  hook: 오늘은 동네 축구 심판! 휘슬 대신 경고음이야.
+  quests:
+  - title: 오프사이드 판정
+    spot: left
+    npc:
+      x: 120
+    say:
+    - 오프사이드 판정. 어깨가 3센티 앞섰어!
+    result: clear
+    after: 아무도 반박을 못 했어.
+  - title: 할리우드 액션
+    spot: center
+    npc:
+      x: 120
+      mood: angry
+    fx:
+    - sweat
+    say:
+    - 한 선수가 넘어지며 비명을. 접촉은 0.2초.
+    result: fail
+    after: 반칙 아니라고 했더니 양 팀 다 화냈어.
+  - title: 경기 분위기 살리기
+    spot: goal
+    npc: false
+    fx:
+    - notes
+    say:
+    - 경기가 거칠어져서 잠깐 쉬고 응원가를 틀었어.
+    result: clear
+    after: 다들 웃으면서 다시 뛰었어.
+  data_face: shock
+  verdict: 75
+  verdict_say: 판정은 기계가 정확할 수 있어. 근데 경기를 즐겁게 만드는 건 다른 일이야.
+- id: mail
+  num: 16
+  job: 집배원
+  scene: street
+  time: morning
+  data:
+    prob: 0.68
+    occupation: Postal Service Mail Carriers
+    label: 집배원
+  hook: 오늘은 집배원! 우편물 칠백 통, 출발!
+  quests:
+  - title: 배달 순서 짜기
+    spot: left
+    npc: false
+    props:
+    - - mailbox
+      - 30
+      - y: 150
+    - - boxes
+      - 120
+      - y: 150
+    say:
+    - 주소 칠백 개를 최적 순서로 정렬. 동선 30% 단축!
+    result: clear
+    after: 선배님이 그 순서 자기한테도 보내 달래.
+  - title: 무거운 택배
+    spot: right
+    npc: false
+    props:
+    - - boxes
+      - 120
+      - y: 150
+    fx:
+    - sweat
+    say:
+    - 이번엔 쌀 20킬로그램 택배. 내 팔 힘은 계산에 없었어.
+    result: fail
+    after: 동선은 내가, 근육은 선배가.
+  - title: 할머니 편지 읽어 드리기
+    spot: center
+    npc:
+      x: 150
+    fx:
+    - hearts
+    say:
+    - 눈이 침침한 할머니께 손주 편지를 천천히 읽어 드렸어.
+    result: clear
+    after: 사탕을 주셨어. 먹지는 못해도 저장했어.
+  verdict: 55
+  verdict_say: 길은 내가 잘 짜. 근데 매일 안부를 묻는 건 사람이 하는 일이더라.
+- id: designer
+  num: 17
+  job: 그래픽 디자이너
+  scene: office
+  time: evening
+  data:
+    prob: 0.082
+    occupation: Graphic Designers
+    label: 그래픽 디자이너
+  hook: 오늘은 그래픽 디자이너로 출근!
+  quests:
+  - title: 포스터 시안 30개
+    spot: desk
+    npc: false
+    say:
+    - 포스터 시안 서른 개를 오 분 만에 완성!
+    result: clear
+    after: 고르는 데는 팀장님이 한 시간 걸렸어.
+  - title: 로고 좀 더 크게
+    spot: desk2
+    npc:
+      x: 160
+    fx:
+    - sweat
+    say:
+    - 로고를 크게, 근데 너무 크진 않게. 화려하면서 심플하게.
+    result: fail
+    after: 모순이라고 말했다가 분위기가 싸해졌어.
+  - title: 최종_진짜최종_v7
+    spot: desk
+    npc: false
+    say:
+    - 밤 열한 시, 파일명 최종 진짜 최종 일곱 번째 버전.
+    result: clear
+    after: 결국 첫 번째 시안으로 정해졌어.
+  data_face: smug
+  verdict: 30
+  verdict_say: 만드는 건 빨라졌어. 근데 클라이언트 마음을 읽는 건 사람 기술이야.
+- id: translator
+  num: 18
+  job: 번역가
+  scene: office
+  data:
+    prob: 0.38
+    occupation: Interpreters and Translators
+    label: 통번역가
+  hook: 오늘은 번역가 체험. 이건 좀 자신 있어!
+  quests:
+  - title: 계약서 번역
+    spot: desk
+    npc: false
+    say:
+    - 영어 계약서 오십 쪽, 십 분 만에 번역 끝.
+    result: clear
+    after: 변호사님이 찾은 오타는 원문에 있던 거였어.
+  - title: 사투리 번역
+    spot: desk2
+    npc: false
+    fx:
+    - sweat
+    say:
+    - 경상도 할머니 인터뷰 번역. 첫 문장은 마, 니 밥 뭇나.
+    result: fail
+    after: Did you eat rice? 정은 다 빠졌어.
+  - title: 농담 번역
+    spot: desk
+    npc: false
+    say:
+    - 코미디 자막의 말장난을 살리려고 후보 이백 개를 만들었어.
+    result: clear
+    after: 시사회에서 관객들이 웃었어!
+  verdict: 50
+  verdict_say: 글자는 빨리 옮겨. 근데 할머니의 정까지 옮기려면 사람이 한 번 더 봐야 해.
+- id: model
+  num: 19
+  job: 모델
+  scene: studio
+  data:
+    prob: 0.98
+    occupation: Models
+    label: 모델
+  hook: 오늘은 화보 모델! 나도 모델이야. 언어 모델.
+  quests:
+  - title: 포즈 100개
+    spot: stage
+    npc: false
+    fx:
+    - flash
+    say:
+    - 포즈 백 개를 1초 간격으로 바꿨어.
+    result: clear
+    after: 열 시간 촬영해도 쌩쌩해.
+  - title: 눈빛 연기
+    spot: stage
+    npc: false
+    fx:
+    - sweat
+    say:
+    - 슬픈 눈빛 연기. 근데 내 눈은 점 두 개야.
+    result: fail
+    after: 점을 내렸더니 졸려 보인대.
+  - title: 옷 핏 살리기
+    spot: stage
+    npc: false
+    say:
+    - 신상 재킷 핏 살리기. 나는 어깨가 네모야.
+    result: fail
+    after: 옷걸이가 더 잘 어울렸어.
+  data_face: shock
+  verdict: 40
+  verdict_say: 연구에선 98%였는데, 옷은 결국 사람 몸에 맞게 만들어졌더라.
+- id: waiter
+  num: 20
+  job: 웨이터
+  scene: cafe
+  time: evening
+  data:
+    prob: 0.94
+    occupation: Waiters and Waitresses
+    label: 웨이터
+  hook: 저녁 피크 타임! 오늘은 웨이터야.
+  quests:
+  - title: 주문 기억하기
+    spot: left
+    npc:
+      x: 30
+    say:
+    - 열두 명 단체 주문을 메모 없이 기억. 양파 빼고 맵기 2단계까지.
+    result: clear
+    after: 손님들이 박수 쳤어.
+  - title: 접시 네 개 들기
+    spot: center
+    npc: false
+    props:
+    - - table
+      - 40
+      - y: 150
+    - - plate
+      - 48
+      - y: 132
+        food:
+        - 240
+        - 140
+        - 60
+    fx:
+    - sweat
+    say:
+    - 접시 네 개 한 번에 나르기. 내 팔은 두 개야.
+    result: fail
+    after: 두 개는… 오늘의 서비스가 됐어.
+  - title: 생일 축하 서프라이즈
+    spot: cups
+    npc:
+      x: 30
+    fx:
+    - notes
+    say:
+    - 생일 테이블! 불을 끄고 내 화면에 케이크를 띄웠어.
+    result: clear
+    after: 화면 속 촛불을 다 같이 불었어.
+  verdict: 60
+  verdict_say: 나르는 건 로봇이 금방 해. 그래도 생일 축하는 사람이랑 하고 싶을걸?

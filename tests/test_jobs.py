@@ -29,6 +29,9 @@ def test_episodes_are_valid_and_unique():
             _check_props(q.get("props", []))
             lines += q["say"] + [q["after"]]
         lines += [e["hook"], e["verdict_say"]]
+        # 쇼츠 완주율을 위해 한 편 40~50초: 음성 글자 수(공백 제외) 제한
+        segs = jobs.build_segments(e, seed=1)
+        assert sum(len(x.text.replace(" ", "")) for x in segs) <= 225, e["id"]
     # 같은 문장을 여러 편에 재사용하지 않는다(대량생산 템플릿 방지)
     assert len(lines) == len(set(lines))
 

@@ -38,11 +38,11 @@ HISTORY = ROOT / "data" / "jobs_history.json"
 W, H, FPS = 1080, 1920, 30
 STAGE_Y = 300                      # 무대(1080x1080)가 시작하는 y
 SCALE = W // SW                    # 6배
-GAP, TAIL = 0.18, 1.2
+GAP, TAIL = 0.12, 1.0
 BOT_Y = FLOOR + 30
 HERO = "모니"
 VOICE = os.environ.get("JOBS_TTS_VOICE", "ko-KR-SunHiNeural")
-VOICE_RATE = os.environ.get("JOBS_TTS_RATE", "+12%")
+VOICE_RATE = os.environ.get("JOBS_TTS_RATE", "+28%")
 VOICE_PITCH = os.environ.get("JOBS_TTS_PITCH", "+18Hz")
 
 FONT_CANDIDATES = [
@@ -53,14 +53,14 @@ FONT_CANDIDATES = [
 ]
 
 DATA_LINES = [
-    "2013년 옥스퍼드대 연구는 {label} 자동화 확률을 {p}로 봤어.",
-    "그런데 옥스퍼드대 연구(2013)에 따르면 {label}{iga} 기계로 바뀔 확률은 {p}래.",
-    "참고로 2013년 옥스퍼드대가 계산한 {label} 자동화 확률은 {p}야.",
+    "옥스퍼드대 연구가 본 {label} 자동화 확률은 {p}.",
+    "2013년 옥스퍼드대 연구로는 {label} 자동화 확률 {p}.",
+    "연구에선 {label}{iga} 기계로 바뀔 확률이 {p}래.",
 ]
 OUTROS = [
-    "다음엔 어떤 직업을 해볼까? 댓글로 추천해 줘!",
-    "다음 체험할 직업, 댓글로 정해 줘. 제일 많은 걸로 간다!",
-    "너라면 이 직업 AI한테 맡길래? 댓글로 알려 줘.",
+    "다음 직업은 댓글로 추천해 줘!",
+    "다음 체험할 직업, 댓글로 정해 줘!",
+    "너라면 AI한테 맡길래? 댓글로 알려 줘.",
 ]
 TITLES = [
     "AI가 {job} 하루 해봤더니 #Shorts",
@@ -161,7 +161,7 @@ def timeline(segs: list[Seg], audio: list[Path]) -> float:
     for s, p in zip(segs, audio):
         d = duration(p) + GAP
         if s.kind == "result":
-            d += 0.5                          # 성공/실패 도장 볼 시간
+            d += 0.35                         # 성공/실패 도장 볼 시간
         s.start, s.end = t, t + d
         t += d
     segs[0].start = 0.0

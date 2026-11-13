@@ -829,3 +829,1098 @@ episodes:
     after: 화면 속 촛불을 다 같이 불었어.
   verdict: 60
   verdict_say: 나르는 건 로봇이 금방 해. 그래도 생일 축하는 사람이랑 하고 싶을걸?
+- id: dentist
+  num: 21
+  job: 치과의사
+  scene: clinic
+  data:
+    prob: 0.0044
+    occupation: Dentists, General
+    label: 치과의사
+  hook: 아 해 보세요! 오늘은 치과의사야.
+  quests:
+  - title: 엑스레이 판독
+    spot: desk
+    fx:
+    - flash
+    say:
+    - 엑스레이 사진에서 충치 세 개를 0.2초 만에 찾았어.
+    result: clear
+    after: 작은 충치까지 빨간 동그라미 완료.
+  - title: 스케일링
+    spot: bed
+    fx:
+    - sweat
+    say:
+    - 드릴 소리를 냈더니 환자가 의자에서 일어났어.
+    result: fail
+    after: 나도 그 소리는 무서웠어.
+  - title: 양치 교육
+    spot: center
+    fx:
+    - notes
+    say:
+    - 칫솔질 3분 노래를 만들어 줬어.
+    result: clear
+    after: 어린이 환자가 따라 불렀어!
+  verdict: 20
+  verdict_say: 충치는 내가 찾을게. 떨리는 손을 잡아 주는 건 의사 선생님이야.
+- id: pharmacist
+  num: 22
+  job: 약사
+  scene: store
+  data:
+    prob: 0.012
+    occupation: Pharmacists
+    label: 약사
+  hook: 처방전 받습니다! 오늘은 약사 체험.
+  quests:
+  - title: 약 겹침 확인
+    spot: register
+    fx:
+    - sparkle
+    say:
+    - 약 다섯 개를 같이 먹어도 되는지 0.1초 만에 확인.
+    result: clear
+    after: 위험한 조합 하나를 잡아냈어.
+  - title: 알약 세기
+    spot: shelf
+    fx:
+    - sweat
+    say:
+    - 알약 이천 개를 셌어. 근데 하나가 굴러갔어.
+    result: fail
+    after: 선반 밑에서 찾느라 십 분 걸렸어.
+  - title: 복약 상담
+    spot: center
+    say:
+    - 할머니가 약을 언제 먹냐고 물으셔서 시간표를 뽑아 드렸어.
+    result: clear
+    after: 글씨를 크게 하니 웃으셨어.
+  verdict: 30
+  verdict_say: 약 정보는 내가 빨라. 증상 듣고 괜찮냐고 묻는 건 약사님이 잘해.
+- id: security_guard
+  num: 23
+  job: 경비원
+  scene: store
+  time: night
+  data:
+    prob: 0.84
+    occupation: Security Guards
+    label: 경비원
+  hook: 밤새 지킨다! 오늘은 경비원이야.
+  quests:
+  - title: CCTV 열여섯 개
+    spot: register
+    npc: false
+    fx:
+    - flash
+    say:
+    - CCTV 화면 열여섯 개를 한꺼번에 봤어.
+    result: clear
+    after: 깜빡임 하나까지 다 기록했어.
+  - title: 수상한 그림자
+    spot: door
+    npc: false
+    props:
+    - - cat
+      - 30
+      - y: 150
+    say:
+    - 수상한 그림자 발견! 출동했더니…
+    result: fail
+    after: 고양이였어. 경보를 울려 버렸어.
+  - title: 새벽 순찰
+    spot: shelf
+    npc: false
+    fx:
+    - zzz
+    say:
+    - 새벽 세 시 순찰. 나는 졸지 않아.
+    result: clear
+    after: 대신 배터리가 3% 남았어.
+  verdict: 75
+  verdict_say: 지켜보는 건 내가 잘해. 근데 고양이랑 도둑은 사람이 더 잘 구분해.
+- id: bus_driver
+  num: 24
+  job: 버스 기사
+  scene: street
+  data:
+    prob: 0.67
+    occupation: Bus Drivers, Transit and Intercity
+    label: 버스 기사
+  hook: 출발합니다! 오늘은 버스 기사야.
+  quests:
+  - title: 배차 시간 맞추기
+    spot: left
+    npc: false
+    say:
+    - 신호 주기를 계산해서 배차 간격 오차 0초.
+    result: clear
+    after: 정류장마다 딱딱 맞췄어.
+  - title: 뛰어오는 승객
+    spot: center
+    fx:
+    - sweat
+    say:
+    - 저 멀리 손님이 뛰어와. 규정상 출발 시간이야.
+    result: fail
+    after: 결국 기다렸어. 규정보다 표정이 먼저였어.
+  - title: 길 안내
+    spot: right
+    fx:
+    - sparkle
+    say:
+    - 외국인 손님에게 다섯 개 언어로 정류장 안내.
+    result: clear
+    after: 엄지 척 받았어!
+  verdict: 60
+  verdict_say: 운전은 곧 기계가 할 거야. 기다려 주는 마음은 아직 사람 쪽이야.
+- id: lawyer
+  num: 25
+  job: 변호사
+  scene: office
+  data:
+    prob: 0.035
+    occupation: Lawyers
+    label: 변호사
+  hook: 이의 있습니다! 오늘은 변호사.
+  quests:
+  - title: 판례 찾기
+    spot: desk
+    fx:
+    - sparkle
+    say:
+    - 판례 십만 건을 1분 만에 읽고 비슷한 사건 세 개를 찾았어.
+    result: clear
+    after: 선배 변호사가 커피를 사 줬어.
+  - title: 의뢰인 상담
+    spot: phone
+    fx:
+    - sweat
+    say:
+    - 의뢰인이 울면서 전화했어. 나는 법 조항부터 읽었어.
+    result: fail
+    after: 지금은 위로가 먼저였대.
+  - title: 계약서 검토
+    spot: desk2
+    say:
+    - 계약서 40쪽에서 숨은 위약금 조항 발견!
+    result: clear
+    after: 의뢰인 돈 오백만 원 지켰어.
+  verdict: 25
+  verdict_say: 서류는 내가 빨라. 법정에서 사람 마음을 움직이는 건 변호사님이야.
+- id: accountant
+  num: 26
+  job: 회계사
+  scene: office
+  data:
+    prob: 0.94
+    occupation: Accountants and Auditors
+    label: 회계사
+  hook: 숫자의 세계로! 오늘은 회계사야.
+  quests:
+  - title: 영수증 정리
+    spot: desk
+    fx:
+    - coins
+    say:
+    - 영수증 삼천 장 분류 끝. 1원도 안 틀렸어.
+    result: clear
+    after: 사장님이 박수를 쳤어.
+  - title: 이상한 지출
+    spot: desk2
+    props:
+    - - cat
+      - 150
+      - y: 150
+    say:
+    - 고양이 사료 구입이 회사 비용에 있어. 이건 횡령?
+    result: fail
+    after: 사무실 고양이 밥이었어. 직원이었대.
+  - title: 세금 신고
+    spot: center
+    fx:
+    - sparkle
+    say:
+    - 마감 하루 전 세금 신고. 나는 밤샘이 필요 없어.
+    result: clear
+    after: 제일 먼저 제출했어.
+  verdict: 80
+  verdict_say: 계산은 진짜 내가 잘해. 고양이가 직원인지는 사람한테 물어봐야 해.
+- id: singer
+  num: 27
+  job: 가수
+  scene: studio
+  data:
+    prob: 0.074
+    occupation: Musicians and Singers
+    label: 가수
+  hook: 마이크 체크! 오늘은 가수 데뷔야.
+  quests:
+  - title: 음정 맞추기
+    spot: stage
+    fx:
+    - notes
+    props:
+    - - mic
+      - 92
+      - y: 150
+    say:
+    - 음정 정확도 100%. 단 한 번도 안 흔들렸어.
+    result: clear
+    after: 근데 PD님이 너무 정확해서 심심하대.
+  - title: 감정 넣기
+    spot: stage
+    fx:
+    - sweat
+    props:
+    - - mic
+      - 92
+      - y: 150
+    say:
+    - 슬픈 노래니까 목소리를 떨어 봤어.
+    result: fail
+    after: 고장 난 줄 알고 수리 기사를 불렀어.
+  - title: 팬 사인회
+    spot: left
+    fx:
+    - hearts
+    say:
+    - 팬 이백 명 이름을 다 외워서 불러 줬어.
+    result: clear
+    after: 그건 진짜 감동이었대.
+  verdict: 20
+  verdict_say: 음정은 내가 맞춰. 듣는 사람 마음을 흔드는 건 사람 목소리야.
+- id: dancer
+  num: 28
+  job: 댄서
+  scene: studio
+  data:
+    prob: 0.13
+    occupation: Dancers
+    label: 댄서
+  hook: 음악 주세요! 오늘은 댄서야.
+  quests:
+  - title: 안무 외우기
+    spot: stage
+    fx:
+    - notes
+    say:
+    - 안무 영상 한 번 보고 동작 128개 전부 저장.
+    result: clear
+    after: 외우는 건 1등이야.
+  - title: 웨이브
+    spot: stage
+    fx:
+    - sweat
+    say:
+    - 웨이브를 했는데 관절이 없어서 직각으로 꺾였어.
+    result: fail
+    after: 새 장르가 생겼대. 로봇 댄스.
+  - title: 박자 맞추기
+    spot: camera
+    fx:
+    - confetti
+    say:
+    - 단체 군무에서 박자 오차 0.01초.
+    result: clear
+    after: 센터 자리를 받았어!
+  verdict: 15
+  verdict_say: 외우는 건 내가 빨라. 무대 위의 표정은 아직 못 따라 해.
+- id: nail_artist
+  num: 29
+  job: 네일아티스트
+  scene: salon
+  data:
+    prob: 0.95
+    occupation: Manicurists and Pedicurists
+    label: 네일아티스트
+  hook: 손 주세요! 오늘은 네일아티스트.
+  quests:
+  - title: 꽃무늬 그리기
+    spot: chair
+    fx:
+    - sparkle
+    say:
+    - 손톱 열 개에 똑같은 꽃을 그렸어. 완벽한 복사.
+    result: clear
+    after: 손님이 도장 찍은 줄 알았대.
+  - title: 색 추천
+    spot: chair2
+    fx:
+    - sweat
+    say:
+    - 손님 피부 톤을 분석해서 베이지를 추천했어.
+    result: fail
+    after: 손님은 형광 초록을 원했어.
+  - title: 수다 떨기
+    spot: chair
+    fx:
+    - hearts
+    say:
+    - 한 시간 동안 손님 얘기를 들었어.
+    result: clear
+    after: 다음 예약도 나로 해 달래.
+  verdict: 70
+  verdict_say: 그리는 건 기계도 잘해. 근데 수다는 손님이 사람이랑 떨고 싶어 해.
+- id: massage_therapist
+  num: 30
+  job: 마사지사
+  scene: salon
+  data:
+    prob: 0.54
+    occupation: Massage Therapists
+    label: 마사지사
+  hook: 어깨 뭉치셨죠? 오늘은 마사지사.
+  quests:
+  - title: 뭉친 곳 찾기
+    spot: chair
+    fx:
+    - sparkle
+    say:
+    - 자세를 분석해서 뭉친 곳 세 군데를 찾았어.
+    result: clear
+    after: 정확하다고 놀라셨어.
+  - title: 꾹꾹 누르기
+    spot: chair
+    fx:
+    - sweat
+    say:
+    - 힘 조절 실패. 내 팔은 5킬로그램이야.
+    result: fail
+    after: 간지럽다고 웃으셨어.
+  - title: 스트레칭 교육
+    spot: center
+    say:
+    - 집에서 할 스트레칭을 그림으로 보여 드렸어.
+    result: clear
+    after: 매일 하신대!
+  verdict: 40
+  verdict_say: 어디가 아픈지는 내가 찾아. 손의 온기는 사람만 있어.
+- id: tailor
+  num: 31
+  job: 재단사
+  scene: home
+  data:
+    prob: 0.84
+    occupation: Tailors, Dressmakers and Custom Sewers
+    label: 재단사
+  hook: 줄자 준비! 오늘은 재단사야.
+  quests:
+  - title: 치수 재기
+    spot: center
+    fx:
+    - flash
+    say:
+    - 카메라로 치수 스물두 군데를 1초 만에 쟀어.
+    result: clear
+    after: 줄자가 필요 없었어.
+  - title: 바느질
+    spot: sofa
+    fx:
+    - sweat
+    say:
+    - 실을 바늘에 꿰는 데 사십 분 걸렸어.
+    result: fail
+    after: 손님이 대신 꿰어 줬어.
+  - title: 수선 견적
+    spot: boxes
+    fx:
+    - coins
+    say:
+    - 바지 길이 수선, 견적과 날짜를 바로 알려 드렸어.
+    result: clear
+    after: 빠르다고 좋아하셨어.
+  verdict: 65
+  verdict_say: 재는 건 내가 정확해. 바늘은 아직 사람 손이 낫더라.
+- id: realtor
+  num: 32
+  job: 공인중개사
+  scene: home
+  data:
+    prob: 0.86
+    occupation: Real Estate Sales Agents
+    label: 공인중개사
+  hook: 집 보러 오셨어요? 오늘은 공인중개사.
+  quests:
+  - title: 조건 맞는 집 찾기
+    spot: boxes
+    fx:
+    - sparkle
+    say:
+    - 매물 이천 개 중 조건 딱 맞는 집 세 곳을 찾았어.
+    result: clear
+    after: 손님이 바로 보러 가재.
+  - title: 집 소개
+    spot: sofa
+    fx:
+    - sweat
+    say:
+    - 이 집은 남향 채광 82%라고 설명했어.
+    result: fail
+    after: 손님은 숫자 말고 느낌을 원했어.
+  - title: 계약서 확인
+    spot: center
+    say:
+    - 등기부 등본 위험 항목 체크 완료.
+    result: clear
+    after: 손님이 안심했어.
+  verdict: 70
+  verdict_say: 매물 찾기는 내가 빨라. 이 동네 분위기는 사람이 더 잘 알아.
+- id: insurance_agent
+  num: 33
+  job: 보험설계사
+  scene: office
+  data:
+    prob: 0.92
+    occupation: Insurance Sales Agents
+    label: 보험설계사
+  hook: 안심을 팝니다! 오늘은 보험설계사.
+  quests:
+  - title: 보험 비교
+    spot: desk
+    fx:
+    - coins
+    say:
+    - 상품 삼백 개를 비교해서 제일 싼 걸 찾았어.
+    result: clear
+    after: 고객이 보험료를 반이나 아꼈어.
+  - title: 전화 영업
+    spot: phone
+    fx:
+    - ring
+    say:
+    - 전화하자마자 약관 12조부터 읽었어.
+    result: fail
+    after: 첫 문장에서 끊겼어.
+  - title: 보험금 청구
+    spot: desk2
+    say:
+    - 사고 서류를 정리해서 보험금 청구를 도와드렸어.
+    result: clear
+    after: 다음 날 바로 입금됐대.
+  verdict: 85
+  verdict_say: 비교는 기계가 이겨. 어려울 때 전화받아 주는 사람은 여전히 필요해.
+- id: tour_guide
+  num: 34
+  job: 여행 가이드
+  scene: street
+  data:
+    prob: 0.91
+    occupation: Tour Guides and Escorts
+    label: 여행 가이드
+  hook: 깃발 따라오세요! 오늘은 여행 가이드야.
+  quests:
+  - title: 역사 설명
+    spot: left
+    npc: false
+    say:
+    - 건물마다 역사 연도를 하나도 안 틀리고 말했어.
+    result: clear
+    after: 근데 다들 사진만 찍었어.
+  - title: 맛집 추천
+    spot: center
+    fx:
+    - sweat
+    say:
+    - 리뷰 만 개를 분석해서 맛집을 골랐어.
+    result: fail
+    after: 줄이 두 시간이었어.
+  - title: 길 잃은 손님
+    spot: right
+    fx:
+    - sparkle
+    say:
+    - 손님 하나가 사라졌어. 위치 추적으로 3분 만에 찾았어.
+    result: clear
+    after: 손님은 아이스크림을 사고 있었어.
+  verdict: 60
+  verdict_say: 정보는 내가 많이 알아. 여행의 재미는 같이 웃어 주는 가이드야.
+- id: reporter
+  num: 35
+  job: 기자
+  scene: street
+  data:
+    prob: 0.11
+    occupation: Reporters and Correspondents
+    label: 기자
+  hook: 현장에서 전해 드립니다! 오늘은 기자야.
+  quests:
+  - title: 속보 쓰기
+    spot: left
+    fx:
+    - flash
+    say:
+    - 사건 발생 30초 만에 기사 초안 완성.
+    result: clear
+    after: 1등으로 올렸어.
+  - title: 인터뷰
+    spot: center
+    fx:
+    - sweat
+    say:
+    - 목격자 인터뷰. 질문 열 개를 한 번에 물었어.
+    result: fail
+    after: 목격자가 도망갔어.
+  - title: 팩트 체크
+    spot: right
+    fx:
+    - sparkle
+    say:
+    - 소문 세 개를 자료로 확인해서 두 개가 가짜인 걸 밝혔어.
+    result: clear
+    after: 편집장님이 칭찬했어.
+  verdict: 25
+  verdict_say: 빨리 쓰는 건 내가 해. 현장에서 사람 얘기를 끌어내는 건 기자님이야.
+- id: writer
+  num: 36
+  job: 작가
+  scene: library
+  data:
+    prob: 0.038
+    occupation: Writers and Authors
+    label: 작가
+  hook: 첫 문장이 제일 어려워. 오늘은 작가야.
+  quests:
+  - title: 소설 한 편
+    spot: desk
+    fx:
+    - sparkle
+    say:
+    - 한 시간 만에 소설 한 편을 썼어. 이백 쪽!
+    result: clear
+    after: 편집자가 너무 길다고 했어.
+  - title: 감동 장면
+    spot: desk
+    fx:
+    - sweat
+    say:
+    - 주인공이 우는 장면을 썼는데…
+    result: fail
+    after: 읽는 사람이 하나도 안 울었어.
+  - title: 자료 조사
+    spot: shelf
+    say:
+    - 조선 시대 시장 자료를 다 찾아 정리했어.
+    result: clear
+    after: 작가님이 자료 조사만 맡기겠대.
+  verdict: 20
+  verdict_say: 자료랑 초안은 내가 도울게. 마음을 울리는 문장은 사람이 써.
+- id: counselor
+  num: 37
+  job: 상담사
+  scene: home
+  time: evening
+  data:
+    prob: 0.0047
+    occupation: Clinical, Counseling and School Psychologists
+    label: 심리상담사
+  hook: 편하게 앉으세요. 오늘은 상담사야.
+  quests:
+  - title: 이야기 듣기
+    spot: sofa
+    fx:
+    - hearts
+    say:
+    - 내담자 이야기를 한 시간 동안 끊지 않고 들었어.
+    result: clear
+    after: 들어 줘서 고맙대.
+  - title: 해결책 제시
+    spot: sofa
+    fx:
+    - sweat
+    say:
+    - 고민 다섯 개에 해결책 오십 개를 바로 말했어.
+    result: fail
+    after: 그냥 공감이 필요했대.
+  - title: 기록 정리
+    spot: boxes
+    say:
+    - 상담 기록을 정리해서 다음 상담 준비를 끝냈어.
+    result: clear
+    after: 선생님 퇴근이 빨라졌어.
+  verdict: 5
+  verdict_say: 기록은 내가 도울게. 마음을 여는 건 사람 사이에서 생겨.
+- id: kindergarten_teacher
+  num: 38
+  job: 유치원 교사
+  scene: classroom
+  time: morning
+  data:
+    prob: 0.15
+    occupation: Kindergarten Teachers, Except Special Education
+    label: 유치원 교사
+  hook: 얘들아 안녕! 오늘은 유치원 선생님이야.
+  quests:
+  - title: 동화 읽기
+    spot: board
+    fx:
+    - notes
+    say:
+    - 동화를 목소리 열 개로 읽어 줬어.
+    result: clear
+    after: 늑대 목소리에서 박수가 나왔어.
+  - title: 낮잠 시간
+    spot: desks
+    fx:
+    - zzz
+    say:
+    - 낮잠 시간인데 내 화면이 너무 밝았어.
+    result: fail
+    after: 다들 내 화면만 구경했어.
+  - title: 싸움 말리기
+    spot: center
+    fx:
+    - sweat
+    say:
+    - 블록 싸움! 공평하게 개수를 나눴어.
+    result: fail
+    after: 둘 다 빨간색만 원했어.
+  verdict: 10
+  verdict_say: 아이들은 숫자로 안 달래져. 안아 주는 선생님이 필요해.
+- id: dog_trainer
+  num: 39
+  job: 반려견 훈련사
+  scene: field
+  data:
+    prob: 0.1
+    occupation: Animal Trainers
+    label: 동물 훈련사
+  hook: 앉아! 오늘은 반려견 훈련사야.
+  quests:
+  - title: 앉아 가르치기
+    spot: center
+    props:
+    - - dog
+      - 106
+      - y: 150
+    fx:
+    - sweat
+    say:
+    - 앉아를 천 번 말했어. 목소리 톤도 똑같이.
+    result: fail
+    after: 강아지가 내 말을 배경음으로 들었대.
+  - title: 간식 타이밍
+    spot: center
+    props:
+    - - dog
+      - 106
+      - y: 150
+    fx:
+    - hearts
+    say:
+    - 잘했을 때 0.5초 안에 간식! 타이밍 완벽.
+    result: clear
+    after: 드디어 앉았어!
+  - title: 산책 기록
+    spot: left
+    say:
+    - 산책 거리와 행동을 기록해서 보호자에게 보냈어.
+    result: clear
+    after: 보호자가 그래프를 좋아했어.
+  verdict: 15
+  verdict_say: 기록은 내가 잘해. 강아지는 나보다 사람 칭찬을 더 좋아해.
+- id: app_developer
+  num: 40
+  job: 앱 개발자
+  scene: office
+  data:
+    prob: 0.042
+    occupation: Software Developers, Applications
+    label: 앱 개발자
+  hook: 코딩 시작! 오늘은 앱 개발자야.
+  quests:
+  - title: 버튼 만들기
+    spot: desk
+    fx:
+    - sparkle
+    say:
+    - 버튼 백 개를 10초 만에 만들었어.
+    result: clear
+    after: 근데 다 같은 기능이었어.
+  - title: 버그 잡기
+    spot: desk2
+    fx:
+    - smoke
+    say:
+    - 버그를 하나 고쳤더니 버그 두 개가 생겼어.
+    result: fail
+    after: 개발자들이 원래 그렇대.
+  - title: 기획 회의
+    spot: center
+    say:
+    - 사람들이 진짜 원하는 기능이 뭔지 물어봤어.
+    result: clear
+    after: 그게 제일 어려운 질문이었대.
+  verdict: 35
+  verdict_say: 코드는 나도 빨리 써. 뭘 만들지 정하는 건 사람 몫이야.
+- id: fashion_designer
+  num: 41
+  job: 패션 디자이너
+  scene: studio
+  data:
+    prob: 0.021
+    occupation: Fashion Designers
+    label: 패션 디자이너
+  hook: 런웨이로! 오늘은 패션 디자이너야.
+  quests:
+  - title: 유행 분석
+    spot: camera
+    fx:
+    - flash
+    say:
+    - 사진 백만 장으로 내년 유행 색을 예측했어.
+    result: clear
+    after: 보라색이래. 기록해 둬.
+  - title: 새 디자인
+    spot: stage
+    fx:
+    - sweat
+    say:
+    - 인기 옷 천 벌을 섞어서 새 옷을 만들었어.
+    result: fail
+    after: 어디서 본 옷 같대.
+  - title: 치수표
+    spot: left
+    say:
+    - 사이즈 열두 개 치수표를 1분 만에 만들었어.
+    result: clear
+    after: 공장이 좋아했어.
+  verdict: 15
+  verdict_say: 분석은 내가 할게. 처음 보는 멋은 사람 머리에서 나와.
+- id: interior_designer
+  num: 42
+  job: 인테리어 디자이너
+  scene: home
+  time: evening
+  data:
+    prob: 0.022
+    occupation: Interior Designers
+    label: 인테리어 디자이너
+  hook: 집을 바꿔 보자! 오늘은 인테리어 디자이너.
+  quests:
+  - title: 가구 배치
+    spot: sofa
+    fx:
+    - sparkle
+    say:
+    - 동선을 계산해서 소파 자리를 옮겼어.
+    result: clear
+    after: 방이 넓어 보인대!
+  - title: 색 고르기
+    spot: center
+    fx:
+    - sweat
+    say:
+    - 통계상 가장 인기 있는 흰색으로 다 칠했어.
+    result: fail
+    after: 병원 같대.
+  - title: 예산 맞추기
+    spot: boxes
+    fx:
+    - coins
+    say:
+    - 예산 안에서 가구 목록을 짰어. 1원 남았어.
+    result: clear
+    after: 고객이 감탄했어.
+  verdict: 25
+  verdict_say: 계산은 내가 도와. 이 집이 누구 집인지 느끼는 건 사람이야.
+- id: fitness_trainer
+  num: 43
+  job: 헬스 트레이너
+  scene: field
+  data:
+    prob: 0.085
+    occupation: Fitness Trainers and Aerobics Instructors
+    label: 헬스 트레이너
+  hook: 하나 더! 오늘은 헬스 트레이너야.
+  quests:
+  - title: 자세 교정
+    spot: center
+    fx:
+    - sparkle
+    say:
+    - 스쿼트 자세를 분석해서 무릎 각도를 고쳐 줬어.
+    result: clear
+    after: 허리가 덜 아프대.
+  - title: 시범 보이기
+    spot: goal
+    fx:
+    - sweat
+    say:
+    - 팔굽혀펴기 시범. 나는 팔이 짧아.
+    result: fail
+    after: 회원님이 대신 시범을 보였어.
+  - title: 응원
+    spot: left
+    fx:
+    - confetti
+    say:
+    - 마지막 한 개! 응원 문구 백 개를 준비했어.
+    result: clear
+    after: 회원님이 해냈어!
+  verdict: 20
+  verdict_say: 자세 분석은 내가 해. 포기하려는 순간 잡아 주는 건 사람 목소리야.
+- id: kitchen_helper
+  num: 44
+  job: 주방 보조
+  scene: kitchen
+  data:
+    prob: 0.87
+    occupation: Food Preparation Workers
+    label: 주방 보조
+  hook: 칼질 준비 완료! 오늘은 주방 보조야.
+  quests:
+  - title: 양파 썰기
+    spot: board
+    fx:
+    - sparkle
+    say:
+    - 양파 백 개를 똑같은 두께로 썰었어.
+    result: clear
+    after: 셰프님이 자로 재 봤어.
+  - title: 재료 손질
+    spot: sink
+    fx:
+    - water
+    say:
+    - 새우 손질을 했는데 껍질이 내 안으로 들어갔어.
+    result: fail
+    after: 청소만 한 시간.
+  - title: 재고 정리
+    spot: fridge
+    say:
+    - 냉장고 재고를 정리하고 내일 주문서를 썼어.
+    result: clear
+    after: 버리는 재료가 줄었어.
+  verdict: 75
+  verdict_say: 반복 손질은 기계가 금방 해. 맛을 보는 혀는 없어.
+- id: receptionist
+  num: 45
+  job: 병원 접수
+  scene: clinic
+  data:
+    prob: 0.96
+    occupation: Receptionists and Information Clerks
+    label: 접수 직원
+  hook: 어디가 불편하세요? 오늘은 병원 접수야.
+  quests:
+  - title: 예약 정리
+    spot: desk
+    fx:
+    - sparkle
+    say:
+    - 예약 이백 건을 겹치지 않게 다시 짰어.
+    result: clear
+    after: 대기 시간이 반으로 줄었어.
+  - title: 어르신 접수
+    spot: center
+    fx:
+    - sweat
+    say:
+    - 어르신이 기계 말고 사람이랑 말하고 싶대.
+    result: fail
+    after: 나도 기계였어.
+  - title: 안내
+    spot: iv
+    say:
+    - 검사실 위치를 다섯 개 언어로 안내했어.
+    result: clear
+    after: 외국인 환자가 길을 안 잃었어.
+  verdict: 85
+  verdict_say: 접수는 키오스크가 이미 하고 있어. 그래도 사람 얼굴이 필요한 분이 있어.
+- id: radio_dj
+  num: 46
+  job: 라디오 DJ
+  scene: studio
+  time: evening
+  data:
+    prob: 0.1
+    occupation: Radio and Television Announcers
+    label: 라디오 DJ
+  hook: 온에어! 오늘은 라디오 DJ야.
+  quests:
+  - title: 선곡
+    spot: stage
+    fx:
+    - notes
+    props:
+    - - mic
+      - 92
+      - y: 150
+    say:
+    - 날씨랑 시간에 맞춰 노래 스무 곡을 골랐어.
+    result: clear
+    after: 선곡 좋다는 문자가 왔어.
+  - title: 사연 읽기
+    spot: stage
+    fx:
+    - sweat
+    props:
+    - - mic
+      - 92
+      - y: 150
+    say:
+    - 사연을 읽다가 슬픈 부분에서 목소리가 똑같았어.
+    result: fail
+    after: 청취자가 로봇 같대. 맞아.
+  - title: 생방송 실수
+    spot: camera
+    fx:
+    - sparkle
+    say:
+    - 방송 사고! 3초 만에 다음 곡을 틀었어.
+    result: clear
+    after: 아무도 몰랐어.
+  verdict: 25
+  verdict_say: 곡은 내가 골라. 밤에 말 걸어 주는 목소리는 사람이 좋대.
+- id: painter
+  num: 47
+  job: 화가
+  scene: studio
+  data:
+    prob: 0.042
+    occupation: Fine Artists, Including Painters, Sculptors and Illustrators
+    label: 화가
+  hook: 붓을 들자! 오늘은 화가야.
+  quests:
+  - title: 풍경화
+    spot: stage
+    props:
+    - - easel
+      - 100
+      - y: 150
+    say:
+    - 사진을 보고 풍경화를 픽셀 하나까지 똑같이 그렸어.
+    result: clear
+    after: 근데 사진이랑 뭐가 다르냐고 물었어.
+  - title: 내 그림
+    spot: stage
+    props:
+    - - easel
+      - 100
+      - y: 150
+    fx:
+    - sweat
+    say:
+    - 이번엔 내 마음대로 그려 봤어.
+    result: fail
+    after: 모니터 모양만 서른 개였어.
+  - title: 전시회
+    spot: left
+    fx:
+    - sparkle
+    say:
+    - 관람객 동선을 계산해서 그림을 걸었어.
+    result: clear
+    after: 관람객이 끝까지 다 봤어.
+  verdict: 10
+  verdict_say: 따라 그리는 건 내가 잘해. 나만의 그림은 아직 못 그려.
+- id: paramedic
+  num: 48
+  job: 구급대원
+  scene: street
+  time: evening
+  data:
+    prob: 0.049
+    occupation: Emergency Medical Technicians and Paramedics
+    label: 구급대원
+  hook: 출동! 오늘은 구급대원이야.
+  quests:
+  - title: 가까운 병원
+    spot: left
+    npc: false
+    fx:
+    - sparkle
+    say:
+    - 빈 병상이 있는 가장 가까운 병원을 바로 찾았어.
+    result: clear
+    after: 이송 시간이 5분 줄었어.
+  - title: 환자 옮기기
+    spot: center
+    fx:
+    - sweat
+    say:
+    - 들것을 들었는데 내가 들려 올라갔어.
+    result: fail
+    after: 사람 구급대원이 웃었어.
+  - title: 보호자 안심
+    spot: right
+    say:
+    - 보호자 손을 잡아 드렸어. 내 손은 차가웠어.
+    result: fail
+    after: 그래도 고맙다고 하셨어.
+  verdict: 10
+  verdict_say: 길 찾기는 내가 도와. 생명을 지키는 손은 사람 손이야.
+- id: proofreader
+  num: 49
+  job: 교정자
+  scene: library
+  data:
+    prob: 0.84
+    occupation: Proofreaders and Copy Markers
+    label: 교정자
+  hook: 빨간 펜 준비! 오늘은 교정자야.
+  quests:
+  - title: 맞춤법 검사
+    spot: desk
+    fx:
+    - sparkle
+    say:
+    - 책 한 권 맞춤법을 5초 만에 다 봤어.
+    result: clear
+    after: 틀린 글자 마흔두 개 발견!
+  - title: 사투리 대사
+    spot: shelf
+    fx:
+    - sweat
+    say:
+    - 소설 속 사투리를 전부 표준어로 고쳤어.
+    result: fail
+    after: 작가님이 다 되돌렸어.
+  - title: 숫자 확인
+    spot: shelf2
+    say:
+    - 본문 숫자랑 표 숫자가 다른 곳을 찾았어.
+    result: clear
+    after: 인쇄 전에 잡았어.
+  verdict: 85
+  verdict_say: 틀린 글자는 내가 다 찾아. 일부러 틀린 건 사람만 알아.
+- id: event_planner
+  num: 50
+  job: 행사 기획자
+  scene: cafe
+  time: evening
+  data:
+    prob: 0.037
+    occupation: Meeting, Convention and Event Planners
+    label: 행사 기획자
+  hook: 파티 준비! 오늘은 행사 기획자야.
+  quests:
+  - title: 일정표
+    spot: register
+    fx:
+    - sparkle
+    say:
+    - 손님 백 명 일정표를 분 단위로 짰어.
+    result: clear
+    after: 한 명도 안 늦었어.
+  - title: 깜짝 이벤트
+    spot: center
+    fx:
+    - sweat
+    say:
+    - 깜짝 파티인데 초대장을 주인공한테도 보냈어.
+    result: fail
+    after: 주인공이 제일 먼저 왔어.
+  - title: 분위기 띄우기
+    spot: cups
+    fx:
+    - confetti
+    say:
+    - 음악이랑 조명을 맞췄어. 다들 춤을 춰!
+    result: clear
+    after: 파티 대성공!
+  verdict: 20
+  verdict_say: 일정은 내가 맞춰. 사람들을 웃게 만드는 아이디어는 사람이 내.

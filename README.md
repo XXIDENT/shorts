@@ -97,5 +97,5 @@ Actions 탭 → **채널 관리** → Run workflow
 - 대본: `config/jobs.yaml` (편마다 직접 씀, 같은 문장 재사용 금지는 테스트로 검사)
 - 무대: `shorts/pixel/scenes.py`, 그림: `shorts/pixel/art.py`, 음악: `shorts/pixel/chiptune.py`
 - 실행: `python -m shorts.jobs --job barista --no-upload`, 정지 화면만: `--frames 1,10,30`
-- 워크플로: `.github/workflows/jobs.yml` (지금은 수동 실행과 PR 샘플만, 매일 자동 업로드는 승인 후 켬)
+- 워크플로: `.github/workflows/jobs.yml` (매일 21시 KST 1편 자동 업로드, PR에서는 샘플만 만듦)
 - 로컬 폰트: `sudo apt install fonts-unifont`

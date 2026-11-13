@@ -1,9 +1,9 @@
 name: 픽셀 직업체험 쇼츠
 
 on:
-  # 사용자 승인 후 켤 예정: 하루 1편 (한국 시간 21시)
-  # schedule:
-  #   - cron: "0 12 * * *"
+  # 하루 1편, 한국 시간 21시 (사용자 결정 2026-11-13)
+  schedule:
+    - cron: "0 12 * * *"
   workflow_dispatch:
     inputs:
       job:

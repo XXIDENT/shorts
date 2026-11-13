@@ -82,6 +82,10 @@ Actions 탭 → **채널 관리** → Run workflow
 - `privacy` + `영상ID public`: 공개로 전환
 - `title` + `영상ID 새 제목`: 제목 수정
 
+## 조회수 리포트 (매일 22:30)
+
+`.github/workflows/stats.yml`이 채널 전체 조회수, 어제보다 늘어난 조회수, 최근 90일 조회수(수익화 기준 대비), 시리즈별(올라간 시각 기준) 합계, TOP 5를 모아 **"📊 조회수 리포트" 이슈에 댓글**로 남깁니다. 이슈를 구독하면 알림으로 받아요. 기록은 `data/views.json`(120일치). Actions에서 '조회수 리포트'를 수동 실행하면 바로 볼 수 있습니다.
+
 ## 주제 추가
 `config/topics.yaml`에 [세계은행 지표 코드](https://data.worldbank.org/indicator)와 제목을 추가하면 됩니다.
 

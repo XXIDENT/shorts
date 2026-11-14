@@ -271,6 +271,29 @@ def cta(d, F, y, since):
         d.polygon([(x0 + bw - 40, y + 70), (x0 + bw + 10, y + 120), (x0 + bw - 22, y + 118)], fill=C["white"])
 
 
+COVER_T = 0.4      # 영상 맨 앞 표지가 보이는 시간(초). 쇼츠 피드 미리보기와 릴스 표지로 쓰인다.
+
+
+def big_title(img, y, s, font, fill, max_w=W - 80, max_scale=2.0):
+    """픽셀 글씨를 크게 키워 가운데에 찍는다(검은 테두리)."""
+    d0 = ImageDraw.Draw(img)
+    l, t, r, b = d0.textbbox((0, 0), s, font=font, stroke_width=6)
+    tmp = Image.new("RGBA", (r - l + 16, b - t + 16), (0, 0, 0, 0))
+    td = ImageDraw.Draw(tmp)
+    td.text((8 - l + 6, 8 - t + 6), s, font=font, fill=C["black"] + (255,), stroke_width=6, stroke_fill=C["black"] + (255,))
+    td.text((8 - l, 8 - t), s, font=font, fill=fill + (255,), stroke_width=6, stroke_fill=C["black"] + (255,))
+    k = min(max_scale, max_w / tmp.width)
+    tmp = tmp.resize((int(tmp.width * k), int(tmp.height * k)), Image.NEAREST)
+    img.paste(tmp, (W // 2 - tmp.width // 2, y), tmp)
+    return y + tmp.height
+
+
+def badge(d, F, y, s, fill, border, color=C["white"]):
+    w = int(d.textlength(s, font=F[64])) + 100
+    pixel_panel(d, W // 2 - w // 2, y, W // 2 + w // 2, y + 110, fill, border)
+    text(d, (W // 2, y + 24), s, F[64], color, "mt", 4)
+
+
 def heart(d, x, y, full: bool, u=6):
     rows = [".##.##.", "#######", "#######", ".#####.", "..###..", "...#..."]
     for j, r in enumerate(rows):
@@ -395,7 +418,27 @@ class Renderer:
                 "earned": int(self.hourly * hours // 100 * 100) if self.hourly else None,
                 "fatigue": max(0, min(100, int(fat)))}
 
+    def cover(self) -> Image.Image:
+        """표지: 'OO편' 큰 제목 + 무대 위 모니."""
+        if getattr(self, "_cover", None) is not None:
+            return self._cover
+        F, ep = self.F, self.ep
+        st = self.stage(max(0.0, self.segs[0].end - 0.05)).resize((W, W), Image.NEAREST)
+        img = Image.new("RGB", (W, H), self.bg_hi)
+        img.paste(st, (0, 700))
+        d = ImageDraw.Draw(img)
+        text(d, (W // 2, 70), f"AI 신입 {HERO}의 직업체험 #{ep['num']:02d}", F[64], C["yellow"], "mt", 4)
+        y = big_title(img, 170, f"{ep['job']}편", F[128], C["white"])
+        badge(d, F, max(y + 30, 480), "AI가 대신할 수 있을까?", C["navy"], C["yellow"], C["cyan"])
+        if self.hourly:
+            d.rectangle([0, 1640, W, 1800], fill=C["black"])
+            text(d, (W // 2, 1690), f"시급 {self.hourly:,}원의 하루", F[64], C["yellow"], "mt", 4)
+        self._cover = img
+        return img
+
     def frame(self, t: float) -> Image.Image:
+        if t < COVER_T:
+            return self.cover()
         F = self.F
         i = self.seg_at(t)
         seg = self.segs[i]
@@ -643,6 +686,8 @@ def main(argv: list[str] | None = None) -> int:
 
     video = args.out / f"{stamp}-job-{ep['id']}.mp4"
     secs = render(ep, segs, audio, video, work, seed)
+    cover = video.with_suffix(".jpg")
+    Renderer(ep, segs, seed).cover().save(cover, quality=92)
     meta = metadata(ep, seed)
     (args.out / f"{stamp}-job-{ep['id']}.json").write_text(json.dumps(
         {**meta, "script": [s.text for s in segs], "seconds": round(secs, 1), "tts": engine},
@@ -660,7 +705,7 @@ def main(argv: list[str] | None = None) -> int:
     elif not args.no_upload:
         print("[jobs] 업로드 설정이 없어 건너뜀")
     if not args.no_upload:
-        upload_instagram.try_upload(video, meta, "jobs")
+        upload_instagram.try_upload(video, meta, "jobs", cover)
 
     if not args.no_upload:
         history.append({"job": ep["id"], "at": stamp, "video_id": video_id})

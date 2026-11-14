@@ -103,7 +103,7 @@ GitHub 예약 실행은 몇 시간씩 늦어서 쓰지 않고, Claude 예약 작
 
 1. 인스타 계정을 **프로페셔널(크리에이터 또는 비즈니스)** 으로 바꾸고 **페이스북 페이지에 연결**합니다(인스타 API 조건).
 2. Make.com에서 새 시나리오: **Webhooks > Custom webhook** → **Instagram for Business > Create a Reel Post**
-   - Video URL: `video_url`, Caption: `caption`
+   - Video URL: `video_url`, Caption: `caption`, Cover URL(표지): `cover_url`
 3. 웹훅 주소를 GitHub Secrets에 `MAKE_IG_WEBHOOK_URL`로 저장하고 시나리오를 켭니다.
 
 인스타 API는 파일 대신 공개 주소의 영상을 가져가서, 영상을 이 저장소의 `reels-media` 릴리스에 임시로 올립니다(최근 40개만 남김). 인스타 전송이 실패해도 유튜브 업로드는 그대로예요.

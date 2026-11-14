@@ -28,6 +28,7 @@ import yaml
 from PIL import Image, ImageDraw, ImageFont
 
 from .once import uploaded_recently
+from . import lang as L
 from . import upload_instagram, upload_make, upload_youtube
 from .pixel import art, chiptune
 from .pixel.art import C, FLOOR, SH, SW
@@ -35,7 +36,7 @@ from .pixel.scenes import SCENES
 from .tts import _silence, duration
 
 ROOT = Path(__file__).resolve().parent.parent
-HISTORY = ROOT / "data" / "jobs_history.json"
+HISTORY = L.data_path("jobs_history.json")
 W, H, FPS = 1080, 1920, 30
 KRW_PER_USD = 1400                 # 시급 환산 환율(대략, 설명란에 밝힘)
 WORK_HOURS = (9, 18)               # 영상 속 하루 근무 09:00~18:00
@@ -43,10 +44,10 @@ STAGE_Y = 300                      # 무대(1080x1080)가 시작하는 y
 SCALE = W // SW                    # 6배
 GAP, TAIL = 0.12, 1.0
 BOT_Y = FLOOR + 30
-HERO = "모니"
-VOICE = os.environ.get("JOBS_TTS_VOICE", "ko-KR-SunHiNeural")
-VOICE_RATE = os.environ.get("JOBS_TTS_RATE", "+28%")
-VOICE_PITCH = os.environ.get("JOBS_TTS_PITCH", "+18Hz")
+HERO = L.HERO
+VOICE = os.environ.get("JOBS_TTS_VOICE") or ("en-US-AnaNeural" if L.EN else "ko-KR-SunHiNeural")
+VOICE_RATE = os.environ.get("JOBS_TTS_RATE") or ("+25%" if L.EN else "+28%")
+VOICE_PITCH = os.environ.get("JOBS_TTS_PITCH") or ("+8Hz" if L.EN else "+18Hz")
 
 FONT_CANDIDATES = [
     os.environ.get("JOBS_FONT", ""),
@@ -71,6 +72,27 @@ TITLES = [
     "AI한테 {job}를 시켜봤다 #Shorts",
     "{job}, AI가 하면 몇 점? #Shorts",
 ]
+if L.EN:
+    DATA_LINES = [
+        "An Oxford study put the odds of {label} being automated at {p}.",
+        "Oxford researchers in 2013 said {label}: {p} chance of automation.",
+        "The study says {label} could be replaced by machines with {p} odds.",
+    ]
+    OUTROS = [
+        "Which job should I try next? Tell me in the comments, and hit subscribe!",
+        "Pick my next job in the comments! Like and subscribe!",
+        "Would you let AI do this job? Comment below, and subscribe for more!",
+    ]
+    TITLES = [
+        "I let an AI work as a {job} for a day #Shorts",
+        "AI rookie tries being a {job} #Shorts",
+        "Can a robot be a {job}? #Shorts",
+        "{job}: how would AI score? #Shorts",
+    ]
+
+
+def a_an(word: str) -> str:
+    return ("an " if word[:1].lower() in "aeiou" else "a ") + word
 
 
 def josa(word: str, pair=("이", "가")) -> str:
@@ -118,6 +140,10 @@ def trim(ep: dict) -> dict:
 def tease_line(ep: dict) -> str:
     """첫 1초 훅: 답을 숨긴 질문으로 끝까지 보게 만든다(정답은 data 구간에서 공개)."""
     job = ep["job"]
+    if ep.get("tease"):
+        return ep["tease"]
+    if L.EN:
+        return f"What are the odds AI replaces {a_an(job.lower())}? Answer at the end!"
     return f"AI가 {job}{josa(job, ('을', '를'))} 대신할 확률, 몇 %일까? 정답은 마지막에!"
 
 
@@ -142,6 +168,8 @@ def metadata(ep: dict, seed: int) -> dict:
     rnd = random.Random(seed)
     job = ep["job"]
     title = ep.get("title") or rnd.choice(TITLES).format(job=job)
+    if L.EN:
+        return metadata_en(ep, title)
     lines = [f"퀘스트 {i + 1}. {q['title']} - {'성공' if q['result'] == 'clear' else '실패'}"
              for i, q in enumerate(ep["quests"])]
     d = ep["data"]
@@ -156,6 +184,22 @@ def metadata(ep: dict, seed: int) -> dict:
             f"#Shorts #직업체험 #{job.replace(' ', '')} #픽셀아트")
     return {"title": title[:100], "description": desc,
             "tags": ["직업체험", "픽셀아트", job, "자동화", "미래직업", "shorts"]}
+
+
+def metadata_en(ep: dict, title: str) -> dict:
+    job = ep["job"]
+    d = ep["data"]
+    lines = [L.t("quest_line", i=i + 1, title=q["title"], res=L.t(q["result"])) for i, q in enumerate(ep["quests"])]
+    desc = (f"AI rookie {HERO}'s Job Day #{ep['num']:02d}: {job}\n\n" + "\n".join(lines) +
+            f"\n\nAutomation odds (2013 study): {pct(d['prob'])} ({d['occupation']})\n"
+            f"{HERO}'s own verdict: {ep['verdict']}% (the character's opinion)\n"
+            + (f"Hourly pay in the video: US median salary ${d['wage']:,} (BLS 2016) / 2,080 hours\n\n"
+               if d.get("wage") else "\n")
+            + "Source: Frey, C. B. & Osborne, M. A. (2013), The Future of Employment, University of Oxford "
+            "(702 US occupations)\n\n"
+            f"#Shorts #pixelart #{job.replace(' ', '').lower()} #jobs #robot")
+    return {"title": title[:100], "description": desc,
+            "tags": ["pixel art", job, "automation", "future of work", "robot", "shorts"]}
 
 
 # ---------------------------------------------------------------- 음성
@@ -280,7 +324,7 @@ def cta(d, F, y, since):
     # 구독 버튼(빨강)
     d.rectangle([x0 + 10, y + 10, x0 + bw + 10, y + 130], fill=C["black"])
     pixel_panel(d, x0 + off, y + off, x0 + bw + off, y + 120 + off, C["red"], C["white"])
-    text(d, (x0 + bw // 2 + off, y + 30 + off), "구독", F[64], C["white"], "mt", 4)
+    text(d, (x0 + bw // 2 + off, y + 30 + off), L.t("subscribe"), F[64], C["white"], "mt", 4)
     # 좋아요 버튼(엄지)
     d.rectangle([x1 + 10, y + 10, x1 + bw + 10, y + 130], fill=C["black"])
     pixel_panel(d, x1, y, x1 + bw, y + 120, C["navy"], C["white"])
@@ -288,7 +332,7 @@ def cta(d, F, y, since):
     tx, ty = x1 + 46, y + 26
     for (cx, cy, cw, ch) in [(2, 0, 2, 3), (1, 3, 5, 5), (0, 4, 1, 4)]:   # 엄지 척
         d.rectangle([tx + cx * u, ty + cy * u, tx + (cx + cw) * u - 1, ty + (cy + ch) * u - 1], fill=C["yellow"])
-    text(d, (x1 + 120, y + 30), "좋아요", F[64], C["white"], "la", 4)
+    text(d, (x1 + 120, y + 30), L.t("like"), F[64], C["white"], "la", 4)
     if pressed:
         d.polygon([(x0 + bw - 40, y + 70), (x0 + bw + 10, y + 120), (x0 + bw - 22, y + 118)], fill=C["white"])
 
@@ -332,7 +376,7 @@ def question_card(img, F, y, top: list[str], big: str, since: float, accent=C["y
     shake = int(math.sin(since * 40) * 6) if since < 0.6 else 0
     bot = big_title(img, yb, big, F[128], accent, max_w=W - 60, max_scale=scale, cx=W // 2 + shake)
     if show_badge and (int(since * 4) % 2 == 0 or since > 2.0):
-        badge(d, F, bot + 20, "정답은 마지막에!", C["red"], C["white"], C["white"])
+        badge(d, F, bot + 20, L.t("answer_end"), C["red"], C["white"], C["white"])
 
 
 def heart(d, x, y, full: bool, u=6):
@@ -366,11 +410,14 @@ class Renderer:
         self.work_t0 = next(x.start for x in segs if x.q == 0)
         self.work_t1 = next(x.start for x in segs if x.kind == "data")
         wage = ep.get("data", {}).get("wage")
-        self.hourly = int(round(wage / 2080 * KRW_PER_USD, -2)) if wage else None
+        if L.EN:
+            self.hourly = round(wage / 2080, 2) if wage else None
+        else:
+            self.hourly = int(round(wage / 2080 * KRW_PER_USD, -2)) if wage else None
 
     # ---- 시리즈마다 바꾸는 글자들 (여행 퀘스트가 덮어쓴다)
     def series_line(self) -> str:
-        return f"AI 신입 {HERO}의 직업체험 #{self.ep['num']:02d}"
+        return L.t("job_series", hero=HERO, num=self.ep["num"])
 
     def name(self) -> str:
         return self.ep["job"]
@@ -378,14 +425,17 @@ class Renderer:
     def tease_parts(self) -> tuple[list[str], list[str], str]:
         """(질문 2줄, 콜드 오픈용 1줄, 큰 글씨)"""
         job = self.ep["job"]
+        if L.EN:
+            j = a_an(job.lower())
+            return ["Odds AI replaces", f"{j}?"], [f"Odds AI replaces {j}?"], "??%"
         return [f"AI가 {job}{josa(job, ('을', '를'))}", "대신할 확률"], [f"AI가 {job}{josa(job, ('을', '를'))} 대신할 확률"], "??%"
 
     def hook_panel(self) -> tuple[str, str]:
-        return f"DAY {self.ep['num']:02d}", "체험 시작!"
+        return f"DAY {self.ep['num']:02d}", L.t("start_job")
 
     def foot(self, seg: Seg) -> str | None:
         if seg.kind in ("data", "verdict"):
-            return "자료: Frey & Osborne(2013) 옥스퍼드대, 미국 702개 직업"
+            return L.t("job_source")
         return None
 
     def draw_name(self, img, d, y):
@@ -479,7 +529,7 @@ class Renderer:
                 fat += (9 if r == "clear" else 20) * k
         clock = h0 * 60 + int(hours * 60)
         return {"clock": f"{clock // 60:02d}:{clock % 60 // 10 * 10:02d}", "p": p,
-                "earned": int(self.hourly * hours // 100 * 100) if self.hourly else None,
+                "earned": (int(self.hourly * hours) if L.EN else int(self.hourly * hours // 100 * 100)) if self.hourly else None,
                 "fatigue": max(0, min(100, int(fat)))}
 
     def cover(self) -> Image.Image:
@@ -491,12 +541,12 @@ class Renderer:
         img = Image.new("RGB", (W, H), self.bg_hi)
         img.paste(st, (0, 700))
         d = ImageDraw.Draw(img)
-        text(d, (W // 2, 70), f"AI 신입 {HERO}의 직업체험 #{ep['num']:02d}", F[64], C["yellow"], "mt", 4)
-        y = big_title(img, 170, f"{ep['job']}편", F[128], C["white"])
-        badge(d, F, max(y + 30, 480), "AI가 대신할 수 있을까?", C["navy"], C["yellow"], C["cyan"])
+        text(d, (W // 2, 70), L.t("job_series", hero=HERO, num=ep["num"]), F[64], C["yellow"], "mt", 4)
+        y = big_title(img, 170, L.t("ep", name=ep["job"]), F[128], C["white"])
+        badge(d, F, max(y + 30, 480), L.t("can_ai"), C["navy"], C["yellow"], C["cyan"])
         if self.hourly:
             d.rectangle([0, 1640, W, 1800], fill=C["black"])
-            text(d, (W // 2, 1690), f"시급 {self.hourly:,}원의 하루", F[64], C["yellow"], "mt", 4)
+            text(d, (W // 2, 1690), f"A day at {L.money(self.hourly)}/hr" if L.EN else f"시급 {self.hourly:,}원의 하루", F[64], C["yellow"], "mt", 4)
         self._cover = img
         return img
 
@@ -563,7 +613,8 @@ class Renderer:
             q = ep["quests"][seg.q]
             label = f"QUEST {seg.q + 1}  {q['title']}"
             pixel_panel(d, 30, STAGE_Y + 24, W - 30, STAGE_Y + 120, C["navy"], C["yellow"])
-            text(d, (W // 2, STAGE_Y + 48), label, F[48], C["white"], "mt", 4)
+            fq = F[48] if d.textlength(label, font=F[48]) <= W - 110 else F[32]
+            text(d, (W // 2, STAGE_Y + 48 + (0 if fq is F[48] else 10)), label, fq, C["white"], "mt", 4)
         if (seg.kind == "result" and since < 1.6) or cold:
             if cold:
                 seg, since = seg_v, min(since, 1.4)
@@ -607,8 +658,9 @@ class Renderer:
         y0, y1 = 1420, 1700
         pixel_panel(d, 24, y0, W - 24, y1, (20, 22, 40), C["white"])
         speaker = HERO
-        pixel_panel(d, 50, y0 - 46, 50 + 60 + 48 * len(speaker), y0 + 30, self.accent, C["white"])
-        text(d, (80 + 48 * len(speaker) // 2, y0 - 22), speaker, F[48], C["white"], "mt", 3)
+        sw = int(d.textlength(speaker, font=F[48]))
+        pixel_panel(d, 50, y0 - 46, 50 + 60 + sw, y0 + 30, self.accent, C["white"])
+        text(d, (80 + sw // 2, y0 - 22), speaker, F[48], C["white"], "mt", 3)
         dur = max(0.1, seg.end - seg.start)
         shown = seg.text if since > dur * 0.55 else seg.text[: int(len(seg.text) * since / (dur * 0.55)) + 1]
         lines = wrap(d, seg.text, F[48], W - 160)
@@ -633,11 +685,15 @@ class Renderer:
         d.rectangle([0, y0, W, y1], fill=(16, 18, 34))
         d.rectangle([0, y0, W, y0 + 4], fill=C["white"])
         if self.hourly:
-            text(d, (28, y0 + 22), f"시급 {self.hourly:,}원", F[32], C["white"], "la", 2)
-            text(d, (300, y0 + 22), f"번 돈 {stt['earned']:,}원", F[32], C["yellow"], "la", 2)
+            if L.EN:
+                text(d, (28, y0 + 22), f"Pay ${self.hourly:,.2f}/hr", F[32], C["white"], "la", 2)
+                text(d, (330, y0 + 22), f"Earned ${stt['earned']:,}", F[32], C["yellow"], "la", 2)
+            else:
+                text(d, (28, y0 + 22), f"시급 {self.hourly:,}원", F[32], C["white"], "la", 2)
+                text(d, (300, y0 + 22), f"번 돈 {stt['earned']:,}원", F[32], C["yellow"], "la", 2)
         # 피곤도 게이지 (초록 → 노랑 → 빨강)
         f = stt["fatigue"]
-        text(d, (640, y0 + 22), "피곤", F[32], C["white"], "la", 2)
+        text(d, (640, y0 + 22), L.t("tired"), F[32], C["white"], "la", 2)
         bx, bw, n = 730, 30, 10
         lit = int(round(f / 10))
         col = C["green"] if f < 45 else (C["yellow"] if f < 75 else C["red"])
@@ -653,11 +709,11 @@ class Renderer:
         img.paste(Image.blend(region, dark, 0.55), (0, STAGE_Y + 140))
         x0, y0, x1 = 60, STAGE_Y + 160, W - 60
         pixel_panel(d, x0, y0, x1, y0 + 560, (24, 28, 52), C["cyan"])
-        text(d, (W // 2, y0 + 40), "정답 공개! AI 대체 확률" if seg.kind == "data" else "AI 대체 가능성",
+        text(d, (W // 2, y0 + 40), L.t("reveal_ai") if seg.kind == "data" else L.t("ai_chance"),
              F[64], C["yellow"] if seg.kind == "data" else C["cyan"], "mt", 4)
-        rows = [("2013 옥스퍼드 연구", p, C["orange"], 0.0)]
+        rows = [(L.t("study"), p, C["orange"], 0.0)]
         if seg.kind == "verdict":
-            rows.append((f"{HERO} 체감 (직접 해봄)", ep["verdict"] / 100, self.accent, 0.0))
+            rows.append((L.t("felt", hero=HERO), ep["verdict"] / 100, self.accent, 0.0))
         for k, (label, val, col, _) in enumerate(rows):
             yy = y0 + 150 + k * 190
             text(d, (x0 + 50, yy), label, F[48], C["white"], "la", 3)
@@ -711,7 +767,8 @@ def render(ep: dict, segs: list[Seg], audio: list[Path], out: Path, work: Path, 
 # ---------------------------------------------------------------- 실행
 
 def load_episodes() -> list[dict]:
-    return yaml.safe_load((ROOT / "config" / "jobs.yaml").read_text())["episodes"]
+    base = yaml.safe_load((ROOT / "config" / "jobs.yaml").read_text())["episodes"]
+    return L.merge_text(base, "jobs.yaml")
 
 
 def load_history() -> list[dict]:

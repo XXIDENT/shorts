@@ -11,6 +11,10 @@ on:
         description: "true면 영상만 만들고 업로드하지 않음"
         required: false
         default: "true"
+      lang:
+        description: "ko(모니의 하루) 또는 en(영어 채널, MAKE_WEBHOOK_URL_EN 필요)"
+        required: false
+        default: "ko"
   # 대본이나 그림을 고치는 PR마다 샘플 영상을 만든다 (업로드 안 함)
   pull_request:
     paths:
@@ -23,7 +27,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: job-shorts-${{ github.event_name }}
+  group: job-shorts-${{ github.event_name }}-${{ github.event.inputs.lang || 'ko' }}
   cancel-in-progress: false
 
 jobs:
@@ -47,11 +51,13 @@ jobs:
         env:
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
-          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          # 영어 채널은 영어 채널 전용 비밀값만 쓴다(한국어 채널로 잘못 올라가지 않게)
+          YT_REFRESH_TOKEN: ${{ github.event.inputs.lang == 'en' && secrets.YT_REFRESH_TOKEN_EN || (github.event.inputs.lang != 'en' && secrets.YT_REFRESH_TOKEN || '') }}
           YT_PRIVACY: ${{ vars.YT_PRIVACY || 'private' }}
-          MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
+          MAKE_WEBHOOK_URL: ${{ github.event.inputs.lang == 'en' && secrets.MAKE_WEBHOOK_URL_EN || (github.event.inputs.lang != 'en' && secrets.MAKE_WEBHOOK_URL || '') }}
           MAKE_PRIVACY: ${{ vars.MAKE_PRIVACY || 'public' }}
-          MAKE_IG_WEBHOOK_URL: ${{ secrets.MAKE_IG_WEBHOOK_URL }}
+          MAKE_IG_WEBHOOK_URL: ${{ github.event.inputs.lang != 'en' && secrets.MAKE_IG_WEBHOOK_URL || '' }}
+          SHORTS_LANG: ${{ github.event.inputs.lang || 'ko' }}
           GITHUB_TOKEN: ${{ github.token }}
           JOB: ${{ github.event.inputs.job }}
           NO_UPLOAD: ${{ github.event.inputs.no_upload }}
@@ -64,6 +70,10 @@ jobs:
           else
             if [ "$NO_UPLOAD" = "true" ]; then ARGS="--no-upload"; fi
             if [ -n "$JOB" ]; then ARGS="$ARGS --job $JOB"; fi
+            if [ "$SHORTS_LANG" = "en" ] && [ -z "$MAKE_WEBHOOK_URL" ] && [ "$NO_UPLOAD" != "true" ]; then
+              echo "영어 채널 웹훅(MAKE_WEBHOOK_URL_EN)이 없어 업로드 없이 만들기만 해요."
+              ARGS="$ARGS --no-upload"
+            fi
           fi
           python -m shorts.jobs $ARGS
 
@@ -79,7 +89,7 @@ jobs:
         run: |
           git config user.name "shorts-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/jobs_history.json 2>/dev/null || exit 0
+          git add data/jobs_history.json data/en/jobs_history.json 2>/dev/null || git add data/jobs_history.json 2>/dev/null || exit 0
           git commit -m "기록: 직업체험 쇼츠 $(date -u +%F)" || exit 0
           git pull --rebase
           git push

@@ -20,6 +20,7 @@ import yaml
 from PIL import Image, ImageDraw
 
 from . import jobs as J
+from . import lang as L
 from . import upload_instagram, upload_make, upload_youtube
 from .jobs import C, HERO, W, Seg, big_title, ease, pixel_panel, text
 from .once import uploaded_recently
@@ -27,7 +28,7 @@ from .pixel import world as Wd
 from .pixel.scenes import SCENES
 
 ROOT = Path(__file__).resolve().parent.parent
-HISTORY = ROOT / "data" / "trip_history.json"
+HISTORY = L.data_path("trip_history.json")
 TRIP_HOURS = (9, 21)
 
 OUTROS = ["다음 여행지는 댓글로 정해 줘! 구독이랑 좋아요도 꾹!",
@@ -35,6 +36,12 @@ OUTROS = ["다음 여행지는 댓글로 정해 줘! 구독이랑 좋아요도 �
           "너는 이 퀘스트 성공할 수 있어? 댓글로 알려 줘! 구독이랑 좋아요도!"]
 TITLES = ["AI 로봇이 {c}에서 살아남기 #Shorts", "{c} 가면 꼭 해 봐야 할 것 #Shorts",
           "{c}에서 이거 하면 안 돼?! #Shorts", "모니의 {c} 여행 퀘스트 #Shorts"]
+if L.EN:
+    OUTROS = ["Where should I go next? Tell me in the comments, and hit subscribe!",
+              "Pick my next country in the comments! Like and subscribe!",
+              "Could you pass these quests? Comment below, and subscribe for more!"]
+    TITLES = ["A robot tries to survive in {c} #Shorts", "Things you must try in {c} #Shorts",
+              "Don't do this in {c}! #Shorts", "Moni's {c} travel quest #Shorts"]
 
 
 def load_trips() -> list[dict]:
@@ -48,6 +55,10 @@ def load_trips() -> list[dict]:
         t["job"] = t["name"]
         t["scene"] = t["quests"][0].get("scene", "street")
         t.setdefault("data_face", "shock")
+    if L.EN:
+        trips = L.merge_text(trips, "trips.yaml")
+        for t in trips:
+            t["job"] = t["name"]
     return trips
 
 
@@ -71,8 +82,14 @@ def metadata(ep: dict, seed: int) -> dict:
     rnd = random.Random(seed)
     c = ep["name"]
     title = ep.get("title") or rnd.choice(TITLES).format(c=c)
-    lines = [f"퀘스트 {i + 1}. {q['title']} - {'성공' if q['result'] == 'clear' else '실패'}"
-             for i, q in enumerate(ep["quests"])]
+    lines = [L.t("quest_line", i=i + 1, title=q["title"], res=L.t(q["result"])) for i, q in enumerate(ep["quests"])]
+    if L.EN:
+        desc = (f"Moni's World Trip #{ep['num']:02d}: {c} {ep.get('city', '')}".strip() + "\n\n" + "\n".join(lines)
+                + f"\n\nAnswer: {ep['answer_big']} ({ep.get('answer_sub', '')})".rstrip(" ()")
+                + (f"\n{ep['source']}" if ep.get("source") else "")
+                + f"\n\n#Shorts #travel #{c.replace(' ', '').lower()} #pixelart #robot")
+        return {"title": title[:100], "description": desc,
+                "tags": ["travel", c, f"{c} travel", "travel tips", "pixel art", "shorts"]}
     desc = (f"모니의 세계여행 #{ep['num']:02d}: {c} {ep.get('city', '')}".strip() + "\n\n" + "\n".join(lines)
             + f"\n\n정답: {ep['answer_big']} ({ep.get('answer_sub', '')})".rstrip(" ()")
             + (f"\n{ep['source']}" if ep.get("source") else "")
@@ -115,14 +132,14 @@ class TripRenderer(J.Renderer):
         return sp["center"]
 
     def series_line(self) -> str:
-        return f"모니의 세계여행 #{self.ep['num']:02d}"
+        return L.t("trip_series", num=self.ep["num"])
 
     def tease_parts(self):
         top = self.ep["tease_top"]
         return top, [" ".join(top)], self.ep.get("tease_big", "?")
 
     def hook_panel(self):
-        return self.ep.get("city", f"TRIP {self.ep['num']:02d}"), "여행 퀘스트 시작!"
+        return self.ep.get("city", f"TRIP {self.ep['num']:02d}"), L.t("start_trip")
 
     def foot(self, seg: Seg):
         return self.ep.get("source") if seg.kind == "data" else None
@@ -155,9 +172,9 @@ class TripRenderer(J.Renderer):
         y0, y1 = J.STAGE_Y + 990, J.STAGE_Y + 1072
         d.rectangle([0, y0, W, y1], fill=(16, 18, 34))
         d.rectangle([0, y0, W, y0 + 4], fill=C["white"])
-        text(d, (28, y0 + 22), f"여행 경비 {stt['spent']:,}원", F[32], C["yellow"], "la", 2)
+        text(d, (28, y0 + 22), (f"Spent {L.money(stt['spent'])}" if L.EN else f"여행 경비 {stt['spent']:,}원"), F[32], C["yellow"], "la", 2)
         f = stt["fatigue"]
-        text(d, (640, y0 + 22), "피곤", F[32], C["white"], "la", 2)
+        text(d, (640, y0 + 22), L.t("tired"), F[32], C["white"], "la", 2)
         bx, bw, n = 730, 30, 10
         lit = int(round(f / 10))
         col = C["green"] if f < 45 else (C["yellow"] if f < 75 else C["red"])
@@ -172,7 +189,7 @@ class TripRenderer(J.Renderer):
         img.paste(Image.blend(region, dark, 0.55), (0, J.STAGE_Y + 140))
         x0, y0, x1 = 60, J.STAGE_Y + 160, W - 60
         pixel_panel(d, x0, y0, x1, y0 + 560, (24, 28, 52), C["cyan"])
-        text(d, (W // 2, y0 + 40), "정답 공개!", F[64], C["yellow"], "mt", 4)
+        text(d, (W // 2, y0 + 40), L.t("reveal"), F[64], C["yellow"], "mt", 4)
         text(d, (W // 2, y0 + 130), " ".join(ep["tease_top"]), F[48], C["white"], "mt", 3)
         pop = ease(min(1.0, since / 0.3))
         if pop > 0.05:
@@ -191,8 +208,8 @@ class TripRenderer(J.Renderer):
         img.paste(st, (0, 700))
         d = ImageDraw.Draw(img)
         text(d, (W // 2, 70), self.series_line(), F[64], C["yellow"], "mt", 4)
-        y = big_title(img, 170, f"{ep['name']}편", F[128], C["white"])
-        J.badge(d, F, max(y + 30, 480), "여행 퀘스트 3개!", C["navy"], C["yellow"], C["cyan"])
+        y = big_title(img, 170, L.t("ep", name=ep["name"]), F[128], C["white"])
+        J.badge(d, F, max(y + 30, 480), L.t("three_quests"), C["navy"], C["yellow"], C["cyan"])
         self._cover = img
         return img
 

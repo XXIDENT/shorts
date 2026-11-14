@@ -1,0 +1,139 @@
+# English channel: "Moni's World Trip" quest scripts.
+# Only the words live here. Scenes, spots, props and effects come from the same id in config/trips.yaml.
+# quests are merged by position (first here = first there). cost is in US dollars.
+# Prices are rough 2025 figures; state the exchange rate in source.
+trips:
+- id: japan
+  num: 1
+  name: Japan
+  city: Tokyo
+  tease: How much is a bowl of ramen in Tokyo, in US dollars? Answer at the end!
+  tease_top: ["A bowl of ramen in Tokyo", "How many dollars?"]
+  tease_big: "$?"
+  hook: Tokyo! Three quests. Let's go!
+  quests:
+  - title: Buy a convenience store bento
+    cost: 3.5
+    say:
+    - I picked a bento, and the clerk asks, "Shall I heat it up?"
+    after: They microwaved it for me! Why are convenience stores this nice?
+  - title: Take a phone call on the train
+    cost: 1.2
+    say:
+    - On the train! Let me call Mom and say I landed. HELLO!
+    after: Everyone stared in silence. Phone calls on Japanese trains are rude.
+  - title: Order ramen from a ticket machine
+    cost: 6.5
+    say:
+    - At this ramen shop you order from a machine. Press a button, hand over the ticket. Done!
+    after: Ramen without saying a single word! The broth is so rich.
+  answer_say: The answer! A bowl of ramen in Tokyo is about a thousand yen. That's around six fifty!
+  answer_big: about $6.50
+  answer_sub: around ¥1,000 ($1 ≈ ¥150)
+  source: Rough 2025 Tokyo prices, $1 ≈ ¥150
+- id: thailand
+  num: 2
+  name: Thailand
+  city: Bangkok
+  tease: How much is street pad thai in Bangkok, in US dollars? Answer at the end!
+  tease_top: ["Street pad thai in Bangkok", "How many dollars?"]
+  tease_big: "$?"
+  hook: Bangkok! So hot! Quests start now!
+  quests:
+  - title: Buy pad thai at a street stall
+    cost: 1.8
+    say:
+    - Ordering pad thai at a market stall. One finger up. One of these, please!
+    after: Wok-fried right in front of me, smoky and fast!
+  - title: Enter the Grand Palace in shorts
+    say:
+    - Next, the Grand Palace! It's hot, so I'll just walk in wearing shorts.
+    after: Stopped at the gate. No shorts and no sleeveless tops at the palace.
+  - title: Haggle a tuk-tuk fare
+    cost: 3
+    say:
+    - Changed into pants and found a tuk-tuk. The rule is to agree on the price before you ride!
+    after: Deal! Riding with the wind in my face feels amazing.
+  answer_say: The answer! Street pad thai is usually around sixty baht. That's under two dollars!
+  answer_big: about $1.80
+  answer_sub: around 60 baht ($1 ≈ 33 baht)
+  source: Rough 2025 Bangkok street prices, $1 ≈ 33 baht
+- id: vietnam
+  num: 3
+  name: Vietnam
+  city: Hanoi
+  tease: How much is a bowl of pho in Hanoi, in US dollars? Answer at the end!
+  tease_top: ["A bowl of pho in Hanoi", "How many dollars?"]
+  tease_big: "$?"
+  hook: Hanoi! So many motorbikes!
+  quests:
+  - title: Cross the street through motorbikes
+    say:
+    - The motorbikes never stop. The trick is to walk slowly and steadily!
+    after: They all flowed around me. I don't have a heart, but it's pounding.
+  - title: Pay with Vietnamese cash
+    say:
+    - Buying a bottle of water with cash. Why do these bills have so many zeros?
+    after: I mixed up ten thousand and a hundred thousand dong. The clerk laughed and gave it back.
+  - title: Eat a bowl of pho
+    cost: 2
+    say:
+    - Pho for breakfast! Lots of herbs and lime, Hanoi style.
+    after: I drank every drop of the broth. People line up for this at 7 a.m.
+  answer_say: The answer! Pho in Hanoi is usually around fifty thousand dong. That's about two dollars!
+  answer_big: about $2
+  answer_sub: around 50,000 dong ($1 ≈ 25,000 dong)
+  source: Rough 2025 Hanoi prices, $1 ≈ 25,000 dong
+- id: france
+  num: 4
+  name: France
+  city: Paris
+  tease: How much is a baguette in Paris, in US dollars? Answer at the end!
+  tease_top: ["A baguette in Paris", "How many dollars?"]
+  tease_big: "$?"
+  hook: Paris! I can smell the bread already.
+  quests:
+  - title: Say hello and buy a baguette
+    cost: 1.5
+    say:
+    - In a French bakery you greet them first, the moment you walk in. Bonjour!
+    after: Bonjour back! The baguette is still warm.
+  - title: Go to the supermarket on Sunday
+    say:
+    - It's Sunday, time for snacks. Wait, why is the door so quiet?
+    after: Closed! Lots of shops in France take Sunday off.
+  - title: Get free water at a restaurant
+    cost: 21
+    say:
+    - Dinner time! For water, ask for a carafe d'eau, a jug of tap water.
+    after: A whole jug of tap water, for free. It's always free in French restaurants.
+  answer_say: The answer! A baguette in Paris is about one euro thirty. That's around a dollar fifty!
+  answer_big: about $1.50
+  answer_sub: around €1.30 ($1 ≈ €0.87)
+  source: Rough 2025 Paris bakery prices, $1 ≈ €0.87
+- id: italy
+  num: 5
+  name: Italy
+  city: Rome
+  tease: How much is an espresso at a bar in Italy, in US dollars? Answer at the end!
+  tease_top: ["An espresso in Italy", "How many dollars?"]
+  tease_big: "$?"
+  hook: Rome! Ancient ruins on every corner.
+  quests:
+  - title: Drink espresso standing up
+    cost: 1.4
+    say:
+    - Here you drink espresso standing at the bar, in one go. Let me try!
+    after: Done in three seconds! Sitting down often costs more.
+  - title: Order a cappuccino after lunch
+    say:
+    - After lunch, one cappuccino for dessert, please! Extra foam!
+    after: The barista smiled. Italians usually drink cappuccino only in the morning.
+  - title: Toss a coin into the Trevi Fountain
+    say:
+    - Toss a coin over your shoulder into the Trevi Fountain and you'll come back to Rome. One, two, three!
+    after: Splash! The coins are collected and given to charity.
+  answer_say: The answer! A standing espresso is usually about one euro twenty. Around a dollar forty!
+  answer_big: about $1.40
+  answer_sub: around €1.20 ($1 ≈ €0.87)
+  source: Rough 2025 Rome bar prices, $1 ≈ €0.87

@@ -31,7 +31,7 @@ from PIL import Image, ImageDraw
 
 from .once import uploaded_recently
 from . import upload_instagram, upload_make, upload_youtube
-from .jobs import Fonts, cta, josa, mix_voice, pixel_panel, synthesize, text, wrap
+from .jobs import COVER_T, Fonts, badge, big_title, cta, josa, mix_voice, pixel_panel, synthesize, text, wrap
 from .pixel import chiptune
 from .pixel import world as Wd
 from .pixel.art import C
@@ -322,7 +322,29 @@ class Frames:
                 c = tuple(int(v) for v in self.pal.colors[self.pal(name)])
                 d.rectangle([x + i * u, y + j * u, x + i * u + u - 1, y + j * u + u - 1], fill=c)
 
+    def cover(self) -> Image.Image:
+        """표지: 국기 + 'OO편' 큰 제목 + 랜드마크."""
+        if getattr(self, "_cover", None) is not None:
+            return self._cover
+        if self.F is None:
+            self.F = Fonts()
+        F, ct = self.F, self.ct
+        lm = next(s for s in self.segs if s.kind == "landmark")
+        img = self.scene(lm.start + 1.5).convert("RGB")
+        d = ImageDraw.Draw(img, "RGBA")
+        d.rectangle([0, 0, W, 640], fill=(10, 12, 24, 170))
+        px = Wd.flag_pixels(ct["flag"])
+        u = 22
+        self.flag_icon(d, W // 2 - len(px[0]) * u // 2, 60, u)
+        text(d, (W // 2, 210), f"모니의 세계여행 #{ct['num']:02d}", F[64], C["yellow"], "mt", 4)
+        big_title(img, 300, f"{ct['name']}편", F[128], C["white"])
+        badge(d, F, 1480, "한국이랑 비교해 봤어!", C["navy"], C["yellow"], C["cyan"])
+        self._cover = img
+        return img
+
     def frame(self, t: float) -> Image.Image:
+        if t < COVER_T:
+            return self.cover()
         if self.F is None:
             self.F = Fonts()
         F, ct = self.F, self.ct
@@ -484,6 +506,8 @@ def main(argv: list[str] | None = None) -> int:
 
     video = args.out / f"{stamp}-travel-{ct['id']}.mp4"
     render_video(fr, segs, audio, total, video, work, seed)
+    cover = video.with_suffix(".jpg")
+    fr.cover().save(cover, quality=92)
     meta = metadata(ct, segs, facts, seed)
     (args.out / f"{stamp}-travel-{ct['id']}.json").write_text(json.dumps(
         {**meta, "script": [s.text for s in segs], "seconds": round(total, 1), "tts": engine},
@@ -499,7 +523,7 @@ def main(argv: list[str] | None = None) -> int:
         video_id = upload_youtube.upload(video, meta)
         print(f"[travel] 업로드 완료: https://youtu.be/{video_id}")
     if not args.no_upload:
-        upload_instagram.try_upload(video, meta, "travel")
+        upload_instagram.try_upload(video, meta, "travel", cover)
         history.append({"country": ct["id"], "at": stamp, "video_id": video_id})
         HISTORY.parent.mkdir(parents=True, exist_ok=True)
         HISTORY.write_text(json.dumps(history, ensure_ascii=False, indent=2))

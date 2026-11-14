@@ -4,6 +4,7 @@
 1) 영상을 이 저장소(공개)의 GitHub 릴리스 'reels-media'에 첨부해 공개 주소를 만들고
 2) 그 주소와 캡션을 Make.com 두 번째 웹훅(MAKE_IG_WEBHOOK_URL)으로 보낸다.
    Make 시나리오: Webhooks > Custom webhook → Instagram for Business > Create a Reel Post
+   (Video URL ← video_url, Caption ← caption, Cover URL ← cover_url)
 
 환경변수: MAKE_IG_WEBHOOK_URL (없으면 인스타는 건너뜀), GITHUB_TOKEN, GITHUB_REPOSITORY (Actions가 넣어 줌)
 인스타 실패는 유튜브 업로드에 영향을 주지 않는다.
@@ -44,8 +45,8 @@ def _release(s: requests.Session, repo: str) -> dict:
     return r.json()
 
 
-def host_video(video: Path) -> str:
-    """영상을 공개 릴리스에 올리고 내려받기 주소를 돌려준다."""
+def host_video(video: Path, content_type: str = "video/mp4") -> str:
+    """영상(또는 표지)을 공개 릴리스에 올리고 내려받기 주소를 돌려준다."""
     repo = os.environ["GITHUB_REPOSITORY"]
     s = _gh()
     rel = _release(s, repo)
@@ -55,7 +56,7 @@ def host_video(video: Path) -> str:
     up = rel["upload_url"].split("{")[0]
     with video.open("rb") as f:
         r = s.post(up, params={"name": video.name}, data=f,
-                   headers={"Content-Type": "video/mp4"}, timeout=300)
+                   headers={"Content-Type": content_type}, timeout=300)
     r.raise_for_status()
     return r.json()["browser_download_url"]
 
@@ -67,10 +68,12 @@ def caption(meta: dict) -> str:
     return f"{title}\n\n{body}\n\n{tags} #릴스".strip()[:2150]
 
 
-def upload(video: Path, meta: dict) -> str:
+def upload(video: Path, meta: dict, cover: Path | None = None) -> str:
     url = host_video(video)
     print(f"[instagram] 영상 주소: {url}")
     data = {"video_url": url, "caption": caption(meta)}
+    if cover and cover.exists():
+        data["cover_url"] = host_video(cover, "image/jpeg")
     last = None
     for attempt in range(3):
         try:
@@ -84,11 +87,11 @@ def upload(video: Path, meta: dict) -> str:
     raise RuntimeError(f"인스타 웹훅 전송 실패: {last}")
 
 
-def try_upload(video: Path, meta: dict, tag: str) -> str | None:
+def try_upload(video: Path, meta: dict, tag: str, cover: Path | None = None) -> str | None:
     if not configured():
         return None
     try:
-        res = upload(video, meta)
+        res = upload(video, meta, cover)
         print(f"[{tag}] 인스타 릴스로 전송 완료 ({res})")
         return res
     except Exception as e:      # 인스타가 실패해도 유튜브 기록은 남긴다

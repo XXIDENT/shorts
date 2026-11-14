@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       command:
-        description: "list | delete | privacy | title | clean_desc"
+        description: "list | delete | privacy | title | clean_desc | branding"
         required: true
         default: list
       args:

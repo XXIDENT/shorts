@@ -496,9 +496,9 @@ class Renderer:
             d.polygon([(W - 90, y1 - 60), (W - 60, y1 - 60), (W - 75, y1 - 42)], fill=C["yellow"])
 
         # ---- 아래 출처(유튜브 UI가 덮는 자리라 작게)
-        foot = "자료: Frey & Osborne(2013) 옥스퍼드대, 미국 702개 직업" if seg.kind in ("data", "verdict") \
-            else "픽셀·음악·음성 모두 코드로 만든 AI 콘텐츠"
-        text(d, (W // 2, 1730), foot, F[32], (150, 150, 170), "mt", 0)
+        if seg.kind in ("data", "verdict"):
+            foot = "자료: Frey & Osborne(2013) 옥스퍼드대, 미국 702개 직업"
+            text(d, (W // 2, 1730), foot, F[32], (150, 150, 170), "mt", 0)
         return img
 
     def status_bar(self, d, stt):

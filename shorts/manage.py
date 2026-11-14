@@ -114,6 +114,23 @@ def main(argv: list[str]) -> int:
             sn = v["snippet"]
             print(f"{v['id']} [{v['status']['privacyStatus']}] cat={sn.get('categoryId')} lang={sn.get('defaultLanguage')}"
                   f"/{sn.get('defaultAudioLanguage')} {sn['title']}\n   tags={sn.get('tags')}")
+    elif cmd == "check":
+        # 영상 상태 진단: 처리·거부·제한·연령·지역·통계 (조회수가 안 오를 때)
+        r = yt.videos().list(part="snippet,status,contentDetails,statistics,processingDetails",
+                             id=",".join(args)).execute()
+        for v in r.get("items", []):
+            st, cd, sn = v["status"], v["contentDetails"], v["snippet"]
+            print(f"== {v['id']} {sn['title']}")
+            print(f"  게시 {sn['publishedAt']}  공개 {st.get('privacyStatus')}  업로드 {st.get('uploadStatus')}"
+                  f"  거부 {st.get('rejectionReason')}  실패 {st.get('failureReason')}")
+            print(f"  아동용 {st.get('madeForKids')}  임베드 {st.get('embeddable')}  라이선스 {st.get('license')}")
+            print(f"  길이 {cd.get('duration')}  화질 {cd.get('definition')}  지역제한 {cd.get('regionRestriction')}"
+                  f"  연령 {cd.get('contentRating')}")
+            print(f"  카테고리 {sn.get('categoryId')}  언어 {sn.get('defaultLanguage')}/{sn.get('defaultAudioLanguage')}"
+                  f"  라이브 {sn.get('liveBroadcastContent')}")
+            print(f"  처리 {v.get('processingDetails', {}).get('processingStatus')}  통계 {v.get('statistics')}")
+        if not r.get("items"):
+            print("영상을 찾을 수 없어요(삭제됐거나 다른 채널).")
     elif cmd == "fix_settings":
         ch = yt.channels().list(part="brandingSettings", mine=True).execute()["items"][0]
         bs = ch["brandingSettings"]

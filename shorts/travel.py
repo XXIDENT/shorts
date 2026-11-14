@@ -375,8 +375,8 @@ class Frames:
         for k2, ln in enumerate(wrap(d, seg.text, F[48], W - 160)[:3]):
             text(d, (80, y0 + 54 + k2 * 64), ln[:max(0, left)], F[48], C["white"], "la", 3)
             left -= len(ln) + 1
-        foot = "자료: 세계은행 오픈데이터" if seg.kind == "fact" else "3D 픽셀·음악·음성 모두 코드로 만든 AI 콘텐츠"
-        text(d, (W // 2, 1726), foot, F[32], (190, 190, 210), "mt", 3)
+        if seg.kind == "fact":
+            text(d, (W // 2, 1726), "자료: 세계은행 오픈데이터", F[32], (190, 190, 210), "mt", 3)
         return img
 
 

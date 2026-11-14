@@ -31,7 +31,7 @@ from PIL import Image, ImageDraw
 
 from .once import uploaded_recently
 from . import upload_instagram, upload_make, upload_youtube
-from .jobs import Fonts, josa, mix_voice, pixel_panel, synthesize, text, wrap
+from .jobs import Fonts, cta, josa, mix_voice, pixel_panel, synthesize, text, wrap
 from .pixel import chiptune
 from .pixel import world as Wd
 from .pixel.art import C
@@ -74,7 +74,8 @@ FACT_LINES = {
 REACT_MORE = ["한국의 {r}배!", "무려 {r}배 차이야.", "생각보다 차이가 크지?"]
 REACT_LESS = ["한국보다 훨씬 적어.", "한국의 {p} 수준이야.", "의외지?"]
 REACT_SAME = ["거의 비슷해!", "한국이랑 거의 같아."]
-OUTROS = ["다음 여행지는 댓글로 정해 줘!", "다음엔 어디 갈까? 댓글로 추천해 줘!", "너는 여기 살아 보고 싶어? 댓글로 알려 줘!"]
+OUTROS = ["다음 여행지는 댓글로 정해 줘! 구독이랑 좋아요도 꾹!", "다음엔 어디 갈까? 댓글로 추천해 줘! 구독, 좋아요 부탁해!",
+          "너는 여기 살아 보고 싶어? 댓글로 알려 줘! 구독이랑 좋아요도!"]
 TITLES = ["AI 로봇이 {c} 가봤더니 #Shorts", "모니의 {c} 여행, 한국이랑 이렇게 달라 #Shorts",
           "{c} vs 한국, 숫자로 비교해 봤어 #Shorts", "픽셀 로봇의 {c} 여행 #Shorts"]
 
@@ -359,6 +360,9 @@ class Frames:
                     d.rectangle([bx0 + b * bw, yy + 4, bx0 + b * bw + bw - 6, yy + 48],
                                 fill=col if b < lit else C["dgrey"])
                 text(d, (W - 80, yy), fmt(v, kind), F[48], col, "ra", 3)
+
+        if seg.kind == "outro":
+            cta(d, F, 1200, since)
 
         # 대화창
         y0, y1 = 1440, 1700

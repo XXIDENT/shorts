@@ -40,3 +40,14 @@ def test_trip_frames(tmp_path):
     assert r.cover().size == (J.W, J.H)
     meta = T.metadata(t, 1)
     assert "#AI" not in meta["description"] and "AI가 만들" not in meta["description"]
+
+
+def test_every_trip_quest_renders(tmp_path):
+    """퀘스트마다 소품·무대가 달라서 모든 나라의 모든 퀘스트 장면을 한 번씩 그려 본다."""
+    for t in T.load_trips():
+        segs = T.build_segments(t, 1)
+        audio, _ = J.synthesize([s.text for s in segs], tmp_path / t["id"], "silent")
+        J.timeline(segs, audio)
+        r = T.TripRenderer(t, segs, 1)
+        for s in segs:
+            r.frame(s.start + 0.3)

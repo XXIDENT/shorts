@@ -99,7 +99,16 @@ def retention_lines(videos: list[dict], ret: dict[str, dict]) -> list[str]:
     return lines
 
 
-def series_of(published: str) -> str:
+JOB_WORDS = ("AI가 하면", "AI한테", "AI 신입", "AI가 ", "체험해 봄")
+TRIP_WORDS = ("여행", "에서 이거", "살아남기", "가면 꼭", "에서 ")
+
+
+def series_of(published: str, title: str = "") -> str:
+    """제목으로 먼저 구분하고(업로드가 늦거나 수동으로 올린 편도 맞게), 모르면 올라간 시각으로."""
+    if any(w in title for w in JOB_WORDS):
+        return "직업체험"
+    if any(w in title for w in TRIP_WORDS):
+        return "세계여행"
     h = datetime.fromisoformat(published.replace("Z", "+00:00")).astimezone(KST).hour
     for hour, name in SLOTS:
         if hour <= h < hour + 2:
@@ -137,7 +146,7 @@ def report(videos: list[dict], history: dict, today: str, now: datetime, ret: di
 
     by: dict[str, list[int]] = {}
     for v in videos:
-        d = by.setdefault(series_of(v["published"]), [0, 0, 0])
+        d = by.setdefault(series_of(v["published"], v.get("title", "")), [0, 0, 0])
         d[0] += 1
         d[1] += v["views"]
         d[2] += v["views"] - prev.get(v["id"], 0) if prev else 0

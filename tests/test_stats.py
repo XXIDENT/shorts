@@ -25,3 +25,9 @@ def test_gain_and_90days():
 def test_series_slot():
     assert stats.series_of("2026-11-12T23:10:00Z") == "직업체험"
     assert stats.series_of("2026-11-13T05:00:00Z") == "기타(수동)"
+
+
+def test_series_by_title():
+    assert stats.series_of("2026-11-14T11:55:00Z", "태국에서 이거 하면 안 돼?! #Shorts") == "세계여행"
+    assert stats.series_of("2026-11-14T03:26:00Z", "바리스타, AI가 하면 몇 점? #Shorts") == "직업체험"
+    assert stats.series_of("2026-11-13T05:00:00Z", "모니의 프랑스 여행, 한국이랑 이렇게 달라 #Shorts") == "세계여행"

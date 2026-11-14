@@ -87,6 +87,23 @@ def flag_pixels(spec: dict, w=9, h=6) -> list[list[str]]:
             g[h // 2 - 1][i] = cols[1] if h % 2 == 0 else g[h // 2 - 1][i]
     if spec.get("dot"):        # 가운데 문장(紋章)을 점 하나로 단순화
         g[h // 2][w // 2] = spec["dot"]
+    if spec.get("canton"):     # 왼쪽 위 사각형 (미국·칠레·말레이시아형)
+        cn = spec["canton"]
+        cw, ch = cn.get("w", w // 2), cn.get("h", h // 2)
+        for j in range(ch):
+            for i in range(cw):
+                g[j][i] = cn["color"]
+        if cn.get("dot"):
+            g[(ch - 1) // 2][(cw - 1) // 2] = cn["dot"]
+    if spec.get("tri"):        # 깃대 쪽 삼각형 (필리핀·체코·쿠바형)
+        tr = spec["tri"]
+        depth = tr.get("w", 4)
+        for j in range(h):
+            dist = abs(j - (h - 1) / 2)
+            for i in range(max(1, round(depth * (1 - dist / (h / 2))))):
+                g[j][i] = tr["color"]
+        if tr.get("dot"):
+            g[h // 2][max(0, depth // 2 - 1)] = tr["dot"]
     return g
 
 

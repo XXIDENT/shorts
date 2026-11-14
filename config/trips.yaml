@@ -48,3 +48,200 @@ trips:
   answer_big: 약 9,000원
   answer_sub: 1,000엔 안팎 (1엔 ≈ 9.4원)
   source: 가격은 2025년 도쿄 기준 대략값, 1엔 ≈ 9.4원
+- id: thailand
+  num: 2
+  country: thailand
+  city: 방콕
+  tease: 방콕 길거리 팟타이 한 접시, 한국 돈으로 얼마일까? 정답은 마지막에!
+  tease_top: ["방콕 길거리 팟타이", "한국 돈으로 얼마?"]
+  tease_big: "?원"
+  hook: 모니의 세계여행, 태국 방콕 도착! 여기 진짜 덥다. 퀘스트 시작!
+  quests:
+  - title: 노점에서 팟타이 사기
+    scene: market
+    spot: stall
+    cost: 2500
+    fx: [steam]
+    say:
+    - 시장 노점에서 팟타이 주문! 손가락 하나 들고 이거 하나 주세요!
+    result: clear
+    after: 웍에서 불맛 나게 볶아 줬어. 금방 나와!
+  - title: 반바지 입고 왕궁 들어가기
+    scene: street
+    spot: center
+    face_after: shock
+    say:
+    - 다음은 방콕 왕궁! 더우니까 반바지 입고 바로 들어가야지.
+    result: fail
+    after: 입구에서 막혔어. 왕궁은 반바지랑 민소매가 안 된대.
+  - title: 툭툭 요금 흥정하기
+    scene: street
+    spot: right
+    cost: 4000
+    props:
+    - - taxi
+      - 110
+      - c: [40, 160, 90]
+    say:
+    - 바지로 갈아입고 툭툭을 탔어. 타기 전에 요금부터 정하는 게 규칙!
+    result: clear
+    after: 흥정 성공! 바람 맞으면서 달리니까 시원해.
+  answer_say: 정답 공개! 길거리 팟타이는 보통 60바트 안팎. 한국 돈으로 약 2천5백 원이야!
+  answer_big: 약 2,500원
+  answer_sub: 60바트 안팎 (1바트 ≈ 42원)
+  source: 가격은 2025년 방콕 길거리 기준 대략값, 1바트 ≈ 42원
+- id: vietnam
+  num: 3
+  country: vietnam
+  city: 하노이
+  tease: 하노이 쌀국수 한 그릇, 한국 돈으로 얼마일까? 정답은 마지막에!
+  tease_top: ["하노이 쌀국수 한 그릇", "한국 돈으로 얼마?"]
+  tease_big: "?원"
+  hook: 모니의 세계여행, 베트남 하노이 도착! 오토바이 소리가 엄청나.
+  quests:
+  - title: 오토바이 사이로 길 건너기
+    scene: street
+    spot: right
+    props:
+    - - taxi
+      - 20
+      - c: [200, 60, 60]
+    say:
+    - 오토바이가 끝없이 와. 천천히 일정하게 걸으면 된대!
+    result: clear
+    after: 오토바이들이 나를 알아서 피해 갔어. 심장 없는데 두근거려.
+  - title: 지폐로 계산하기
+    scene: store
+    spot: register
+    face_after: dizzy
+    say:
+    - 물 한 병 사려고 지폐를 냈어. 근데 0이 왜 이렇게 많아?
+    result: fail
+    after: 만 동이랑 십만 동을 헷갈렸어. 점원이 웃으면서 돌려줬어.
+  - title: 쌀국수 먹기
+    scene: restaurant
+    spot: counter
+    cost: 2800
+    fx_after: [steam, sparkle]
+    say:
+    - 아침은 쌀국수! 고수랑 라임을 듬뿍 넣어서 먹는 게 하노이 스타일.
+    result: clear
+    after: 국물까지 다 마셨어. 아침부터 사람들이 줄을 서.
+  answer_say: 정답 공개! 하노이 쌀국수는 보통 5만 동 안팎. 한국 돈으로 약 2천8백 원이야!
+  answer_big: 약 2,800원
+  answer_sub: 5만 동 안팎 (1만 동 ≈ 550원)
+  source: 가격은 2025년 하노이 기준 대략값, 1만 동 ≈ 550원
+- id: usa
+  num: 4
+  country: usa
+  city: 뉴욕
+  tease: 미국 식당 팁, 음식값의 몇 퍼센트일까? 정답은 마지막에!
+  tease_top: ["미국 식당 팁은", "음식값의 몇 %?"]
+  tease_big: "??%"
+  hook: 모니의 세계여행, 미국 뉴욕 도착!
+  quests:
+  - title: 가격표 보고 물 사기
+    scene: store
+    spot: register
+    cost: 4200
+    face_after: shock
+    say:
+    - 가게에서 2달러 99센트짜리 물을 샀어. 딱 맞게 돈을 냈는데…
+    result: fail
+    after: 계산대에서 세금이 더해졌어. 미국은 가격표에 세금이 빠져 있대.
+  - title: 지하철 개찰구 통과하기
+    scene: train
+    spot: door
+    cost: 4100
+    say:
+    - 뉴욕 지하철은 표 대신 카드를 개찰구에 톡 대면 돼. 2달러 90센트!
+    result: clear
+    after: 성공! 지하철이 24시간 다닌대. 나처럼 안 자나 봐.
+  - title: 식당에서 팁 계산하기
+    scene: restaurant
+    spot: counter
+    cost: 42000
+    say:
+    - 햄버거를 먹고 계산서를 받았어. 팁 칸이 비어 있어. 얼마를 써야 하지?
+    result: clear
+    after: 계산해서 적었더니 직원이 활짝 웃었어. 뭔가 맞혔나 봐.
+  answer_say: 정답 공개! 미국 식당 팁은 보통 음식값의 18에서 20퍼센트야. 꼭 계산해 둬!
+  answer_big: 18~20%
+  answer_sub: 세금 빼고 음식값 기준
+  source: 미국 식당의 일반적인 팁 관행 기준, 1달러 ≈ 1,400원
+- id: france
+  num: 5
+  country: france
+  city: 파리
+  tease: 파리 바게트 하나, 한국 돈으로 얼마일까? 정답은 마지막에!
+  tease_top: ["파리 바게트 하나", "한국 돈으로 얼마?"]
+  tease_big: "?원"
+  hook: 모니의 세계여행, 프랑스 파리 도착! 아침부터 빵 냄새가 가득해.
+  quests:
+  - title: 인사하고 바게트 사기
+    scene: bakery
+    spot: counter
+    cost: 2000
+    say:
+    - 빵집에선 들어가자마자 인사부터 한대. 봉주르!
+    result: clear
+    after: 점원도 봉주르! 갓 구운 바게트가 아직 따뜻해.
+  - title: 일요일에 마트 가기
+    scene: store
+    spot: door
+    face_after: sad
+    npc: false
+    say:
+    - 일요일이니까 마트에서 간식 사야지. 어, 문이 왜 이렇게 조용하지?
+    result: fail
+    after: 문이 닫혀 있었어. 프랑스는 일요일에 쉬는 가게가 많대.
+  - title: 식당에서 공짜 물 받기
+    scene: restaurant
+    spot: counter
+    cost: 30000
+    say:
+    - 저녁은 식당! 물을 달라고 할 땐 카라프 도, 수돗물 한 병 주세요!
+    result: clear
+    after: 수돗물 한 병이 공짜로 나왔어. 프랑스 식당에선 무료래.
+  answer_say: 정답 공개! 파리 바게트는 보통 1.3유로 안팎. 한국 돈으로 약 2천 원이야!
+  answer_big: 약 2,000원
+  answer_sub: 1.3유로 안팎 (1유로 ≈ 1,600원)
+  source: 가격은 2025년 파리 빵집 기준 대략값, 1유로 ≈ 1,600원
+- id: italy
+  num: 6
+  country: italy
+  city: 로마
+  tease: 이탈리아 바에서 마시는 에스프레소, 한국 돈으로 얼마일까? 정답은 마지막에!
+  tease_top: ["이탈리아 에스프레소 한 잔", "한국 돈으로 얼마?"]
+  tease_big: "?원"
+  hook: 모니의 세계여행, 이탈리아 로마 도착! 길마다 유적이 있어.
+  quests:
+  - title: 서서 에스프레소 마시기
+    scene: cafe
+    spot: register
+    cost: 1900
+    fx: [steam]
+    say:
+    - 여기선 바에 서서 에스프레소를 한 번에 마신대. 나도 해 볼게!
+    result: clear
+    after: 3초 만에 끝! 앉아서 마시면 더 비쌀 때가 많대.
+  - title: 점심 먹고 카푸치노 주문
+    scene: cafe
+    spot: machine
+    face_after: sad
+    say:
+    - 점심 먹고 디저트로 카푸치노 한 잔 주세요! 우유 거품 듬뿍!
+    result: fail
+    after: 직원이 웃었어. 여기선 카푸치노는 보통 아침에만 마신대.
+  - title: 트레비 분수에 동전 던지기
+    scene: street
+    spot: center
+    fx_after: [sparkle, water]
+    say:
+    - 트레비 분수에 등을 지고 동전을 던지면 로마에 다시 온대. 하나, 둘, 셋!
+    result: clear
+    after: 퐁당! 이 동전들은 모아서 좋은 일에 쓴대.
+  answer_say: 정답 공개! 서서 마시는 에스프레소는 보통 1.2유로 안팎. 약 1천9백 원이야!
+  answer_big: 약 1,900원
+  answer_sub: 1.2유로 안팎 (1유로 ≈ 1,600원)
+  source: 가격은 2025년 로마 바 기준 대략값, 1유로 ≈ 1,600원

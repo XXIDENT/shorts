@@ -100,6 +100,21 @@ class Seg:
     end: float = 0.0
 
 
+# 짧은 편집(25~30초): 퀘스트 2개(실패 포함)·대사 1줄씩, 인사·체감 점수 생략, 첫 장면은 실패 순간.
+CUT_DEFAULT = "0"   # "1"로 바꾸면 매일 업로드가 짧은 편집으로 나간다
+CUT = (os.environ.get("SHORTS_CUT") or CUT_DEFAULT) == "1"
+
+
+def trim(ep: dict) -> dict:
+    """짧은 편집용 에피소드: 첫 퀘스트 + 실패 퀘스트(없으면 마지막), 대사는 첫 줄만."""
+    qs = ep["quests"]
+    fail = next((i for i, q in enumerate(qs) if q["result"] == "fail"), len(qs) - 1)
+    keep = sorted({0 if fail else min(1, len(qs) - 1), fail})
+    out = dict(ep)
+    out["quests"] = [dict(qs[i], say=qs[i]["say"][:1]) for i in keep]
+    return out
+
+
 def tease_line(ep: dict) -> str:
     """첫 1초 훅: 답을 숨긴 질문으로 끝까지 보게 만든다(정답은 data 구간에서 공개)."""
     job = ep["job"]
@@ -108,7 +123,7 @@ def tease_line(ep: dict) -> str:
 
 def build_segments(ep: dict, seed: int) -> list[Seg]:
     rnd = random.Random(seed)
-    segs = [Seg("tease", tease_line(ep)), Seg("hook", ep["hook"])]
+    segs = [Seg("tease", tease_line(ep))] + ([] if CUT else [Seg("hook", ep["hook"])])
     for i, q in enumerate(ep["quests"]):
         for line in q["say"]:
             segs.append(Seg("say", line, i))
@@ -117,7 +132,8 @@ def build_segments(ep: dict, seed: int) -> list[Seg]:
     label = d["label"]
     segs.append(Seg("data", ep.get("data_say") or rnd.choice(DATA_LINES).format(
         label=label, iga=josa(label), p=pct(d["prob"]))))
-    segs.append(Seg("verdict", ep["verdict_say"]))
+    if not CUT:
+        segs.append(Seg("verdict", ep["verdict_say"]))
     segs.append(Seg("outro", ep.get("outro") or rnd.choice(OUTROS)))
     return segs
 
@@ -300,7 +316,7 @@ def badge(d, F, y, s, fill, border, color=C["white"]):
     text(d, (W // 2, y + 24), s, F[64], color, "mt", 4)
 
 
-def question_card(img, F, y, top: list[str], big: str, since: float, accent=C["yellow"]):
+def question_card(img, F, y, top: list[str], big: str, since: float, accent=C["yellow"], scale0=2.0, show_badge=True):
     """첫 1초 훅 카드: 위에 질문, 가운데 거대한 '??%', 아래 '정답은 마지막에!' (튀어나오며 흔들린다)."""
     d = ImageDraw.Draw(img)
     pop = ease(min(1.0, since / 0.18))
@@ -308,10 +324,10 @@ def question_card(img, F, y, top: list[str], big: str, since: float, accent=C["y
     for k, ln in enumerate(top):
         text(d, (W // 2, y + k * 84), ln, F[64], C["white"], "mt", 5)
     yb = y + len(top) * 84 + 10
-    scale = 2.0 + 0.6 * max(0.0, 1 - since / 0.25)
+    scale = scale0 + 0.6 * max(0.0, 1 - since / 0.25)
     shake = int(math.sin(since * 40) * 6) if since < 0.6 else 0
     bot = big_title(img, yb, big, F[128], accent, max_w=W - 60, max_scale=scale, cx=W // 2 + shake)
-    if int(since * 4) % 2 == 0 or since > 2.0:
+    if show_badge and (int(since * 4) % 2 == 0 or since > 2.0):
         badge(d, F, bot + 20, "정답은 마지막에!", C["red"], C["white"], C["white"])
 
 
@@ -463,10 +479,19 @@ class Renderer:
         seg = self.segs[i]
         since = t - seg.start
         img = Image.new("RGB", (W, H), self.bg_hi)
-        st = self.stage(t)
-        if seg.kind in ("say", "result"):
+        cold = CUT and seg.kind == "tease"
+        if cold:
+            # 콜드 오픈: 실패(없으면 마지막) 퀘스트 결과 순간을 먼저 보여 준다
+            res = [s for s in self.segs if s.kind == "result"]
+            fseg = next((s for s in res if self.ep["quests"][s.q]["result"] == "fail"), res[-1])
+            st = self.stage(fseg.start + 0.05 + min(since, 1.4))
+            seg_v = fseg
+        else:
+            st = self.stage(t)
+            seg_v = seg
+        if seg_v.kind in ("say", "result"):
             # 퀘스트 중에는 모니 쪽으로 카메라를 당긴다(120px 창 = 9배, 픽셀 격자 유지)
-            q = ep_q = self.ep["quests"][seg.q]
+            q = ep_q = self.ep["quests"][seg_v.q]
             focus = self.bot_x
             npc = q.get("npc")
             if npc is not False and self.scene.get("npc") is not None:
@@ -481,15 +506,22 @@ class Renderer:
         ep = self.ep
 
         # ---- 위쪽 HUD
-        text(d, (W // 2, 34), f"AI 신입 {HERO}의 직업체험 #{ep['num']:02d}", F[48], C["yellow"], "mt", 4)
-        text(d, (W // 2, 100), ep["job"], F[96], C["white"], "mt", 6)
+        if cold:
+            job = ep["job"]
+            question_card(img, F, 14, [f"AI가 {job}{josa(job, ('을', '를'))} 대신할 확률"], "??%", since,
+                          scale0=1.15, show_badge=False)
+            d = ImageDraw.Draw(img)
+        else:
+            text(d, (W // 2, 34), f"AI 신입 {HERO}의 직업체험 #{ep['num']:02d}", F[48], C["yellow"], "mt", 4)
+            text(d, (W // 2, 100), ep["job"], F[96], C["white"], "mt", 6)
         done = [r for (at, r) in self.results if at <= t]
         hp = 3 - sum(1 for r in done if r == "fail")
-        for k in range(3):
+        for k in range(3 if not cold else 0):
             heart(d, 48 + k * 54, 222, k < hp)
         stt = self.status(t)
-        text(d, (W - 48, 224), stt["clock"], F[48], C["yellow"], "ra", 4)
-        n = len(ep["quests"])
+        if not cold:
+            text(d, (W - 48, 224), stt["clock"], F[48], C["yellow"], "ra", 4)
+        n = len(ep["quests"]) if not cold else 0
         for k in range(n):   # 퀘스트 진행 칸
             x0 = W // 2 - (n * 60) // 2 + k * 60
             c = C["dgrey"]
@@ -506,7 +538,9 @@ class Renderer:
             label = f"QUEST {seg.q + 1}  {q['title']}"
             pixel_panel(d, 30, STAGE_Y + 24, W - 30, STAGE_Y + 120, C["navy"], C["yellow"])
             text(d, (W // 2, STAGE_Y + 48), label, F[48], C["white"], "mt", 4)
-        if seg.kind == "result" and since < 1.6:
+        if (seg.kind == "result" and since < 1.6) or cold:
+            if cold:
+                seg, since = seg_v, min(since, 1.4)
             ok = ep["quests"][seg.q]["result"] == "clear"
             s = "CLEAR!" if ok else "FAIL..."
             pop = 1 + 0.4 * max(0, 1 - since / 0.25)
@@ -518,7 +552,9 @@ class Renderer:
             td.text((450, 110), s, font=F[size], fill=col + (255,), anchor="mm")
             tmp = tmp.resize((int(900 * pop), int(220 * pop)), Image.NEAREST)
             img.paste(tmp, (W // 2 - tmp.width // 2, STAGE_Y + 230 - tmp.height // 2), tmp)
-        if seg.kind == "tease":
+        if cold:
+            seg, since = self.segs[i], t - self.segs[i].start
+        if seg.kind == "tease" and not cold:
             d.rectangle([0, STAGE_Y, W, STAGE_Y + 640], fill=(10, 12, 24))
             job = ep["job"]
             question_card(img, F, STAGE_Y + 40, [f"AI가 {job}{josa(job, ('을', '를'))}", "대신할 확률"], "??%", since)
@@ -687,6 +723,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
     seed = (ep["num"] * 7919 + len(history)) & 0xFFFF
+    if CUT:
+        ep = trim(ep)
     segs = build_segments(ep, seed)
     print(f"[jobs] #{ep['num']:02d} {ep['job']} ({len(segs)}줄)")
 

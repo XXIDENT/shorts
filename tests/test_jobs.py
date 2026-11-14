@@ -51,7 +51,7 @@ def test_josa_and_pct():
 def test_segments_and_frame(tmp_path: Path):
     ep = next(e for e in jobs.load_episodes() if e["id"] == "barista")
     segs = jobs.build_segments(ep, seed=1)
-    assert segs[0].kind == "tease" and segs[1].kind == "hook" and segs[-1].kind == "outro"
+    assert segs[0].kind == "tease" and segs[-1].kind == "outro"
     assert sum(1 for s in segs if s.kind == "result") == len(ep["quests"])
     audio, eng = jobs.synthesize([s.text for s in segs], tmp_path, "silent")
     total = jobs.timeline(segs, audio)
@@ -61,3 +61,15 @@ def test_segments_and_frame(tmp_path: Path):
         assert r.frame(t).size == (jobs.W, jobs.H)
     meta = jobs.metadata(ep, 1)
     assert "Frey" in meta["description"] and len(meta["title"]) <= 100
+
+
+def test_subtitles_fit_three_lines():
+    """자막창은 3줄까지만 보인다. 넘치면 뒷부분이 잘리므로 미리 막는다."""
+    from PIL import Image, ImageDraw
+    from shorts import travel as T
+    F = jobs.Fonts()
+    d = ImageDraw.Draw(Image.new("RGB", (10, 10)))
+    lines = [s.text for e in jobs.load_episodes() for s in jobs.build_segments(e, 1)]
+    lines += [x for c in T.load_countries() for x in (c["hook"], c["landmark_say"], c["culture_say"], c["closing"])]
+    over = [x for x in lines if len(jobs.wrap(d, x, F[48], jobs.W - 160)) > 3]
+    assert not over, over[:3]

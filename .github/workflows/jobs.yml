@@ -55,6 +55,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           JOB: ${{ github.event.inputs.job }}
           NO_UPLOAD: ${{ github.event.inputs.no_upload }}
+          # PR 샘플은 짧은 편집(25~30초)으로 미리 만들어 본다. 실제 업로드는 코드의 기본값을 따른다.
+          SHORTS_CUT: ${{ github.event_name == 'pull_request' && '1' || '' }}
         run: |
           ARGS=""
           if [ "${{ github.event_name }}" = "pull_request" ]; then

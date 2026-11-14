@@ -31,7 +31,7 @@ from PIL import Image, ImageDraw
 
 from .once import uploaded_recently
 from . import upload_instagram, upload_make, upload_youtube
-from .jobs import Fonts, badge, big_title, cta, josa, mix_voice, pixel_panel, question_card, synthesize, text, wrap
+from .jobs import CUT, Fonts, badge, big_title, cta, josa, mix_voice, pixel_panel, question_card, synthesize, text, wrap
 from .pixel import chiptune
 from .pixel import world as Wd
 from .pixel.art import C
@@ -180,13 +180,18 @@ def build_segments(ct: dict, facts: dict, seed: int) -> list[Seg]:
     # 제일 차이가 큰 지표를 첫 1초에 질문으로 걸고, 정답은 마지막 사실로 미룬다.
     star = max(chosen, key=lambda ind: abs(math.log(max(facts[ind]["c"], 1e-9) / max(facts[ind]["k"], 1e-9))))
     rest = [x for x in chosen if x != star]
-    segs = [Seg("tease", tease(star, ct["name"], facts[star])[2], star), Seg("hook", ct["hook"])]
+    segs = [Seg("tease", tease(star, ct["name"], facts[star])[2], star)]
+    if not CUT:
+        segs.append(Seg("hook", ct["hook"]))
     segs.append(Seg("fact", fact_line(rest[0], ct["name"], facts[rest[0]], rnd), rest[0]))
     segs.append(Seg("landmark", ct["landmark_say"]))
     segs.append(Seg("culture", ct["culture_say"]))
-    for ind in rest[1:]:
+    for ind in ([] if CUT else rest[1:]):
         segs.append(Seg("fact", fact_line(ind, ct["name"], facts[ind], rnd), ind))
     segs.append(Seg("fact", reveal_line(star, ct["name"], facts[star], rnd), star))
+    if CUT:
+        segs.append(Seg("outro", ct.get("outro") or rnd.choice(OUTROS)))
+        return segs
     segs.append(Seg("closing", ct["closing"]))
     segs.append(Seg("outro", ct.get("outro") or rnd.choice(OUTROS)))
     return segs
@@ -234,7 +239,7 @@ class Director:
 
     def __init__(self, segs: list[Seg], total: float, seed: int):
         self.segs, self.total = segs, total
-        self.z0, self.z1 = 18.0, float(Wd.LANDMARK_Z - 44)
+        self.z0, self.z1 = (80.0 if CUT else 18.0), float(Wd.LANDMARK_Z - 44)
         # 셀카(문화) 구간에서는 멈춘다
         walk = sum(s.end - s.start for s in segs if s.kind not in ("culture",))
         self.speed = (self.z1 - self.z0) / max(1.0, walk + TAIL)
@@ -268,7 +273,11 @@ class Director:
         mz = self.moni_z(t)
         since, dur = t - s.start, max(0.1, s.end - s.start)
         cam, tgt = self.behind(mz, t)
-        if s.kind == "tease":
+        if s.kind == "tease" and CUT:
+            # 콜드 오픈: 랜드마크를 올려다보는 장면부터, 천천히 다가간다
+            z = Wd.LANDMARK_Z - 120 + since * 6
+            cam, tgt = (Wd.CENTER + 1.0 * self.side, 13.0, z + 25), (Wd.CENTER, 34.0, Wd.LANDMARK_Z + 12)
+        elif s.kind == "tease":
             # 빠르게 모니 쪽으로 밀고 들어가는 줌(첫 프레임부터 움직임)
             k = smooth(since / 0.9)
             far = ((Wd.CENTER + 12 * self.side, 30.0, mz - 40), (Wd.CENTER, 8.0, mz + 40))
@@ -278,6 +287,8 @@ class Director:
             # 모니 눈높이 1인칭: 모니가 보는 랜드마크
             up = ((Wd.CENTER - 1, 11.0, mz + 3), (Wd.CENTER, 28.0, Wd.LANDMARK_Z + 12))
             cam, tgt = lerp(cam, up[0], k), lerp(tgt, up[1], k)
+            # 모니 머리를 뚫고 지나가지 않게 넘어가는 동안 위로 살짝 띄운다
+            cam = (cam[0], cam[1] + math.sin(math.pi * k) * 10, cam[2])
         elif s.kind == "culture":
             k = smooth(since / 1.0)
             a = math.pi * 0.15 * self.side + since * 0.08
@@ -289,7 +300,8 @@ class Director:
             pc, pt = self.camera(self.segs[i - 1].end - 1e-3)
             cam, tgt = lerp(pc, cam, k), lerp(pt, tgt, k)
         elif s.kind in ("closing", "outro"):
-            base = self.segs[[x.kind for x in self.segs].index("closing")].start
+            kinds = [x.kind for x in self.segs]
+            base = self.segs[kinds.index("closing") if "closing" in kinds else kinds.index("outro")].start
             k = smooth((t - base) / 4.0)
             air = ((Wd.CENTER + 18 * self.side, 46.0, mz - 26), (Wd.CENTER, 26.0, Wd.LANDMARK_Z + 10))
             cam, tgt = lerp(cam, air[0], k), lerp(tgt, air[1], k)

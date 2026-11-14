@@ -53,6 +53,52 @@ def fetch_videos() -> list[dict]:
     return videos
 
 
+def fetch_retention(ids: list[str], since: str, until: str) -> dict[str, dict]:
+    """YouTube Analytics: 영상별 평균 시청 비율·시간, 참여 조회수(engagedViews).
+
+    refresh token에 yt-analytics.readonly 권한이 없으면 빈 dict(리포트에서 안내만 한다).
+    '계속 시청' 비율은 API에 없어서 engagedViews / views를 대신 쓴다.
+    """
+    from google.oauth2.credentials import Credentials
+    from googleapiclient.discovery import build
+
+    creds = Credentials(None, refresh_token=os.environ["YT_REFRESH_TOKEN"], client_id=os.environ["YT_CLIENT_ID"],
+                        client_secret=os.environ["YT_CLIENT_SECRET"], token_uri="https://oauth2.googleapis.com/token")
+    ya = build("youtubeAnalytics", "v2", credentials=creds, cache_discovery=False)
+    out: dict[str, dict] = {}
+    for metrics in ("views,engagedViews,averageViewDuration,averageViewPercentage",
+                    "views,averageViewDuration,averageViewPercentage"):
+        try:
+            for i in range(0, len(ids), 200):
+                r = ya.reports().query(ids="channel==MINE", startDate=since, endDate=until, metrics=metrics,
+                                       dimensions="video", filters="video==" + ",".join(ids[i:i + 200])).execute()
+                cols = [h["name"] for h in r.get("columnHeaders", [])]
+                for row in r.get("rows", []):
+                    d = dict(zip(cols, row))
+                    out[d.pop("video")] = d
+            return out
+        except Exception as e:  # noqa: BLE001 - 권한 없음/지표 없음
+            print(f"[stats] 분석 API 실패({metrics.split(',')[1]}): {str(e)[:200]}")
+            out = {}
+    return out
+
+
+def retention_lines(videos: list[dict], ret: dict[str, dict]) -> list[str]:
+    if not ret:
+        return ["**시청 유지율**: 분석 권한이 없어서 못 가져왔어요 (scripts/get_refresh_token.py로 토큰을 다시 받으면 보여요)", ""]
+    lines = ["**시청 유지율 (최근 영상)**", "", "| 영상 | 조회 | 계속 시청* | 평균 시청 | 평균 비율 |", "|---|---:|---:|---:|---:|"]
+    for v in sorted(videos, key=lambda v: v["published"], reverse=True)[:12]:
+        d = ret.get(v["id"])
+        if not d:
+            continue
+        views = d.get("views") or 0
+        eng = f"{d['engagedViews'] / views * 100:.0f}%" if views and "engagedViews" in d else "-"
+        lines.append(f"| {v['title'][:28]} | {fmt(int(views))} | {eng} | {d.get('averageViewDuration', 0):.0f}초 | "
+                     f"{d.get('averageViewPercentage', 0):.0f}% |")
+    lines += ["", "*계속 시청 = 참여 조회수 ÷ 조회수 (스튜디오의 '계속 시청'과 비슷한 값). 분석 숫자는 1~2일 늦게 들어와요.", ""]
+    return lines
+
+
 def series_of(published: str) -> str:
     h = datetime.fromisoformat(published.replace("Z", "+00:00")).astimezone(KST).hour
     for hour, name in SLOTS:
@@ -67,7 +113,7 @@ def fmt(n: int) -> str:
     return f"{n:,}"
 
 
-def report(videos: list[dict], history: dict, today: str, now: datetime) -> str:
+def report(videos: list[dict], history: dict, today: str, now: datetime, ret: dict | None = None) -> str:
     snap = {v["id"]: v["views"] for v in videos}
     prev_days = sorted(d for d in history if d < today)
     prev = history[prev_days[-1]] if prev_days else {}
@@ -105,6 +151,7 @@ def report(videos: list[dict], history: dict, today: str, now: datetime) -> str:
         lines.append(f"{i}. [{v['title']}](https://youtu.be/{v['id']}) · {fmt(v['views'])}회 · 👍 {fmt(v['likes'])}")
     lines.append("")
 
+    lines += retention_lines(videos, ret or {})
     new = sorted(videos, key=lambda v: v["published"], reverse=True)[:5]
     lines += ["**최근 올린 영상**", ""]
     for v in new:
@@ -123,7 +170,11 @@ def main(argv=None) -> int:
     now = datetime.now(timezone.utc)
     today = now.astimezone(KST).strftime("%Y-%m-%d")
     history = json.loads(HISTORY.read_text()) if HISTORY.exists() else {}
-    md = report(videos, history, today, now)
+    ret = {}
+    if not a.fixture and videos:
+        since = min(v["published"][:10] for v in videos)
+        ret = fetch_retention([v["id"] for v in videos], since, today)
+    md = report(videos, history, today, now, ret)
 
     history[today] = {v["id"]: v["views"] for v in videos}
     for d in sorted(history)[:-120]:          # 120일치만 보관

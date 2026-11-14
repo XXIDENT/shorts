@@ -72,7 +72,9 @@ TITLES = [
     "AI한테 {job}를 시켜봤다 #Shorts",
     "{job}, AI가 하면 몇 점? #Shorts",
 ]
+SHORT_OUTROS = ["구독하고 다음 편도 봐 줘!", "다음 편이 궁금하면 구독!", "구독, 좋아요 꾹!"]
 if L.EN:
+    SHORT_OUTROS = ["Subscribe for the next one!", "Like and subscribe!", "Follow for more!"]
     DATA_LINES = [
         "An Oxford study put the odds of {label} being automated at {p}.",
         "Oxford researchers in 2013 said {label}: {p} chance of automation.",
@@ -123,17 +125,16 @@ class Seg:
 
 
 # 짧은 편집(25~30초): 퀘스트 2개(실패 포함)·대사 1줄씩, 인사·체감 점수 생략, 첫 장면은 실패 순간.
-CUT_DEFAULT = "0"   # "1"로 바꾸면 매일 업로드가 짧은 편집으로 나간다
+CUT_DEFAULT = "1"   # 사용자 요청(2026-11-14): 모든 영상 20초 내외. "0"이면 퀘스트 3개짜리 긴 편집
 CUT = (os.environ.get("SHORTS_CUT") or CUT_DEFAULT) == "1"
 
 
 def trim(ep: dict) -> dict:
-    """짧은 편집용 에피소드: 첫 퀘스트 + 실패 퀘스트(없으면 마지막), 대사는 첫 줄만."""
+    """짧은 편집용(약 20초): 실패 퀘스트 하나(없으면 마지막), 대사는 첫 줄만."""
     qs = ep["quests"]
     fail = next((i for i, q in enumerate(qs) if q["result"] == "fail"), len(qs) - 1)
-    keep = sorted({0 if fail else min(1, len(qs) - 1), fail})
     out = dict(ep)
-    out["quests"] = [dict(qs[i], say=qs[i]["say"][:1]) for i in keep]
+    out["quests"] = [dict(qs[fail], say=qs[fail]["say"][:1])]
     return out
 
 
@@ -160,7 +161,7 @@ def build_segments(ep: dict, seed: int) -> list[Seg]:
         label=label, iga=josa(label), p=pct(d["prob"]))))
     if not CUT:
         segs.append(Seg("verdict", ep["verdict_say"]))
-    segs.append(Seg("outro", ep.get("outro") or rnd.choice(OUTROS)))
+    segs.append(Seg("outro", rnd.choice(SHORT_OUTROS) if CUT else (ep.get("outro") or rnd.choice(OUTROS))))
     return segs
 
 
@@ -584,8 +585,11 @@ class Renderer:
 
         # ---- 위쪽 HUD
         if cold:
-            _, top1, big = self.tease_parts()
-            question_card(img, F, 14, top1, big, since, scale0=1.15, show_badge=False)
+            top2, top1, big = self.tease_parts()
+            if d.textlength(top1[0], font=F[64]) <= W - 60:
+                question_card(img, F, 14, top1, big, since, scale0=1.15, show_badge=False)
+            else:   # 한 줄에 안 들어가면 두 줄 + 작은 물음표
+                question_card(img, F, 6, top2, big, since, scale0=0.8, show_badge=False)
             d = ImageDraw.Draw(img)
         else:
             text(d, (W // 2, 34), self.series_line(), F[48], C["yellow"], "mt", 4)

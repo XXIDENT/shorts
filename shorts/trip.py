@@ -74,7 +74,7 @@ def build_segments(ep: dict, seed: int) -> list[Seg]:
             segs.append(Seg("say", line, i))
         segs.append(Seg("result", q["after"], i))
     segs.append(Seg("data", ep["answer_say"]))
-    segs.append(Seg("outro", ep.get("outro") or rnd.choice(OUTROS)))
+    segs.append(Seg("outro", rnd.choice(J.SHORT_OUTROS) if J.CUT else (ep.get("outro") or rnd.choice(OUTROS))))
     return segs
 
 

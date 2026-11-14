@@ -6,6 +6,7 @@
 #   spot: 모니가 설 자리, pose: work|idle|wave, face: normal|focus|happy|sad|shock|smug|love|dizzy
 #   fx: 진행 중 효과, fx_after: 결과 효과, props: 이 퀘스트에만 나오는 소품, npc: false면 손님 없음
 # - data: Frey & Osborne(2013) 부록의 실제 확률(prob)과 원래 직업명(occupation), 화면용 이름(label)
+#   wage: 같은 표의 미국 중위 연봉(달러, BLS 2016). 화면 시급 = wage / 2080시간 x 환율
 # - verdict: 모니의 체감 대체 가능도(%), 캐릭터 의견이라고 설명에 밝힌다
 # - draft: true면 아직 안 올림
 episodes:
@@ -17,6 +18,7 @@ episodes:
     prob: 0.96
     occupation: Counter Attendants, Cafeteria, Food Concession and Coffee Shop
     label: 커피숍 카운터 직원
+    wage: 19970
   hook: 안녕, 난 AI 신입 모니! 오늘은 바리스타야.
   quests:
   - title: 아메리카노 30잔
@@ -52,6 +54,7 @@ episodes:
     prob: 0.99
     occupation: Telemarketers
     label: 텔레마케터
+    wage: 24300
   hook: 오늘은 텔레마케터. 연구에서 AI가 제일 잘할 거라던 직업이야.
   quests:
   - title: 하루 300통 전화
@@ -93,6 +96,7 @@ episodes:
     prob: 0.89
     occupation: Bakers
     label: 제빵사
+    wage: 25090
   hook: 새벽 네 시 빵집 출근! 오늘은 제빵사야.
   quests:
   - title: 반죽 100개 계량
@@ -125,6 +129,7 @@ episodes:
     prob: 0.11
     occupation: Hairdressers, Hairstylists and Cosmetologists
     label: 미용사
+    wage: 24260
   hook: 오늘은 미용실! 가위는 처음 잡아 봐.
   quests:
   - title: 손님 머리 2cm만
@@ -164,6 +169,7 @@ episodes:
     prob: 0.97
     occupation: Cashiers
     label: 계산원
+    wage: 20180
   hook: 밤 열 시, 편의점 야간 알바 시작!
   quests:
   - title: 바코드 찍기
@@ -204,6 +210,7 @@ episodes:
     prob: 0.009
     occupation: Registered Nurses
     label: 간호사
+    wage: 124830
   hook: 오늘은 간호사 체험. 연구에선 거의 안 바뀐다던 직업이야.
   quests:
   - title: 활력징후 체크
@@ -243,6 +250,7 @@ episodes:
     prob: 0.89
     occupation: Taxi Drivers and Chauffeurs
     label: 택시 기사
+    wage: 24300
   hook: 오늘은 택시 기사! 안전벨트, 철컥.
   quests:
   - title: 최단 경로 찾기
@@ -290,6 +298,7 @@ episodes:
     prob: 0.021
     occupation: Photographers
     label: 사진작가
+    wage: 34070
   hook: 오늘은 스튜디오 사진작가야. 찰칵!
   quests:
   - title: 조명 세팅
@@ -327,6 +336,7 @@ episodes:
     prob: 0.1
     occupation: Chefs and Head Cooks
     label: 셰프
+    wage: 43180
   hook: 오늘은 레스토랑 주방! 모니 셰프 출근.
   quests:
   - title: 레시피 그대로
@@ -365,6 +375,7 @@ episodes:
     prob: 0.0044
     occupation: Elementary School Teachers, Except Special Education
     label: 초등학교 교사
+    wage: 55800
   hook: 오늘은 초등학교 선생님! 애들이 나를 TV라고 불러.
   quests:
   - title: 구구단 수업
@@ -404,6 +415,7 @@ episodes:
     prob: 0.65
     occupation: Librarians
     label: 사서
+    wage: 57680
   hook: 쉿. 오늘은 도서관 사서 체험이야.
   quests:
   - title: 책 위치 찾기
@@ -442,6 +454,7 @@ episodes:
     prob: 0.17
     occupation: Firefighters
     label: 소방관
+    wage: 48030
   hook: 출동! 오늘은 소방관 체험이야.
   quests:
   - title: 출동 경로 계산
@@ -503,6 +516,7 @@ episodes:
     prob: 0.038
     occupation: Veterinarians
     label: 수의사
+    wage: 88770
   hook: 멍멍, 야옹! 오늘은 동물병원 수의사야.
   quests:
   - title: 강아지 진찰
@@ -547,6 +561,7 @@ episodes:
     prob: 0.77
     occupation: Bartenders
     label: 바텐더
+    wage: 20800
   hook: 밤 아홉 시, 바 오픈. 오늘은 바텐더야.
   quests:
   - title: 칵테일 레시피
@@ -584,6 +599,7 @@ episodes:
     prob: 0.98
     occupation: Umpires, Referees and Other Sports Officials
     label: 스포츠 심판
+    wage: 25660
   hook: 오늘은 동네 축구 심판! 휘슬 대신 경고음이야.
   quests:
   - title: 오프사이드 판정
@@ -626,6 +642,7 @@ episodes:
     prob: 0.68
     occupation: Postal Service Mail Carriers
     label: 집배원
+    wage: 58110
   hook: 오늘은 집배원! 우편물 칠백 통, 출발!
   quests:
   - title: 배달 순서 짜기
@@ -676,6 +693,7 @@ episodes:
     prob: 0.082
     occupation: Graphic Designers
     label: 그래픽 디자이너
+    wage: 47640
   hook: 오늘은 그래픽 디자이너로 출근!
   quests:
   - title: 포스터 시안 30개
@@ -713,6 +731,7 @@ episodes:
     prob: 0.38
     occupation: Interpreters and Translators
     label: 통번역가
+    wage: 46120
   hook: 오늘은 번역가 체험. 이건 좀 자신 있어!
   quests:
   - title: 계약서 번역
@@ -748,6 +767,7 @@ episodes:
     prob: 0.98
     occupation: Models
     label: 모델
+    wage: 21870
   hook: 오늘은 화보 모델! 나도 모델이야. 언어 모델.
   quests:
   - title: 포즈 100개
@@ -787,6 +807,7 @@ episodes:
     prob: 0.94
     occupation: Waiters and Waitresses
     label: 웨이터
+    wage: 19990
   hook: 저녁 피크 타임! 오늘은 웨이터야.
   quests:
   - title: 주문 기억하기
@@ -837,6 +858,7 @@ episodes:
     prob: 0.0044
     occupation: Dentists, General
     label: 치과의사
+    wage: 153900
   hook: 아 해 보세요! 오늘은 치과의사야.
   quests:
   - title: 엑스레이 판독
@@ -873,6 +895,7 @@ episodes:
     prob: 0.012
     occupation: Pharmacists
     label: 약사
+    wage: 122230
   hook: 처방전 받습니다! 오늘은 약사 체험.
   quests:
   - title: 약 겹침 확인
@@ -908,6 +931,7 @@ episodes:
     prob: 0.84
     occupation: Security Guards
     label: 경비원
+    wage: 25770
   hook: 밤새 지킨다! 오늘은 경비원이야.
   quests:
   - title: CCTV 열여섯 개
@@ -949,6 +973,7 @@ episodes:
     prob: 0.67
     occupation: Bus Drivers, Transit and Intercity
     label: 버스 기사
+    wage: 39790
   hook: 출발합니다! 오늘은 버스 기사야.
   quests:
   - title: 배차 시간 맞추기
@@ -984,6 +1009,7 @@ episodes:
     prob: 0.035
     occupation: Lawyers
     label: 변호사
+    wage: 118160
   hook: 이의 있습니다! 오늘은 변호사.
   quests:
   - title: 판례 찾기
@@ -1018,6 +1044,7 @@ episodes:
     prob: 0.94
     occupation: Accountants and Auditors
     label: 회계사
+    wage: 68150
   hook: 숫자의 세계로! 오늘은 회계사야.
   quests:
   - title: 영수증 정리
@@ -1056,6 +1083,7 @@ episodes:
     prob: 0.074
     occupation: Musicians and Singers
     label: 가수
+    wage: 45001
   hook: 마이크 체크! 오늘은 가수 데뷔야.
   quests:
   - title: 음정 맞추기
@@ -1100,6 +1128,7 @@ episodes:
     prob: 0.13
     occupation: Dancers
     label: 댄서
+    wage: 24595
   hook: 음악 주세요! 오늘은 댄서야.
   quests:
   - title: 안무 외우기
@@ -1136,6 +1165,7 @@ episodes:
     prob: 0.95
     occupation: Manicurists and Pedicurists
     label: 네일아티스트
+    wage: 22150
   hook: 손 주세요! 오늘은 네일아티스트.
   quests:
   - title: 꽃무늬 그리기
@@ -1172,6 +1202,7 @@ episodes:
     prob: 0.54
     occupation: Massage Therapists
     label: 마사지사
+    wage: 39860
   hook: 어깨 뭉치셨죠? 오늘은 마사지사.
   quests:
   - title: 뭉친 곳 찾기
@@ -1206,6 +1237,7 @@ episodes:
     prob: 0.84
     occupation: Tailors, Dressmakers and Custom Sewers
     label: 재단사
+    wage: 28240
   hook: 줄자 준비! 오늘은 재단사야.
   quests:
   - title: 치수 재기
@@ -1242,6 +1274,7 @@ episodes:
     prob: 0.86
     occupation: Real Estate Sales Agents
     label: 공인중개사
+    wage: 44090
   hook: 집 보러 오셨어요? 오늘은 공인중개사.
   quests:
   - title: 조건 맞는 집 찾기
@@ -1276,6 +1309,7 @@ episodes:
     prob: 0.92
     occupation: Insurance Sales Agents
     label: 보험설계사
+    wage: 49990
   hook: 안심을 팝니다! 오늘은 보험설계사.
   quests:
   - title: 보험 비교
@@ -1310,6 +1344,7 @@ episodes:
     prob: 0.91
     occupation: Tour Guides and Escorts
     label: 여행 가이드
+    wage: 24920
   hook: 깃발 따라오세요! 오늘은 여행 가이드야.
   quests:
   - title: 역사 설명
@@ -1345,6 +1380,7 @@ episodes:
     prob: 0.11
     occupation: Reporters and Correspondents
     label: 기자
+    wage: 37820
   hook: 현장에서 전해 드립니다! 오늘은 기자야.
   quests:
   - title: 속보 쓰기
@@ -1381,6 +1417,7 @@ episodes:
     prob: 0.038
     occupation: Writers and Authors
     label: 작가
+    wage: 61240
   hook: 첫 문장이 제일 어려워. 오늘은 작가야.
   quests:
   - title: 소설 한 편
@@ -1416,6 +1453,7 @@ episodes:
     prob: 0.0047
     occupation: Clinical, Counseling and School Psychologists
     label: 심리상담사
+    wage: 73270
   hook: 편하게 앉으세요. 오늘은 상담사야.
   quests:
   - title: 이야기 듣기
@@ -1451,6 +1489,7 @@ episodes:
     prob: 0.15
     occupation: Kindergarten Teachers, Except Special Education
     label: 유치원 교사
+    wage: 52620
   hook: 얘들아 안녕! 오늘은 유치원 선생님이야.
   quests:
   - title: 동화 읽기
@@ -1487,6 +1526,7 @@ episodes:
     prob: 0.1
     occupation: Animal Trainers
     label: 동물 훈련사
+    wage: 27690
   hook: 앉아! 오늘은 반려견 훈련사야.
   quests:
   - title: 앉아 가르치기
@@ -1529,6 +1569,7 @@ episodes:
     prob: 0.042
     occupation: Software Developers, Applications
     label: 앱 개발자
+    wage: 100080
   hook: 코딩 시작! 오늘은 앱 개발자야.
   quests:
   - title: 버튼 만들기
@@ -1563,6 +1604,7 @@ episodes:
     prob: 0.021
     occupation: Fashion Designers
     label: 패션 디자이너
+    wage: 65170
   hook: 런웨이로! 오늘은 패션 디자이너야.
   quests:
   - title: 유행 분석
@@ -1598,6 +1640,7 @@ episodes:
     prob: 0.022
     occupation: Interior Designers
     label: 인테리어 디자이너
+    wage: 49810
   hook: 집을 바꿔 보자! 오늘은 인테리어 디자이너.
   quests:
   - title: 가구 배치
@@ -1634,6 +1677,7 @@ episodes:
     prob: 0.085
     occupation: Fitness Trainers and Aerobics Instructors
     label: 헬스 트레이너
+    wage: 38160
   hook: 하나 더! 오늘은 헬스 트레이너야.
   quests:
   - title: 자세 교정
@@ -1670,6 +1714,7 @@ episodes:
     prob: 0.87
     occupation: Food Preparation Workers
     label: 주방 보조
+    wage: 21440
   hook: 칼질 준비 완료! 오늘은 주방 보조야.
   quests:
   - title: 양파 썰기
@@ -1704,6 +1749,7 @@ episodes:
     prob: 0.96
     occupation: Receptionists and Information Clerks
     label: 접수 직원
+    wage: 27920
   hook: 어디가 불편하세요? 오늘은 병원 접수야.
   quests:
   - title: 예약 정리
@@ -1739,6 +1785,7 @@ episodes:
     prob: 0.1
     occupation: Radio and Television Announcers
     label: 라디오 DJ
+    wage: 31400
   hook: 온에어! 오늘은 라디오 DJ야.
   quests:
   - title: 선곡
@@ -1783,6 +1830,7 @@ episodes:
     prob: 0.042
     occupation: Fine Artists, Including Painters, Sculptors and Illustrators
     label: 화가
+    wage: 50790
   hook: 붓을 들자! 오늘은 화가야.
   quests:
   - title: 풍경화
@@ -1826,6 +1874,7 @@ episodes:
     prob: 0.049
     occupation: Emergency Medical Technicians and Paramedics
     label: 구급대원
+    wage: 32670
   hook: 출동! 오늘은 구급대원이야.
   quests:
   - title: 가까운 병원
@@ -1861,6 +1910,7 @@ episodes:
     prob: 0.84
     occupation: Proofreaders and Copy Markers
     label: 교정자
+    wage: 36960
   hook: 빨간 펜 준비! 오늘은 교정자야.
   quests:
   - title: 맞춤법 검사
@@ -1896,6 +1946,7 @@ episodes:
     prob: 0.037
     occupation: Meeting, Convention and Event Planners
     label: 행사 기획자
+    wage: 47350
   hook: 파티 준비! 오늘은 행사 기획자야.
   quests:
   - title: 일정표

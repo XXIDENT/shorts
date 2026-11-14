@@ -52,11 +52,9 @@ def keyword_string(words: list[str]) -> str:
 
 
 def clean_description(desc: str) -> str:
-    """'코드로 만들었어요' 줄과 #AI 태그(세계여행)를 뺀다."""
+    """'코드로 만들었어요' 줄과 #AI 해시태그를 뺀다(사용자 요청 2026-11-14)."""
     out = "\n".join(ln for ln in desc.split("\n") if "코드로 만들었어요" not in ln)
-    if "#세계여행" in out:
-        out = out.replace(" #AI", "")
-    return out
+    return out.replace(" #AI", "")
 
 
 def main(argv: list[str]) -> int:

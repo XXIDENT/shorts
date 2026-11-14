@@ -73,8 +73,12 @@ def build_segments(ep: dict, seed: int) -> list[Seg]:
         for line in q["say"]:
             segs.append(Seg("say", line, i))
         segs.append(Seg("result", q["after"], i))
-    segs.append(Seg("data", ep["answer_say"]))
-    segs.append(Seg("outro", ep.get("outro") or rnd.choice(OUTROS)))
+    if J.CUT:   # 20초 편집: 정답만 짧게
+        ans = ep["answer_big"].replace("about ", "")
+        segs.append(Seg("data", f"The answer: about {ans}!" if L.EN else f"정답! {ep['answer_big'].replace('~', '에서 ')}!"))
+    else:
+        segs.append(Seg("data", ep["answer_say"]))
+    segs.append(Seg("outro", rnd.choice(J.SHORT_OUTROS) if J.CUT else (ep.get("outro") or rnd.choice(OUTROS))))
     return segs
 
 

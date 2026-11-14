@@ -27,7 +27,7 @@ def test_segments_and_frame(tmp_path):
     ct = next(c for c in T.load_countries() if c["id"] == "france")
     facts = T.fetch_facts("FR", FX)
     segs = T.build_segments(ct, facts, seed=3)
-    assert [s.kind for s in segs][0] == "hook" and segs[-1].kind == "outro"
+    assert [s.kind for s in segs][:2] == ["tease", "hook"] and segs[-1].kind == "outro"
     assert sum(1 for s in segs if s.kind == "fact") == 3
     audio, _ = T.synthesize([s.text for s in segs], tmp_path, "silent")
     total = T.timeline(segs, audio)

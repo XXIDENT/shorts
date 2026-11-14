@@ -93,16 +93,22 @@ def pct(p: float) -> str:
 
 @dataclass
 class Seg:
-    kind: str                 # hook | say | result | data | verdict | outro
+    kind: str                 # tease | hook | say | result | data | verdict | outro
     text: str
     q: int | None = None      # 퀘스트 번호(0부터)
     start: float = 0.0
     end: float = 0.0
 
 
+def tease_line(ep: dict) -> str:
+    """첫 1초 훅: 답을 숨긴 질문으로 끝까지 보게 만든다(정답은 data 구간에서 공개)."""
+    job = ep["job"]
+    return f"AI가 {job}{josa(job, ('을', '를'))} 대신할 확률, 몇 %일까? 정답은 마지막에!"
+
+
 def build_segments(ep: dict, seed: int) -> list[Seg]:
     rnd = random.Random(seed)
-    segs = [Seg("hook", ep["hook"])]
+    segs = [Seg("tease", tease_line(ep)), Seg("hook", ep["hook"])]
     for i, q in enumerate(ep["quests"]):
         for line in q["say"]:
             segs.append(Seg("say", line, i))
@@ -163,7 +169,7 @@ def synthesize(lines: list[str], workdir: Path, engine: str | None = None) -> tu
 
 
 def timeline(segs: list[Seg], audio: list[Path]) -> float:
-    t = 0.6                                   # 첫 0.6초는 타이틀만
+    t = 0.1                                   # 첫 프레임부터 바로 질문
     for s, p in zip(segs, audio):
         d = duration(p) + GAP
         if s.kind == "result":
@@ -294,6 +300,21 @@ def badge(d, F, y, s, fill, border, color=C["white"]):
     text(d, (W // 2, y + 24), s, F[64], color, "mt", 4)
 
 
+def question_card(img, F, y, top: list[str], big: str, since: float, accent=C["yellow"]):
+    """첫 1초 훅 카드: 위에 질문, 가운데 거대한 '??%', 아래 '정답은 마지막에!' (튀어나오며 흔들린다)."""
+    d = ImageDraw.Draw(img)
+    pop = ease(min(1.0, since / 0.18))
+    y = y + int((1 - pop) * -80)
+    for k, ln in enumerate(top):
+        text(d, (W // 2, y + k * 84), ln, F[64], C["white"], "mt", 5)
+    yb = y + len(top) * 84 + 10
+    scale = 2.0 + 0.6 * max(0.0, 1 - since / 0.25)
+    shake = int(math.sin(since * 40) * 6) if since < 0.6 else 0
+    bot = big_title(img, yb, big, F[128], accent, max_w=W - 60, max_scale=scale, cx=W // 2 + shake)
+    if int(since * 4) % 2 == 0 or since > 2.0:
+        badge(d, F, bot + 20, "정답은 마지막에!", C["red"], C["white"], C["white"])
+
+
 def heart(d, x, y, full: bool, u=6):
     rows = [".##.##.", "#######", "#######", ".#####.", "..###..", "...#..."]
     for j, r in enumerate(rows):
@@ -371,7 +392,7 @@ class Renderer:
             x = prev + (target - prev) * ease(since / walk_t)
             pose = "walk"
         if pose != "walk":
-            if seg.kind == "hook":
+            if seg.kind in ("tease", "hook"):
                 pose, face = "wave", "happy"
             elif seg.kind == "say":
                 pose, face = q.get("pose", "work"), q.get("face", "focus")
@@ -437,8 +458,6 @@ class Renderer:
         return img
 
     def frame(self, t: float) -> Image.Image:
-        if t < COVER_T:
-            return self.cover()
         F = self.F
         i = self.seg_at(t)
         seg = self.segs[i]
@@ -499,8 +518,13 @@ class Renderer:
             td.text((450, 110), s, font=F[size], fill=col + (255,), anchor="mm")
             tmp = tmp.resize((int(900 * pop), int(220 * pop)), Image.NEAREST)
             img.paste(tmp, (W // 2 - tmp.width // 2, STAGE_Y + 230 - tmp.height // 2), tmp)
-        if seg.kind == "hook" and t < 2.2:
-            k = ease(t / 0.35) if t < 1.8 else 1 - ease((t - 1.8) / 0.4)
+        if seg.kind == "tease":
+            d.rectangle([0, STAGE_Y, W, STAGE_Y + 640], fill=(10, 12, 24))
+            job = ep["job"]
+            question_card(img, F, STAGE_Y + 40, [f"AI가 {job}{josa(job, ('을', '를'))}", "대신할 확률"], "??%", since)
+            d = ImageDraw.Draw(img)
+        if seg.kind == "hook" and since < 2.2:
+            k = ease(since / 0.35) if since < 1.8 else 1 - ease((since - 1.8) / 0.4)
             y0 = STAGE_Y + 260 + int((1 - k) * -120)
             if k > 0.02:
                 pixel_panel(d, 90, y0, W - 90, y0 + 380, C["navy"], self.accent)
@@ -513,11 +537,7 @@ class Renderer:
             cta(d, F, STAGE_Y + 440, since)
 
         # ---- 근무 상태 줄 (시급, 번 돈, 피곤도)
-        if seg.kind != "hook" and seg.kind not in ("data", "verdict"):
-            self.status_bar(d, stt)
-
-        # ---- 근무 상태 줄 (시급, 번 돈, 피곤도)
-        if seg.kind != "hook" and seg.kind not in ("data", "verdict"):
+        if seg.kind not in ("tease", "hook", "data", "verdict"):
             self.status_bar(d, stt)
 
         # ---- 대화창
@@ -570,7 +590,8 @@ class Renderer:
         img.paste(Image.blend(region, dark, 0.55), (0, STAGE_Y + 140))
         x0, y0, x1 = 60, STAGE_Y + 160, W - 60
         pixel_panel(d, x0, y0, x1, y0 + 560, (24, 28, 52), C["cyan"])
-        text(d, (W // 2, y0 + 40), "AI 대체 가능성", F[64], C["cyan"], "mt", 4)
+        text(d, (W // 2, y0 + 40), "정답 공개! AI 대체 확률" if seg.kind == "data" else "AI 대체 가능성",
+             F[64], C["yellow"] if seg.kind == "data" else C["cyan"], "mt", 4)
         rows = [("2013 옥스퍼드 연구", p, C["orange"], 0.0)]
         if seg.kind == "verdict":
             rows.append((f"{HERO} 체감 (직접 해봄)", ep["verdict"] / 100, self.accent, 0.0))

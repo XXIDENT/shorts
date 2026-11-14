@@ -31,7 +31,7 @@ from PIL import Image, ImageDraw
 
 from .once import uploaded_recently
 from . import upload_instagram, upload_make, upload_youtube
-from .jobs import COVER_T, Fonts, badge, big_title, cta, josa, mix_voice, pixel_panel, synthesize, text, wrap
+from .jobs import Fonts, badge, big_title, cta, josa, mix_voice, pixel_panel, question_card, synthesize, text, wrap
 from .pixel import chiptune
 from .pixel import world as Wd
 from .pixel.art import C
@@ -133,7 +133,7 @@ def pick_facts(facts: dict, rnd: random.Random, n=3, prefer: list[str] | None = 
 
 @dataclass
 class Seg:
-    kind: str           # hook | fact | landmark | culture | closing | outro
+    kind: str           # tease | hook | fact | landmark | culture | closing | outro
     text: str
     fact: str | None = None
     start: float = 0.0
@@ -154,23 +154,46 @@ def fact_line(ind: str, cname: str, f: dict, rnd: random.Random) -> str:
     return f"{line} {react}"
 
 
+def reveal_line(ind: str, cname: str, f: dict, rnd: random.Random) -> str:
+    """첫 질문의 정답. 몇 배/몇 %를 꼭 말한다."""
+    label, kind = INDICATORS[ind]
+    line = rnd.choice(FACT_LINES[ind]).format(c=cname, v=fmt(f["c"], kind), k=fmt(f["k"], kind))
+    ratio = f["c"] / f["k"] if f["k"] else 1
+    ans = f"무려 {ratio:.1f}배!".replace(".0배", "배") if ratio >= 1 else f"한국의 {ratio * 100:.0f}%밖에 안 돼!"
+    return f"정답 공개! {line} {ans}"
+
+
+def tease(ind: str, cname: str, f: dict) -> tuple[list[str], str, str]:
+    """첫 1초 훅: 가장 놀라운 지표를 답 없이 묻는다. (화면 위 질문 줄, 큰 글씨, 음성)"""
+    label, _ = INDICATORS[ind]
+    nun, ga = josa(cname, ("은", "는")), josa(label)
+    if f["c"] >= f["k"]:
+        return ([f"{cname}{nun} 한국보다", f"{label}{ga}"], "?배",
+                f"{cname}{nun} 한국보다 {label}{ga} 몇 배일까? 정답은 마지막에!")
+    return ([f"{cname}의 {label},", "한국의 몇 %?"], "??%",
+            f"{cname}의 {label}, 한국의 몇 %일까? 정답은 마지막에!")
+
+
 def build_segments(ct: dict, facts: dict, seed: int) -> list[Seg]:
     rnd = random.Random(seed)
     chosen = pick_facts(facts, rnd, 3, ct.get("prefer"))
-    segs = [Seg("hook", ct["hook"])]
-    for ind in chosen[:2]:
-        segs.append(Seg("fact", fact_line(ind, ct["name"], facts[ind], rnd), ind))
+    # 제일 차이가 큰 지표를 첫 1초에 질문으로 걸고, 정답은 마지막 사실로 미룬다.
+    star = max(chosen, key=lambda ind: abs(math.log(max(facts[ind]["c"], 1e-9) / max(facts[ind]["k"], 1e-9))))
+    rest = [x for x in chosen if x != star]
+    segs = [Seg("tease", tease(star, ct["name"], facts[star])[2], star), Seg("hook", ct["hook"])]
+    segs.append(Seg("fact", fact_line(rest[0], ct["name"], facts[rest[0]], rnd), rest[0]))
     segs.append(Seg("landmark", ct["landmark_say"]))
     segs.append(Seg("culture", ct["culture_say"]))
-    for ind in chosen[2:]:
+    for ind in rest[1:]:
         segs.append(Seg("fact", fact_line(ind, ct["name"], facts[ind], rnd), ind))
+    segs.append(Seg("fact", reveal_line(star, ct["name"], facts[star], rnd), star))
     segs.append(Seg("closing", ct["closing"]))
     segs.append(Seg("outro", ct.get("outro") or rnd.choice(OUTROS)))
     return segs
 
 
 def timeline(segs: list[Seg], audio: list[Path]) -> float:
-    t = 1.0                                       # 첫 1초는 하늘에서 내려오는 장면
+    t = 0.1                                       # 첫 프레임부터 바로 질문
     for s, p in zip(segs, audio):
         d = duration(p) + GAP + (0.4 if s.kind == "fact" else 0)
         s.start, s.end = t, t + d
@@ -183,7 +206,7 @@ def metadata(ct: dict, segs: list[Seg], facts: dict, seed: int) -> dict:
     rnd = random.Random(seed)
     lines = []
     for s in segs:
-        if s.fact:
+        if s.fact and s.kind == "fact":
             label, kind = INDICATORS[s.fact]
             f = facts[s.fact]
             lines.append(f"- {label}: {ct['name']} {fmt(f['c'], kind)} / 한국 {fmt(f['k'], kind)} ({f['year']}년)")
@@ -245,10 +268,11 @@ class Director:
         mz = self.moni_z(t)
         since, dur = t - s.start, max(0.1, s.end - s.start)
         cam, tgt = self.behind(mz, t)
-        if s.kind == "hook":
-            k = smooth(since / max(1.0, dur + 1.0 - 0.4))
-            air = ((Wd.CENTER + 22 * self.side, 56.0, mz - 34), (Wd.CENTER, 4.0, mz + 50))
-            cam, tgt = lerp(air[0], cam, k), lerp(air[1], tgt, k)
+        if s.kind == "tease":
+            # 빠르게 모니 쪽으로 밀고 들어가는 줌(첫 프레임부터 움직임)
+            k = smooth(since / 0.9)
+            far = ((Wd.CENTER + 12 * self.side, 30.0, mz - 40), (Wd.CENTER, 8.0, mz + 40))
+            cam, tgt = lerp(far[0], cam, k), lerp(far[1], tgt, k)
         elif s.kind == "landmark":
             k = smooth(since / 1.2)
             # 모니 눈높이 1인칭: 모니가 보는 랜드마크
@@ -343,8 +367,6 @@ class Frames:
         return img
 
     def frame(self, t: float) -> Image.Image:
-        if t < COVER_T:
-            return self.cover()
         if self.F is None:
             self.F = Fonts()
         F, ct = self.F, self.ct
@@ -383,6 +405,11 @@ class Frames:
                                 fill=col if b < lit else C["dgrey"])
                 text(d, (W - 80, yy), fmt(v, kind), F[48], col, "ra", 3)
 
+        if seg.kind == "tease":
+            top, big, _ = tease(seg.fact, ct["name"], self.facts[seg.fact])
+            d.rectangle([0, 300, W, 1000], fill=(10, 12, 24, 160))
+            question_card(img, F, 330, top, big, since)
+            d = ImageDraw.Draw(img, "RGBA")
         if seg.kind == "outro":
             cta(d, F, 1200, since)
 

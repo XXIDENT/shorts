@@ -51,3 +51,13 @@ def test_every_trip_quest_renders(tmp_path):
         r = T.TripRenderer(t, segs, 1)
         for s in segs:
             r.frame(s.start + 0.3)
+
+
+def test_consecutive_titles_differ():
+    """연달아 올라가는 편은 제목 틀이 달라야 한다(같은 날 '…에서 이거 하면 안 돼?!'가 두 번 나가 노출이 약했음)."""
+    for mod, items in ((T, T.load_trips()), (J, J.load_episodes())):
+        eps = sorted(items, key=lambda e: e["num"])
+        for a, b in zip(eps, eps[1:]):
+            ta = mod.metadata(a, 1)["title"].replace(a.get("name", a["job"]), "")
+            tb = mod.metadata(b, 1)["title"].replace(b.get("name", b["job"]), "")
+            assert ta != tb, (a["id"], b["id"])

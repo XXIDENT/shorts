@@ -85,7 +85,7 @@ def build_segments(ep: dict, seed: int) -> list[Seg]:
 def metadata(ep: dict, seed: int) -> dict:
     rnd = random.Random(seed)
     c = ep["name"]
-    title = ep.get("title") or rnd.choice(TITLES).format(c=c)
+    title = ep.get("title") or TITLES[ep["num"] % len(TITLES)].format(c=c)
     lines = [L.t("quest_line", i=i + 1, title=q["title"], res=L.t(q["result"])) for i, q in enumerate(ep["quests"])]
     if L.EN:
         desc = (f"Moni's World Trip #{ep['num']:02d}: {c} {ep.get('city', '')}".strip() + "\n\n" + "\n".join(lines)

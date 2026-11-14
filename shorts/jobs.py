@@ -168,7 +168,7 @@ def build_segments(ep: dict, seed: int) -> list[Seg]:
 def metadata(ep: dict, seed: int) -> dict:
     rnd = random.Random(seed)
     job = ep["job"]
-    title = ep.get("title") or rnd.choice(TITLES).format(job=job)
+    title = ep.get("title") or TITLES[ep["num"] % len(TITLES)].format(job=job)
     if L.EN:
         return metadata_en(ep, title)
     lines = [f"퀘스트 {i + 1}. {q['title']} - {'성공' if q['result'] == 'clear' else '실패'}"

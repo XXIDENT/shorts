@@ -752,8 +752,8 @@ def render(ep: dict, segs: list[Seg], audio: list[Path], out: Path, work: Path, 
         ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
          "-r", str(FPS), "-i", "-", "-i", str(voice), "-i", str(bgm),
          "-filter_complex", "[2:a]volume=0.32[m];[1:a][m]amix=inputs=2:normalize=0:duration=first[a]",
-         "-map", "0:v", "-map", "[a]", "-c:v", "libx264", "-preset", "veryfast", "-crf", "24",
-         "-tune", "animation", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k",
+         "-map", "0:v", "-map", "[a]", "-c:v", "libx264", "-preset", "veryfast", "-crf", os.environ.get("SHORTS_CRF", "27"),
+         "-tune", "animation", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "96k",
          "-movflags", "+faststart", "-t", f"{total:.2f}", str(out)],
         stdin=subprocess.PIPE)
     for i in range(int(total * FPS)):

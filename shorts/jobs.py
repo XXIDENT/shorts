@@ -37,6 +37,8 @@ from .tts import _silence, duration
 ROOT = Path(__file__).resolve().parent.parent
 HISTORY = ROOT / "data" / "jobs_history.json"
 W, H, FPS = 1080, 1920, 30
+KRW_PER_USD = 1400                 # 시급 환산 환율(대략, 설명란에 밝힘)
+WORK_HOURS = (9, 18)               # 영상 속 하루 근무 09:00~18:00
 STAGE_Y = 300                      # 무대(1080x1080)가 시작하는 y
 SCALE = W // SW                    # 6배
 GAP, TAIL = 0.12, 1.0
@@ -123,8 +125,11 @@ def metadata(ep: dict, seed: int) -> dict:
     d = ep["data"]
     desc = (f"AI 신입 '{HERO}'의 직업체험 #{ep['num']:02d}: {job}\n\n" + "\n".join(lines) +
             f"\n\n2013년 연구의 자동화 확률: {pct(d['prob'])} ({d['occupation']})\n"
-            f"{HERO}의 체감 대체 가능도: {ep['verdict']}% (영상 속 캐릭터의 의견이에요)\n\n"
-            "자료: Frey, C. B. & Osborne, M. A. (2013), The Future of Employment, 옥스퍼드대 "
+            f"{HERO}의 체감 대체 가능도: {ep['verdict']}% (영상 속 캐릭터의 의견이에요)\n"
+            + (f"영상 속 시급: 미국 중위 연봉 ${d['wage']:,}(BLS 2016, 같은 자료) ÷ 2,080시간, "
+               f"1달러 {KRW_PER_USD:,}원 환산 = 약 {int(round(d['wage'] / 2080 * KRW_PER_USD, -2)):,}원\n\n"
+               if d.get("wage") else "\n")
+            + "자료: Frey, C. B. & Osborne, M. A. (2013), The Future of Employment, 옥스퍼드대 "
             "(미국 702개 직업 기준)\n픽셀아트, 음악, 음성은 코드로 만들었어요(AI 음성).\n\n"
             f"#Shorts #직업체험 #AI #{job.replace(' ', '')} #픽셀아트")
     return {"title": title[:100], "description": desc,
@@ -266,6 +271,11 @@ class Renderer:
         self.looks = [art.npc_look(random.Random(seed + i)) for i in range(len(ep["quests"]) + 1)]
         self.quest_starts = [next(s.start for s in segs if s.q == i) for i in range(len(ep["quests"]))]
         self.results = [(s.start, ep["quests"][s.q]["result"]) for s in segs if s.kind == "result"]
+        # 근무 시간: 첫 퀘스트부터 데이터 카드 직전까지가 하루(09~18시)
+        self.work_t0 = next(x.start for x in segs if x.q == 0)
+        self.work_t1 = next(x.start for x in segs if x.kind == "data")
+        wage = ep["data"].get("wage")
+        self.hourly = int(round(wage / 2080 * KRW_PER_USD, -2)) if wage else None
 
     # 모니가 서 있어야 할 x
     def spot(self, seg: Seg) -> int:
@@ -343,6 +353,21 @@ class Renderer:
             art.fx_confetti(d, 0, 0, t)
         return img
 
+    def status(self, t: float) -> dict:
+        """시계, 번 돈, 피곤도. 시간이 흐르며 오르고, 퀘스트 결과에 따라 피곤도가 튄다."""
+        p = max(0.0, min(1.0, (t - self.work_t0) / max(1e-6, self.work_t1 - self.work_t0)))
+        h0, h1 = WORK_HOURS
+        hours = (h1 - h0) * p
+        fat = 8 + 52 * p ** 1.3
+        for at, r in self.results:
+            if at <= t:
+                k = ease((t - at) / 0.5)      # 결과가 뜨면 0.5초 동안 차오른다
+                fat += (9 if r == "clear" else 20) * k
+        clock = h0 * 60 + int(hours * 60)
+        return {"clock": f"{clock // 60:02d}:{clock % 60 // 10 * 10:02d}", "p": p,
+                "earned": int(self.hourly * hours // 100 * 100) if self.hourly else None,
+                "fatigue": max(0, min(100, int(fat)))}
+
     def frame(self, t: float) -> Image.Image:
         F = self.F
         i = self.seg_at(t)
@@ -373,8 +398,8 @@ class Renderer:
         hp = 3 - sum(1 for r in done if r == "fail")
         for k in range(3):
             heart(d, 48 + k * 54, 222, k < hp)
-        coins = sum(1 for r in done if r == "clear") * ep.get("coin", 100)
-        text(d, (W - 48, 224), f"G {coins:,}", F[48], C["yellow"], "ra", 4)
+        stt = self.status(t)
+        text(d, (W - 48, 224), stt["clock"], F[48], C["yellow"], "ra", 4)
         n = len(ep["quests"])
         for k in range(n):   # 퀘스트 진행 칸
             x0 = W // 2 - (n * 60) // 2 + k * 60
@@ -415,6 +440,10 @@ class Renderer:
         if seg.kind in ("data", "verdict"):
             self.data_card(img, d, seg, since)
 
+        # ---- 근무 상태 줄 (시급, 번 돈, 피곤도)
+        if seg.kind != "hook" and seg.kind not in ("data", "verdict"):
+            self.status_bar(d, stt)
+
         # ---- 대화창
         y0, y1 = 1420, 1700
         pixel_panel(d, 24, y0, W - 24, y1, (20, 22, 40), C["white"])
@@ -438,6 +467,24 @@ class Renderer:
             else "픽셀·음악·음성 모두 코드로 만든 AI 콘텐츠"
         text(d, (W // 2, 1730), foot, F[32], (150, 150, 170), "mt", 0)
         return img
+
+    def status_bar(self, d, stt):
+        F = self.F
+        y0, y1 = STAGE_Y + 990, STAGE_Y + 1072
+        d.rectangle([0, y0, W, y1], fill=(16, 18, 34))
+        d.rectangle([0, y0, W, y0 + 4], fill=C["white"])
+        if self.hourly:
+            text(d, (28, y0 + 22), f"시급 {self.hourly:,}원", F[32], C["white"], "la", 2)
+            text(d, (300, y0 + 22), f"번 돈 {stt['earned']:,}원", F[32], C["yellow"], "la", 2)
+        # 피곤도 게이지 (초록 → 노랑 → 빨강)
+        f = stt["fatigue"]
+        text(d, (640, y0 + 22), "피곤", F[32], C["white"], "la", 2)
+        bx, bw, n = 730, 30, 10
+        lit = int(round(f / 10))
+        col = C["green"] if f < 45 else (C["yellow"] if f < 75 else C["red"])
+        for k in range(n):
+            x = bx + k * (bw + 2)
+            d.rectangle([x, y0 + 24, x + bw - 1, y0 + 56], fill=col if k < lit else C["dgrey"])
 
     def data_card(self, img, d, seg, since):
         F, ep = self.F, self.ep

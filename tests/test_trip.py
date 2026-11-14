@@ -23,7 +23,7 @@ def test_trips_valid_and_unique():
             lines += q["say"] + [q["after"]]
         lines += [t["tease"], t["hook"], t["answer_say"]]
         segs = T.build_segments(t, 1)
-        assert sum(len(s.text.replace(" ", "")) for s in segs if s.kind not in ("tease", "outro")) <= 210, t["id"]
+        assert sum(len(s.text.replace(" ", "")) for s in segs if s.kind not in ("tease", "outro")) <= 195, t["id"]   # 실제 음성 기준 약 50초
         for s in segs:
             assert len(J.wrap(d, s.text, F[48], J.W - 160)) <= 3, s.text
     assert len(lines) == len(set(lines))

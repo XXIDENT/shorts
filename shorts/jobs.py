@@ -274,7 +274,7 @@ def cta(d, F, y, since):
 COVER_T = 0.4      # 영상 맨 앞 표지가 보이는 시간(초). 쇼츠 피드 미리보기와 릴스 표지로 쓰인다.
 
 
-def big_title(img, y, s, font, fill, max_w=W - 80, max_scale=2.0):
+def big_title(img, y, s, font, fill, max_w=W - 80, max_scale=2.0, cx=W // 2):
     """픽셀 글씨를 크게 키워 가운데에 찍는다(검은 테두리)."""
     d0 = ImageDraw.Draw(img)
     l, t, r, b = d0.textbbox((0, 0), s, font=font, stroke_width=6)
@@ -284,7 +284,7 @@ def big_title(img, y, s, font, fill, max_w=W - 80, max_scale=2.0):
     td.text((8 - l, 8 - t), s, font=font, fill=fill + (255,), stroke_width=6, stroke_fill=C["black"] + (255,))
     k = min(max_scale, max_w / tmp.width)
     tmp = tmp.resize((int(tmp.width * k), int(tmp.height * k)), Image.NEAREST)
-    img.paste(tmp, (W // 2 - tmp.width // 2, y), tmp)
+    img.paste(tmp, (cx - tmp.width // 2, y), tmp)
     return y + tmp.height
 
 

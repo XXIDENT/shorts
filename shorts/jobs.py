@@ -61,9 +61,9 @@ DATA_LINES = [
     "연구에선 {label}{iga} 기계로 바뀔 확률이 {p}래.",
 ]
 OUTROS = [
-    "다음 직업은 댓글로 추천해 줘!",
-    "다음 체험할 직업, 댓글로 정해 줘!",
-    "너라면 AI한테 맡길래? 댓글로 알려 줘.",
+    "다음 직업은 댓글로 추천해 줘! 구독이랑 좋아요도 꾹!",
+    "다음 체험할 직업, 댓글로 정해 줘! 구독, 좋아요 부탁해!",
+    "너라면 AI한테 맡길래? 댓글로 알려 줘. 구독이랑 좋아요도!",
 ]
 TITLES = [
     "AI가 {job} 하루 해봤더니 #Shorts",
@@ -242,6 +242,33 @@ def pixel_panel(d, x0, y0, x1, y1, fill, border=C["white"], u=6):
     d.rectangle([x0, y0 + u, x1, y1 - u], fill=C["black"])
     d.rectangle([x0 + u, y0 + u, x1 - u, y1 - u], fill=border)
     d.rectangle([x0 + 2 * u, y0 + 2 * u, x1 - 2 * u, y1 - 2 * u], fill=fill)
+
+
+def cta(d, F, y, since):
+    """마지막 인사 때 뜨는 구독·좋아요 버튼(픽셀). since: 아웃트로 시작 후 초."""
+    if since < 0.15:
+        return
+    k = ease(min(1.0, since / 0.35))
+    y = int(y + (1 - k) * 80)
+    bw, gap = 380, 40
+    x0 = W // 2 - bw - gap // 2
+    x1 = W // 2 + gap // 2
+    pressed = int(since * 2.5) % 3 == 2
+    off = 8 if pressed else 0
+    # 구독 버튼(빨강)
+    d.rectangle([x0 + 10, y + 10, x0 + bw + 10, y + 130], fill=C["black"])
+    pixel_panel(d, x0 + off, y + off, x0 + bw + off, y + 120 + off, C["red"], C["white"])
+    text(d, (x0 + bw // 2 + off, y + 30 + off), "구독", F[64], C["white"], "mt", 4)
+    # 좋아요 버튼(엄지)
+    d.rectangle([x1 + 10, y + 10, x1 + bw + 10, y + 130], fill=C["black"])
+    pixel_panel(d, x1, y, x1 + bw, y + 120, C["navy"], C["white"])
+    u = 8
+    tx, ty = x1 + 46, y + 26
+    for (cx, cy, cw, ch) in [(2, 0, 2, 3), (1, 3, 5, 5), (0, 4, 1, 4)]:   # 엄지 척
+        d.rectangle([tx + cx * u, ty + cy * u, tx + (cx + cw) * u - 1, ty + (cy + ch) * u - 1], fill=C["yellow"])
+    text(d, (x1 + 120, y + 30), "좋아요", F[64], C["white"], "la", 4)
+    if pressed:
+        d.polygon([(x0 + bw - 40, y + 70), (x0 + bw + 10, y + 120), (x0 + bw - 22, y + 118)], fill=C["white"])
 
 
 def heart(d, x, y, full: bool, u=6):
@@ -439,6 +466,8 @@ class Renderer:
                 text(d, (W // 2, y0 + 290), "체험 시작!", F[48], C["cyan"], "mt", 4)
         if seg.kind in ("data", "verdict"):
             self.data_card(img, d, seg, since)
+        if seg.kind == "outro":
+            cta(d, F, STAGE_Y + 440, since)
 
         # ---- 근무 상태 줄 (시급, 번 돈, 피곤도)
         if seg.kind != "hook" and seg.kind not in ("data", "verdict"):

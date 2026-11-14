@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       command:
-        description: "list | delete | privacy | title | clean_desc | branding | audit | fix_settings"
+        description: "list | delete | privacy | title | clean_desc | branding | audit | fix_settings | check"
         required: true
         default: list
       args:
-        description: "예) delete: 영상ID  /  privacy: 영상ID public  /  title: 영상ID 새 제목"
+        description: "예) check: 영상ID 영상ID  /  delete: 영상ID  /  privacy: 영상ID public  /  title: 영상ID 새 제목"
         required: false
 
 jobs:

@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       country:
-        description: "나라 id (비우면 다음 차례, config/travel.yaml 참고)"
+        description: "나라 id (비우면 다음 차례, config/trips.yaml 참고)"
         required: false
       no_upload:
         description: "true면 영상만 만들고 업로드하지 않음"
@@ -18,6 +18,8 @@ on:
       - "shorts/pixel/voxel.py"
       - "shorts/pixel/world.py"
       - "config/travel.yaml"
+      - "config/trips.yaml"
+      - "shorts/trip.py"
       - ".github/workflows/travel.yml"
 
 permissions:
@@ -61,12 +63,12 @@ jobs:
         run: |
           ARGS=""
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            ARGS="--no-upload --country ${JOB:-france}"
+            ARGS="--no-upload --country ${JOB:-japan}"
           else
             if [ "$NO_UPLOAD" = "true" ]; then ARGS="--no-upload"; fi
             if [ -n "$JOB" ]; then ARGS="$ARGS --country $JOB"; fi
           fi
-          python -m shorts.travel $ARGS
+          python -m shorts.trip $ARGS   # 2026-11-14부터 여행 퀘스트판 (통계판은 shorts.travel)
 
       - name: 영상 파일 보관 (14일)
         uses: actions/upload-artifact@v4
@@ -80,7 +82,7 @@ jobs:
         run: |
           git config user.name "shorts-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/travel_history.json 2>/dev/null || exit 0
+          git add data/trip_history.json 2>/dev/null || exit 0
           git commit -m "기록: 세계여행 쇼츠 $(date -u +%F)" || exit 0
           git pull --rebase
           git push

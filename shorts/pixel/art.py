@@ -572,6 +572,82 @@ def p_sofa(d, x, y, t):
     R(d, x + 35, y - 4, 3, 4, C["dbrown"])
 
 
+
+# ---- 여행 퀘스트용 소품
+def p_train_window(d, x, y, t, w=50):
+    """창밖 풍경이 옆으로 흐르는 전철 창문."""
+    box(d, x, y, w, 26, (150, 200, 240))
+    for k in range(4):
+        bx = x + 1 + int((k * 17 - t * 40) % (w + 10)) - 8
+        hh = 6 + (k * 5) % 9
+        R(d, max(x + 1, bx), y + 25 - hh, min(8, x + w - 1 - max(x + 1, bx)), hh, (120, 130, 150))
+    R(d, x, y + 12, w, 1, OUT)
+
+
+def p_train_seat(d, x, y, t, w=60, c=None):
+    c = c or (70, 110, 170)
+    box(d, x, y - 14, w, 8, c)
+    box(d, x, y - 26, w, 12, tuple(max(0, v - 25) for v in c))
+    R(d, x + 2, y - 6, 3, 6, C["dgrey"])
+    R(d, x + w - 5, y - 6, 3, 6, C["dgrey"])
+
+
+def p_strap(d, x, y, t, n=5, gap=14):
+    R(d, x, y, n * gap, 2, C["steel"])
+    for k in range(n):
+        sw = int(math.sin(t * 2 + k) * 1.2)
+        R(d, x + 4 + k * gap + sw, y + 2, 1, 8, C["lgrey"])
+        box(d, x + 2 + k * gap + sw, y + 10, 5, 5, C["white"])
+
+
+def p_ticket_machine(d, x, y, t, c=None):
+    c = c or (230, 230, 220)
+    box(d, x, y - 44, 26, 44, c)
+    for j in range(3):
+        for i in range(3):
+            R(d, x + 3 + i * 7, y - 40 + j * 7, 5, 5, SHIRT[(i + j * 3) % len(SHIRT)])
+    R(d, x + 4, y - 16, 18, 4, OUT)
+    R(d, x + 9, y - 9, 8, 2, C["dgrey"])
+    if int(t * 3) % 2:
+        R(d, x + 22, y - 40, 2, 2, C["green"])
+
+
+def p_bowl(d, x, y, t, c=None):
+    c = c or C["red"]
+    R(d, x, y - 6, 14, 2, (240, 220, 160))
+    R(d, x + 1, y - 4, 12, 3, c)
+    R(d, x + 3, y - 1, 8, 1, c)
+    for i in range(2):
+        k = (t * 1.2 + i / 2) % 1
+        R(d, x + 4 + i * 5, y - 9 - int(k * 8), 1, 2, (230, 230, 240))
+
+
+def p_lantern(d, x, y, t, c=None):
+    c = c or C["red"]
+    R(d, x + 4, y, 1, 4, OUT)
+    box(d, x, y + 4, 10, 12, c)
+    R(d, x + 1, y + 8, 8, 1, tuple(max(0, v - 50) for v in c))
+    R(d, x + 3, y + 16, 4, 2, OUT)
+
+
+def p_stall(d, x, y, t, w=56, c=None, seed=4):
+    c = c or C["orange"]
+    for i in range(0, w, 8):   # 줄무늬 차양
+        R(d, x + i, y - 52, 8, 8, c if (i // 8) % 2 else C["white"])
+    R(d, x + 2, y - 44, 2, 44, C["dbrown"])
+    R(d, x + w - 4, y - 44, 2, 44, C["dbrown"])
+    box(d, x, y - 20, w, 20, C["wood"])
+    rnd = random.Random(seed)
+    for i in range(x + 4, x + w - 6, 7):
+        R(d, i, y - 25, 5, 5, rnd.choice([C["red"], C["yellow"], C["green"], C["orange"]]))
+
+
+def p_sign(d, x, y, t, c=None, w=30):
+    box(d, x, y, w, 12, c or C["navy"])
+    for i in range(x + 4, x + w - 4, 5):
+        R(d, i, y + 4, 3, 4, C["white"])
+
+
 PROPS = {k[2:]: v for k, v in globals().items() if k.startswith("p_")}
 
 

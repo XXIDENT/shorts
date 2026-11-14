@@ -473,6 +473,10 @@ class Renderer:
         if seg.kind != "hook" and seg.kind not in ("data", "verdict"):
             self.status_bar(d, stt)
 
+        # ---- 근무 상태 줄 (시급, 번 돈, 피곤도)
+        if seg.kind != "hook" and seg.kind not in ("data", "verdict"):
+            self.status_bar(d, stt)
+
         # ---- 대화창
         y0, y1 = 1420, 1700
         pixel_panel(d, 24, y0, W - 24, y1, (20, 22, 40), C["white"])

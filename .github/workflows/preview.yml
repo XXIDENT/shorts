@@ -13,6 +13,9 @@ on:
       cut:
         description: "1이면 짧은 편집(25~30초)"
         default: "1"
+      lang:
+        description: "ko 또는 en(영어 채널)"
+        default: "ko"
 
 permissions:
   contents: write
@@ -32,6 +35,7 @@ jobs:
       - name: 영상 만들기 (업로드 안 함)
         env:
           SHORTS_CUT: ${{ github.event.inputs.cut }}
+          SHORTS_LANG: ${{ github.event.inputs.lang }}
         run: |
           mkdir -p prev
           if [ -n "${{ github.event.inputs.job }}" ]; then python -m shorts.jobs --no-upload --job "${{ github.event.inputs.job }}" --out prev; fi
@@ -43,7 +47,7 @@ jobs:
         run: |
           gh release view previews >/dev/null 2>&1 || gh release create previews --title "미리보기 영상" --notes "업로드 전 확인용 미리보기" --prerelease
           for f in prev/*.mp4; do
-            n="preview-$(basename "$f" | sed -E 's/^[0-9-]+-//')"
+            n="preview-${{ github.event.inputs.lang == 'en' && 'en-' || '' }}$(basename "$f" | sed -E 's/^[0-9-]+-//')"
             cp "$f" "$n"
             gh release upload previews "$n" --clobber
             echo "https://github.com/${{ github.repository }}/releases/download/previews/$n"

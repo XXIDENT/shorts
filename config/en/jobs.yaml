@@ -1,0 +1,271 @@
+# English channel: "AI Rookie Moni's Job Day" scripts.
+# Only the words live here. Scene, props, effects, results and the study data (prob, wage)
+# come from the same id in config/jobs.yaml. Quests merge by position.
+# data.label: the job name shown on the data card. Write each episode by hand (no templates).
+episodes:
+- id: barista
+  num: 1
+  job: Barista
+  data: {label: coffee shop counter attendants}
+  hook: Hi, I'm Moni, the AI rookie! Today I'm a barista.
+  quests:
+  - title: 30 Americanos
+    say:
+    - A group order of thirty Americanos. Zero seconds off on every shot!
+    after: Me and the espresso machine work so well together. Are we related?
+  - title: Latte art heart
+    say:
+    - A latte art heart. My coordinates were perfect, but...
+    after: The customer asked if it was a potato.
+  - title: '"The usual, please"'
+    say:
+    - A regular wants "the usual." Analyzing 312 past orders!
+    after: Rainy day means vanilla latte. Nailed it!
+  verdict_say: Machines pour great coffee. But hearts still need human hands.
+- id: telemarketer
+  num: 2
+  job: Telemarketer
+  data: {label: telemarketers}
+  hook: Today I'm a telemarketer. The study said AI would crush this one.
+  quests:
+  - title: 300 calls a day
+    say:
+    - The goal is three hundred calls a day. I made all three hundred at once.
+    after: Top seller! My manager's face looked complicated.
+  - title: '"Hello?"'
+    say:
+    - But everyone who picked up asked the same thing. "Are you a robot?"
+    after: I said yes. They hung up instantly.
+  - title: Calm an angry customer
+    say:
+    - For an angry customer, I picked the most sincere of five hundred apology lines.
+    after: Choosing sincerity is apparently not sincere.
+  verdict_say: I win on call count. But some people just want to hear a human voice.
+- id: baker
+  num: 3
+  job: Baker
+  data: {label: bakers}
+  hook: Clocking in at 4 a.m.! Today I'm a baker.
+  quests:
+  - title: Weigh 100 doughs
+    say:
+    - I weighed one hundred doughs, accurate to a tenth of a gram.
+    after: The scale looked at me with respect.
+  - title: Get the oven right
+    say:
+    - Recipe says 350 degrees for 15 minutes. But this oven has a mind of its own.
+    after: Instead of baguettes, I made charcoal.
+  - title: Describe the smell of fresh bread
+    say:
+    - Asked how the bread smells, I summarized ten thousand reviews instead.
+    after: The customer bought three loaves. Talking is a skill too!
+  verdict_say: I'm great at measuring. But making friends with an oven takes years.
+- id: hairdresser
+  num: 4
+  job: Hairdresser
+  data: {label: hairdressers}
+  hook: Today, the hair salon! First time holding scissors.
+  quests:
+  - title: Just an inch off
+    say:
+    - "\"Just an inch off,\" she said. So I cut exactly 1.00 inch."
+    after: Her "inch" was actually half an inch.
+  - title: '"Make it look like this photo"'
+    say:
+    - She wants a celebrity's haircut. Face shape and part angle, calculated.
+    after: She looked in the mirror and clapped! The math worked.
+  - title: Chat while cutting
+    say:
+    - The secret skill of hairdressers is small talk while cutting.
+    after: I focused on the chat and my hands stopped.
+  verdict_say: The study said just 11% too. Every head of hair is different.
+- id: cashier
+  num: 5
+  job: Cashier
+  data: {label: cashiers}
+  hook: 10 p.m., night shift at the convenience store!
+  quests:
+  - title: Scan barcodes
+    say:
+    - Beep, beep, beep. Barcodes are my native language.
+    after: The line vanished before it even formed.
+  - title: Explain buy one get one
+    say:
+    - Can you mix flavors on buy one get one free? It's not in the rules!
+    after: I called the manager at 1 a.m.
+  - title: Sleepy 3 a.m.
+    say:
+    - 3 a.m. restocking. They say this is when people are sleepiest.
+    after: I'm not sleepy. I sorted everything by color and got scolded.
+  verdict_say: Checkout will be automated soon. But humans are better at asking night customers how they're doing.
+- id: nurse
+  num: 6
+  job: Nurse
+  data: {label: registered nurses}
+  hook: Today I'm a nurse. The study said this job barely changes.
+  quests:
+  - title: Check vital signs
+    say:
+    - Blood pressure, pulse, temperature. Twelve patients charted in one second!
+    after: My charts are the neatest on the ward.
+  - title: Give a shot
+    say:
+    - Next, a shot. I found the vein, but my hand is a claw.
+    after: The patient asked for a human nurse.
+  - title: Comfort a scared patient
+    say:
+    - A patient is scared of surgery, so I told her the success rate is 98%.
+    after: The nurse next to me just held her hand. That was the answer.
+  verdict_say: I can help with the records. Holding hands is a human job.
+- id: taxi
+  num: 7
+  job: Taxi Driver
+  data: {label: taxi drivers}
+  hook: Today I'm a taxi driver! Seatbelt, click.
+  quests:
+  - title: Find the fastest route
+    say:
+    - To the airport! Live traffic analysis, fastest route, go!
+    after: Three seconds off the estimate. Perfect.
+  - title: '"Not that way"'
+    say:
+    - The next passenger said, "Take the way I know, please."
+    after: It took seven minutes longer, and he was happier. Why?
+  - title: Backseat advice
+    say:
+    - An 11 p.m. passenger wants to quit his job. I said it's my first day at work.
+    after: We both laughed. He tipped me with a tangerine.
+  verdict_say: Self-driving cars will catch up on driving. But someone still has to listen in the back seat.
+- id: photographer
+  num: 8
+  job: Photographer
+  data: {label: photographers}
+  hook: Today I'm a studio photographer. Click!
+  quests:
+  - title: Set up the lights
+    say:
+    - Two lights, 45 degrees, 1% brightness error. Setup done.
+    after: The lighting guy says he has nothing left to do.
+  - title: '"Smile naturally"'
+    say:
+    - To get a natural smile, I prepared ten thousand dad jokes.
+    after: She laughed at joke number 937. The shoot was already over.
+  - title: Pick the best shot
+    say:
+    - Pick the best of two thousand photos. Delete closed eyes first.
+    after: She loves all ten that were left!
+  verdict_say: I'm great at picking. But the timing to make people smile? Not yet.
+- id: chef
+  num: 9
+  job: Chef
+  data: {label: chefs and head cooks}
+  hook: Today, a restaurant kitchen! Chef Moni reporting.
+  quests:
+  - title: Follow the recipe exactly
+    say:
+    - Cream pasta. Noodles nine minutes, sauce three, zero timer error.
+    after: They said it tastes like a textbook. That's a compliment, right?
+  - title: Taste the seasoning
+    say:
+    - The head chef says taste it. But I don't have a tongue.
+    after: I used the average. Now nobody likes it.
+  - title: Leftover special
+    say:
+    - A new dish from leftovers. I found a combo! Kimchi, cheese, banana!
+    after: There was a reason nobody had made it before.
+  verdict_say: I memorized every recipe. But "delicious" lives on a chef's tongue.
+- id: teacher
+  num: 10
+  job: Teacher
+  data: {label: elementary school teachers}
+  hook: Today I'm an elementary school teacher! The kids call me TV.
+  quests:
+  - title: Times tables
+    say:
+    - First class, times tables. Sevens to nines without a pause!
+    after: I did them backwards too.
+  - title: 100 "Why?"s
+    say:
+    - One kid keeps asking. Why? Why is that? Then why that?
+    after: My hundredth answer was a philosophy paper. The kid went to lunch.
+  - title: Help two friends make up
+    say:
+    - Two kids fought at recess, so I collected evidence on who started it.
+    after: What mattered was getting them to play together again.
+  verdict_say: I can help explain things. But kids need a grown-up on their side more than the right answer.
+- id: librarian
+  num: 11
+  job: Librarian
+  data: {label: librarians}
+  hook: Shh. Today I'm a librarian.
+  quests:
+  - title: Find a book
+    say:
+    - Someone wants a book with a blue cover. No title. Analyzing 2,341 blue books!
+    after: That's the one! Call me Sherlock.
+  - title: Reshelve returns
+    say:
+    - Put two hundred returned books back by call number.
+    after: Fast, but I needed a chair for the top shelf.
+  - title: '"Please be quiet"'
+    say:
+    - Someone was loud in the reading room, so I warned them.
+    after: But my warning beep was the loudest thing in there.
+  verdict_say: I'm faster at search. But a human librarian hands you the perfect book.
+- id: firefighter
+  num: 12
+  job: Firefighter
+  data: {label: firefighters}
+  hook: Dispatch! Today I'm a firefighter.
+  quests:
+  - title: Plan the route
+    say:
+    - Two seconds after the call, I had a route around every traffic jam.
+    after: Four minutes faster. That actually helped.
+  - title: Put out the fire
+    say:
+    - On scene! I grabbed the hose, and the water almost launched me away.
+    after: I weigh eleven pounds. A human has to hold the hose.
+  - title: Rescue a cat
+    say:
+    - A cat stuck in a tree. I'm light, so up the ladder I go!
+    after: The cat hugged my screen because it was warm.
+  verdict_say: I can help find the way. The courage to run into a fire belongs to people.
+- id: vet
+  num: 13
+  job: Veterinarian
+  data: {label: veterinarians}
+  hook: Woof! Meow! Today I'm a vet.
+  quests:
+  - title: Examine a puppy
+    say:
+    - A puppy won't eat. Comparing a hundred thousand cases, and the answer is...
+    after: Too many treats. He was just full.
+  - title: Trim a cat's claws
+    say:
+    - Trimming cat claws. I memorized every cat behavior pattern.
+    after: This cat wasn't in the patterns. Now my screen has scratches.
+  - title: Calm a scared dog
+    say:
+    - A dog scared of needles, so I played a ball video on my screen.
+    after: He didn't even notice the shot!
+  verdict_say: I can help diagnose. But patients who can't talk need to be touched to be understood.
+- id: bartender
+  num: 14
+  job: Bartender
+  data: {label: bartenders}
+  hook: 9 p.m., the bar opens. Today I'm a bartender.
+  quests:
+  - title: Cocktail recipes
+    say:
+    - Six hundred cocktail recipes memorized. Same shaker speed every time.
+    after: It tastes exactly the same every time. That's a compliment, right?
+  - title: A drink for my mood
+    say:
+    - Someone asked for a drink for their mood, so I scanned their face. Sadness 72%.
+    after: They didn't want analysis. They wanted someone to listen.
+  - title: Closing time
+    say:
+    - 2 a.m. closing. Wash a hundred glasses and count the stock.
+    after: First time the inventory sheet ever matched.
+  verdict_say: I make drinks precisely. But people don't come to a bar just for drinks.

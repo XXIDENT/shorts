@@ -316,6 +316,10 @@ def badge(d, F, y, s, fill, border, color=C["white"]):
     text(d, (W // 2, y + 24), s, F[64], color, "mt", 4)
 
 
+def F_NAME(F):
+    return F[96]
+
+
 def question_card(img, F, y, top: list[str], big: str, since: float, accent=C["yellow"], scale0=2.0, show_badge=True):
     """첫 1초 훅 카드: 위에 질문, 가운데 거대한 '??%', 아래 '정답은 마지막에!' (튀어나오며 흔들린다)."""
     d = ImageDraw.Draw(img)
@@ -361,8 +365,31 @@ class Renderer:
         # 근무 시간: 첫 퀘스트부터 데이터 카드 직전까지가 하루(09~18시)
         self.work_t0 = next(x.start for x in segs if x.q == 0)
         self.work_t1 = next(x.start for x in segs if x.kind == "data")
-        wage = ep["data"].get("wage")
+        wage = ep.get("data", {}).get("wage")
         self.hourly = int(round(wage / 2080 * KRW_PER_USD, -2)) if wage else None
+
+    # ---- 시리즈마다 바꾸는 글자들 (여행 퀘스트가 덮어쓴다)
+    def series_line(self) -> str:
+        return f"AI 신입 {HERO}의 직업체험 #{self.ep['num']:02d}"
+
+    def name(self) -> str:
+        return self.ep["job"]
+
+    def tease_parts(self) -> tuple[list[str], list[str], str]:
+        """(질문 2줄, 콜드 오픈용 1줄, 큰 글씨)"""
+        job = self.ep["job"]
+        return [f"AI가 {job}{josa(job, ('을', '를'))}", "대신할 확률"], [f"AI가 {job}{josa(job, ('을', '를'))} 대신할 확률"], "??%"
+
+    def hook_panel(self) -> tuple[str, str]:
+        return f"DAY {self.ep['num']:02d}", "체험 시작!"
+
+    def foot(self, seg: Seg) -> str | None:
+        if seg.kind in ("data", "verdict"):
+            return "자료: Frey & Osborne(2013) 옥스퍼드대, 미국 702개 직업"
+        return None
+
+    def draw_name(self, img, d, y):
+        text(d, (W // 2, y), self.name(), F_NAME(self.F), C["white"], "mt", 6)
 
     # 모니가 서 있어야 할 x
     def spot(self, seg: Seg) -> int:
@@ -417,7 +444,7 @@ class Renderer:
                 pose = ("jump" if since < 1.0 else "idle") if ok else ("shake" if since < 1.0 else "sad")
                 face = q.get("face_after", "happy" if ok else "dizzy")
             elif seg.kind == "data":
-                face = self.ep.get("data_face", "shock" if self.ep["data"]["prob"] >= 0.5 else "smug")
+                face = self.ep.get("data_face", "shock" if self.ep.get("data", {}).get("prob", 1) >= 0.5 else "smug")
             elif seg.kind == "verdict":
                 face = self.ep.get("verdict_face", "happy")
                 pose = "idle"
@@ -507,13 +534,12 @@ class Renderer:
 
         # ---- 위쪽 HUD
         if cold:
-            job = ep["job"]
-            question_card(img, F, 14, [f"AI가 {job}{josa(job, ('을', '를'))} 대신할 확률"], "??%", since,
-                          scale0=1.15, show_badge=False)
+            _, top1, big = self.tease_parts()
+            question_card(img, F, 14, top1, big, since, scale0=1.15, show_badge=False)
             d = ImageDraw.Draw(img)
         else:
-            text(d, (W // 2, 34), f"AI 신입 {HERO}의 직업체험 #{ep['num']:02d}", F[48], C["yellow"], "mt", 4)
-            text(d, (W // 2, 100), ep["job"], F[96], C["white"], "mt", 6)
+            text(d, (W // 2, 34), self.series_line(), F[48], C["yellow"], "mt", 4)
+            self.draw_name(img, d, 100)
         done = [r for (at, r) in self.results if at <= t]
         hp = 3 - sum(1 for r in done if r == "fail")
         for k in range(3 if not cold else 0):
@@ -556,17 +582,18 @@ class Renderer:
             seg, since = self.segs[i], t - self.segs[i].start
         if seg.kind == "tease" and not cold:
             d.rectangle([0, STAGE_Y, W, STAGE_Y + 640], fill=(10, 12, 24))
-            job = ep["job"]
-            question_card(img, F, STAGE_Y + 40, [f"AI가 {job}{josa(job, ('을', '를'))}", "대신할 확률"], "??%", since)
+            top2, _, big = self.tease_parts()
+            question_card(img, F, STAGE_Y + 40, top2, big, since)
             d = ImageDraw.Draw(img)
         if seg.kind == "hook" and since < 2.2:
             k = ease(since / 0.35) if since < 1.8 else 1 - ease((since - 1.8) / 0.4)
             y0 = STAGE_Y + 260 + int((1 - k) * -120)
             if k > 0.02:
                 pixel_panel(d, 90, y0, W - 90, y0 + 380, C["navy"], self.accent)
-                text(d, (W // 2, y0 + 50), f"DAY {ep['num']:02d}", F[64], C["yellow"], "mt", 4)
-                text(d, (W // 2, y0 + 140), ep["job"], F[128], C["white"], "mt", 8)
-                text(d, (W // 2, y0 + 290), "체험 시작!", F[48], C["cyan"], "mt", 4)
+                top, bottom = self.hook_panel()
+                text(d, (W // 2, y0 + 50), top, F[64], C["yellow"], "mt", 4)
+                text(d, (W // 2, y0 + 140), self.name(), F[128], C["white"], "mt", 8)
+                text(d, (W // 2, y0 + 290), bottom, F[48], C["cyan"], "mt", 4)
         if seg.kind in ("data", "verdict"):
             self.data_card(img, d, seg, since)
         if seg.kind == "outro":
@@ -595,8 +622,8 @@ class Renderer:
             d.polygon([(W - 90, y1 - 60), (W - 60, y1 - 60), (W - 75, y1 - 42)], fill=C["yellow"])
 
         # ---- 아래 출처(유튜브 UI가 덮는 자리라 작게)
-        if seg.kind in ("data", "verdict"):
-            foot = "자료: Frey & Osborne(2013) 옥스퍼드대, 미국 702개 직업"
+        foot = self.foot(seg)
+        if foot:
             text(d, (W // 2, 1730), foot, F[32], (150, 150, 170), "mt", 0)
         return img
 
@@ -648,7 +675,7 @@ class Renderer:
             text(d, (W // 2, y0 + 470), ep["data"]["label"], F[32], (180, 180, 200), "mt", 0)
 
 
-def render(ep: dict, segs: list[Seg], audio: list[Path], out: Path, work: Path, seed: int) -> float:
+def render(ep: dict, segs: list[Seg], audio: list[Path], out: Path, work: Path, seed: int, R=None) -> float:
     total = timeline(segs, audio)
     voice = work / "voice.wav"
     mix_voice(segs, audio, total, voice)
@@ -664,7 +691,7 @@ def render(ep: dict, segs: list[Seg], audio: list[Path], out: Path, work: Path, 
             cues.append((s.start, "levelup"))
     bgm = work / "bgm.wav"
     chiptune.write_track(bgm, total, seed, cues, ep.get("mood", "happy"))
-    r = Renderer(ep, segs, seed)
+    r = (R or Renderer)(ep, segs, seed)
     proc = subprocess.Popen(
         ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
          "-r", str(FPS), "-i", "-", "-i", str(voice), "-i", str(bgm),

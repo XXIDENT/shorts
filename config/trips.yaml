@@ -1,0 +1,50 @@
+# '모니의 세계여행' 여행 퀘스트 대본 (2026-11-14 개편, 통계 비교 대신 실제 여행 체험)
+#
+# 나라마다 직접 쓴다(템플릿 반복 금지). 나라 이름·국기는 config/travel.yaml의 country id에서 가져온다.
+# - tease: 첫 1초에 말하는 질문(답은 마지막 answer에서 공개). tease_top: 화면 질문 2줄, tease_big: 큰 글씨
+# - quests: 3개. scene(무대: store, train, restaurant, market, street, cafe, bar, bakery, kitchen, home 등),
+#   spot(무대의 spots 이름), cost(그 퀘스트에서 쓴 돈, 원), say → result(clear|fail) → after
+# - answer_say / answer_big / answer_sub: 정답 공개. 가격은 '약'으로, 환율·기준은 source에 밝힌다.
+# - 사실만 쓴다: 예절·제도는 널리 알려진 것만, 가격은 대략값
+trips:
+- id: japan
+  num: 1
+  country: japan
+  city: 도쿄
+  tease: 일본 라멘 한 그릇, 한국 돈으로 얼마일까? 정답은 마지막에!
+  tease_top: ["일본 라멘 한 그릇", "한국 돈으로 얼마?"]
+  tease_big: "?원"
+  hook: 모니의 세계여행, 일본 도쿄 도착! 오늘 퀘스트는 세 개야.
+  quests:
+  - title: 편의점 도시락 사기
+    scene: store
+    spot: register
+    cost: 5000
+    say:
+    - 편의점 도시락 하나 골랐어. 점원이 뭐라고 묻는데… 데워 드릴까요?래!
+    result: clear
+    after: 전자레인지로 데워 줬어. 편의점이 이렇게 친절해?
+  - title: 전철에서 통화하기
+    scene: train
+    spot: seat
+    cost: 1700
+    npc: {x: 72}
+    face_after: shock
+    fx_after: [sweat]
+    say:
+    - 전철 탔다! 엄마한테 전화해서 도착했다고 말해야지. 여보세요!
+    result: fail
+    after: 다들 조용히 쳐다봤어. 일본 전철에선 통화하면 실례래.
+  - title: 식권 자판기로 라멘 주문
+    scene: restaurant
+    spot: machine
+    cost: 9000
+    fx_after: [steam, sparkle]
+    say:
+    - 라멘집인데 주문을 기계로 해. 버튼 누르고 표를 뽑아서 내밀면 끝!
+    result: clear
+    after: 한마디도 안 하고 라멘 성공! 국물이 진하다.
+  answer_say: 정답 공개! 도쿄 라멘 한 그릇은 보통 천 엔 안팎. 한국 돈으로 약 9천 원이야!
+  answer_big: 약 9,000원
+  answer_sub: 1,000엔 안팎 (1엔 ≈ 9.4원)
+  source: 가격은 2025년 도쿄 기준 대략값, 1엔 ≈ 9.4원

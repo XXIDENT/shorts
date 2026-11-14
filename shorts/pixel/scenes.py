@@ -125,4 +125,30 @@ SCENES = {
         "spots": {"enter": -20, "center": 90, "sofa": 90, "boxes": 30},
         "npc": 150,
     },
+    # ---- 여행 퀘스트 무대
+    "train": {
+        "wall": (214, 222, 228), "wall2": (196, 206, 214), "floor": (120, 124, 136), "time": "day",
+        "window": False,
+        "decor": [("train_window", 14, {"y": 30}), ("train_window", 112, {"y": 30}), ("strap", 20, {"y": 12, "n": 10})],
+        "props": [("train_seat", 4, {"y": B, "w": 64}), ("train_seat", 112, {"y": B, "w": 64})],
+        "spots": {"enter": -20, "center": 90, "seat": 40, "door": 150, "left": 30},
+        "npc": 140,
+    },
+    "restaurant": {
+        "wall": (240, 220, 190), "wall2": (226, 204, 170), "floor": (130, 90, 60), "time": "evening",
+        "window_x": 128, "decor": [("lantern", 20, {"y": 8}), ("lantern", 60, {"y": 8}), ("sign", 84, {"y": 22})],
+        "props": [("ticket_machine", 4, {"y": B}), ("counter", 50, {"y": B, "w": 120}),
+                  ("bowl", 80, {"y": TOP}), ("bowl", 120, {"y": TOP, "c": C["navy"]})],
+        "spots": {"enter": -20, "center": 90, "machine": 18, "counter": 100, "seat": 130},
+        "npc": 150,
+    },
+    "market": {
+        "wall": (110, 180, 245), "floor": (190, 170, 140), "floor2": (170, 150, 120), "outdoor": True,
+        "time": "day",
+        "decor": [("building", 0, {"y": FLOOR, "w": 40, "h": 80, "c": (200, 180, 160)}),
+                  ("building", 140, {"y": FLOOR, "w": 40, "h": 90, "c": (180, 190, 170)})],
+        "props": [("stall", 10, {"y": B}), ("stall", 110, {"y": B, "c": C["teal"], "seed": 9})],
+        "spots": {"enter": -20, "center": 90, "stall": 40, "stall2": 136, "left": 20},
+        "npc": 70,
+    },
 }

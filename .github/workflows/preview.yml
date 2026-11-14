@@ -5,11 +5,11 @@ on:
   workflow_dispatch:
     inputs:
       job:
-        description: "직업 id"
+        description: "직업 id (비우면 직업체험은 건너뜀)"
         default: barista
       country:
-        description: "나라 id"
-        default: france
+        description: "나라 id (config/trips.yaml)"
+        default: japan
       cut:
         description: "1이면 짧은 편집(25~30초)"
         default: "1"
@@ -34,8 +34,8 @@ jobs:
           SHORTS_CUT: ${{ github.event.inputs.cut }}
         run: |
           mkdir -p prev
-          python -m shorts.jobs --no-upload --job "${{ github.event.inputs.job }}" --out prev
-          python -m shorts.travel --no-upload --country "${{ github.event.inputs.country }}" --out prev
+          if [ -n "${{ github.event.inputs.job }}" ]; then python -m shorts.jobs --no-upload --job "${{ github.event.inputs.job }}" --out prev; fi
+          python -m shorts.trip --no-upload --country "${{ github.event.inputs.country }}" --out prev
           ls -la prev
       - name: 릴리스 'previews'에 올리기
         env:

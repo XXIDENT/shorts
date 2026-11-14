@@ -6,6 +6,8 @@
   python -m shorts.manage privacy VIDEO_ID public|unlisted|private
   python -m shorts.manage title VIDEO_ID "새 제목"
   python -m shorts.manage branding "채널 이름"   # 배너(assets/brand/banner.png)·채널 설명 바꾸고 이름 변경 시도
+  python -m shorts.manage audit               # 채널 설정·재생목록·영상 태그를 출력(읽기만)
+  python -m shorts.manage fix_settings        # 채널 키워드·기본 언어를 '모니의 하루'에 맞게 바꾸기
   python -m shorts.manage clean_desc          # 설명란에서 '코드로 만들었어요(AI 음성)' 줄 지우기(전체 영상)
 """
 from __future__ import annotations
@@ -38,6 +40,15 @@ CHANNEL_DESC = (
     "매일 08시·12시·19시·21시(한국 시간) 업로드\n"
     "다음 직업이나 나라는 댓글로 추천해 주세요!"
 )
+
+
+CHANNEL_KEYWORDS = ["모니의 하루", "모니", "픽셀아트", "픽셀 로봇", "직업체험", "직업 체험", "AI 직업",
+                    "세계여행", "나라 비교", "한국 비교", "자동화", "쇼츠", "도트", "칩튠"]
+
+
+def keyword_string(words: list[str]) -> str:
+    """유튜브 채널 키워드는 공백으로 나누고, 띄어쓰기가 있는 말은 따옴표로 묶는다."""
+    return " ".join(f'"{w}"' if " " in w else w for w in words)
 
 
 def clean_description(desc: str) -> str:
@@ -87,6 +98,34 @@ def main(argv: list[str]) -> int:
         print("배너·설명 변경 완료")
         now = yt.channels().list(part="snippet", mine=True).execute()["items"][0]["snippet"]["title"]
         print(f"채널 이름: {now}" + ("" if now == name else f"  (API로는 이름이 안 바뀜 → 유튜브 스튜디오에서 '{name}'로 직접 변경 필요)"))
+    elif cmd == "audit":
+        ch = yt.channels().list(part="snippet,brandingSettings,status,contentDetails", mine=True).execute()["items"][0]
+        bc = ch["brandingSettings"].get("channel", {})
+        print(f"이름: {ch['snippet']['title']}  핸들: {ch['snippet'].get('customUrl')}")
+        for k in ("keywords", "country", "defaultLanguage", "unsubscribedTrailer", "trackingAnalyticsAccountId"):
+            print(f"{k}: {bc.get(k)}")
+        print(f"madeForKids: {ch['status'].get('madeForKids')}  selfDeclared: {ch['status'].get('selfDeclaredMadeForKids')}")
+        print("--- 재생목록")
+        for pl in yt.playlists().list(part="snippet,status", mine=True, maxResults=50).execute().get("items", []):
+            print(f"{pl['id']} [{pl['status']['privacyStatus']}] {pl['snippet']['title']}")
+        print("--- 영상")
+        uploads = ch["contentDetails"]["relatedPlaylists"]["uploads"]
+        items = yt.playlistItems().list(part="contentDetails", playlistId=uploads, maxResults=50).execute()
+        ids = [it["contentDetails"]["videoId"] for it in items.get("items", [])]
+        for v in yt.videos().list(part="snippet,status", id=",".join(ids)).execute().get("items", []) if ids else []:
+            sn = v["snippet"]
+            print(f"{v['id']} [{v['status']['privacyStatus']}] cat={sn.get('categoryId')} lang={sn.get('defaultLanguage')}"
+                  f"/{sn.get('defaultAudioLanguage')} {sn['title']}\n   tags={sn.get('tags')}")
+    elif cmd == "fix_settings":
+        ch = yt.channels().list(part="brandingSettings", mine=True).execute()["items"][0]
+        bs = ch["brandingSettings"]
+        c = bs.setdefault("channel", {})
+        print(f"이전 키워드: {c.get('keywords')}")
+        c["keywords"] = keyword_string(CHANNEL_KEYWORDS)
+        c["defaultLanguage"] = "ko"
+        c["description"] = CHANNEL_DESC
+        yt.channels().update(part="brandingSettings", body={"id": ch["id"], "brandingSettings": bs}).execute()
+        print(f"새 키워드: {c['keywords']}")
     elif cmd == "clean_desc":
         ch = yt.channels().list(part="contentDetails", mine=True).execute()["items"][0]
         uploads = ch["contentDetails"]["relatedPlaylists"]["uploads"]

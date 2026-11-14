@@ -46,7 +46,7 @@ GAP, TAIL = 0.12, 1.0
 BOT_Y = FLOOR + 30
 HERO = L.HERO
 VOICE = os.environ.get("JOBS_TTS_VOICE") or ("en-US-AnaNeural" if L.EN else "ko-KR-SunHiNeural")
-VOICE_RATE = os.environ.get("JOBS_TTS_RATE") or ("+12%" if L.EN else "+28%")
+VOICE_RATE = os.environ.get("JOBS_TTS_RATE") or ("+25%" if L.EN else "+28%")
 VOICE_PITCH = os.environ.get("JOBS_TTS_PITCH") or ("+8Hz" if L.EN else "+18Hz")
 
 FONT_CANDIDATES = [

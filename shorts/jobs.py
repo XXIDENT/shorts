@@ -130,7 +130,7 @@ def metadata(ep: dict, seed: int) -> dict:
                f"1달러 {KRW_PER_USD:,}원 환산 = 약 {int(round(d['wage'] / 2080 * KRW_PER_USD, -2)):,}원\n\n"
                if d.get("wage") else "\n")
             + "자료: Frey, C. B. & Osborne, M. A. (2013), The Future of Employment, 옥스퍼드대 "
-            "(미국 702개 직업 기준)\n픽셀아트, 음악, 음성은 코드로 만들었어요(AI 음성).\n\n"
+            "(미국 702개 직업 기준)\n\n"
             f"#Shorts #직업체험 #AI #{job.replace(' ', '')} #픽셀아트")
     return {"title": title[:100], "description": desc,
             "tags": ["직업체험", "AI", "픽셀아트", job, "자동화", "미래직업", "shorts"]}

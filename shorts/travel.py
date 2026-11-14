@@ -189,10 +189,10 @@ def metadata(ct: dict, segs: list[Seg], facts: dict, seed: int) -> dict:
             lines.append(f"- {label}: {ct['name']} {fmt(f['c'], kind)} / 한국 {fmt(f['k'], kind)} ({f['year']}년)")
     desc = (f"모니의 세계여행 #{ct['num']:02d}: {ct['name']}\n\n" + "\n".join(lines) +
             "\n\n자료: 세계은행(World Bank) 오픈데이터, 각 지표의 최신 공개 연도\n"
-            "3D 픽셀 그래픽, 음악, 음성은 코드로 만들었어요(AI 음성).\n\n"
-            f"#Shorts #세계여행 #{ct['name'].replace(' ', '')} #픽셀아트 #AI")
+            "\n"
+            f"#Shorts #세계여행 #{ct['name'].replace(' ', '')} #픽셀아트")
     return {"title": (ct.get("title") or rnd.choice(TITLES).format(c=ct["name"]))[:100], "description": desc,
-            "tags": ["세계여행", ct["name"], "나라비교", "픽셀아트", "복셀", "AI", "shorts"]}
+            "tags": ["세계여행", ct["name"], "나라비교", "픽셀아트", "복셀", "shorts"]}
 
 
 # ---------------------------------------------------------------- 카메라와 장면

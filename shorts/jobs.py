@@ -460,7 +460,7 @@ class Renderer:
         art.draw_props(d, self.scene, t)
         if q:
             for name, x, *rest in q.get("props", []):
-                kw = dict(rest[0]) if rest else {}
+                kw = {k: tuple(v) if isinstance(v, list) else v for k, v in (dict(rest[0]) if rest else {}).items()}
                 y = kw.pop("y", FLOOR + 18)
                 art.PROPS[name](d, x, y, t, **kw)
 

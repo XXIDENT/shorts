@@ -124,6 +124,7 @@ episodes:
 - id: hairdresser
   num: 4
   job: 미용사
+  title: "AI한테 머리 맡기면 생기는 일 #Shorts"
   scene: salon
   data:
     prob: 0.11

@@ -164,6 +164,7 @@ episodes:
 - id: cashier
   num: 5
   job: 편의점 캐셔
+  title: "편의점 캐셔, AI가 대신할 확률 몇 %? #Shorts"
   scene: store
   data:
     prob: 0.97

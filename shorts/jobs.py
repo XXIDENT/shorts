@@ -365,14 +365,17 @@ def F_NAME(F):
     return F[96]
 
 
-def question_card(img, F, y, top: list[str], big: str, since: float, accent=C["yellow"], scale0=2.0, show_badge=True):
-    """첫 1초 훅 카드: 위에 질문, 가운데 거대한 '??%', 아래 '정답은 마지막에!' (튀어나오며 흔들린다)."""
+def question_card(img, F, y, top: list[str], big: str, since: float, accent=C["yellow"], scale0=2.0, show_badge=True,
+                  slide=True, ftop=64):
+    """첫 1초 훅 카드: 위에 질문, 가운데 거대한 '??%', 아래 '정답은 마지막에!' (튀어나오며 흔들린다).
+    slide=False면 첫 프레임부터 글자가 다 보인다(콜드 오픈: 첫 화면에 내용이 없으면 바로 넘김)."""
     d = ImageDraw.Draw(img)
-    pop = ease(min(1.0, since / 0.18))
+    pop = ease(min(1.0, since / 0.18)) if slide else 1.0
     y = y + int((1 - pop) * -80)
+    lh = ftop + ftop // 3
     for k, ln in enumerate(top):
-        text(d, (W // 2, y + k * 84), ln, F[64], C["white"], "mt", 5)
-    yb = y + len(top) * 84 + 10
+        text(d, (W // 2, y + k * lh), ln, F[ftop], C["white"], "mt", 5 if ftop <= 64 else 7)
+    yb = y + len(top) * lh + 10
     scale = scale0 + 0.6 * max(0.0, 1 - since / 0.25)
     shake = int(math.sin(since * 40) * 6) if since < 0.6 else 0
     bot = big_title(img, yb, big, F[128], accent, max_w=W - 60, max_scale=scale, cx=W // 2 + shake)
@@ -576,8 +579,12 @@ class Renderer:
                 nx = npc.get("x", self.scene["npc"]) if isinstance(npc, dict) else self.scene["npc"]
                 if abs(nx - focus) < 90:
                     focus = (focus + nx) / 2
-            cx = int(min(max(focus, 60), SW - 60))
-            st = st.crop((cx - 60, 54, cx + 60, 174))
+            if cold:   # 콜드 오픈은 더 바짝(80px 창 = 13.5배): 첫 화면에 모니와 사고 장면이 꽉 차게
+                cx = int(min(max(self.bot_x, 40), SW - 40))
+                st = st.crop((cx - 40, 90, cx + 40, 170))
+            else:
+                cx = int(min(max(focus, 60), SW - 60))
+                st = st.crop((cx - 60, 54, cx + 60, 174))
         st = st.resize((W, W), Image.NEAREST)
         img.paste(st, (0, STAGE_Y))
         d = ImageDraw.Draw(img)
@@ -586,10 +593,12 @@ class Renderer:
         # ---- 위쪽 HUD
         if cold:
             top2, top1, big = self.tease_parts()
-            if d.textlength(top1[0], font=F[64]) <= W - 60:
-                question_card(img, F, 14, top1, big, since, scale0=1.15, show_badge=False)
+            if all(d.textlength(ln, font=F[96]) <= W - 60 for ln in top2):   # 큰 글씨 두 줄
+                question_card(img, F, 12, top2, big, since, scale0=1.1, show_badge=False, slide=False, ftop=96)
+            elif d.textlength(top1[0], font=F[64]) <= W - 60:
+                question_card(img, F, 14, top1, big, since, scale0=1.15, show_badge=False, slide=False)
             else:   # 한 줄에 안 들어가면 두 줄 + 작은 물음표
-                question_card(img, F, 6, top2, big, since, scale0=0.8, show_badge=False)
+                question_card(img, F, 6, top2, big, since, scale0=0.8, show_badge=False, slide=False)
             d = ImageDraw.Draw(img)
         else:
             text(d, (W // 2, 34), self.series_line(), F[48], C["yellow"], "mt", 4)
@@ -632,7 +641,8 @@ class Renderer:
             td.text((458, 118), s, font=F[size], fill=C["black"] + (255,), anchor="mm")
             td.text((450, 110), s, font=F[size], fill=col + (255,), anchor="mm")
             tmp = tmp.resize((int(900 * pop), int(220 * pop)), Image.NEAREST)
-            img.paste(tmp, (W // 2 - tmp.width // 2, STAGE_Y + 230 - tmp.height // 2), tmp)
+            fy = STAGE_Y + (900 if cold else 230)   # 콜드 오픈은 확대한 모니 얼굴을 가리지 않게 바닥 쪽
+            img.paste(tmp, (W // 2 - tmp.width // 2, fy - tmp.height // 2), tmp)
         if cold:
             seg, since = self.segs[i], t - self.segs[i].start
         if seg.kind == "tease" and not cold:
@@ -666,7 +676,7 @@ class Renderer:
         pixel_panel(d, 50, y0 - 46, 50 + 60 + sw, y0 + 30, self.accent, C["white"])
         text(d, (80 + sw // 2, y0 - 22), speaker, F[48], C["white"], "mt", 3)
         dur = max(0.1, seg.end - seg.start)
-        shown = seg.text if since > dur * 0.55 else seg.text[: int(len(seg.text) * since / (dur * 0.55)) + 1]
+        shown = seg.text if (cold or since > dur * 0.55) else seg.text[: int(len(seg.text) * since / (dur * 0.55)) + 1]
         lines = wrap(d, seg.text, F[48], W - 160)
         # 줄 바꿈 위치를 고정하려고 전체 문장 기준으로 자른 뒤 보이는 만큼만 그린다
         left = len(shown)

@@ -23,5 +23,10 @@
     "trip": "usa",
     "at": "20261116-025312",
     "video_id": "make:Accepted"
+  },
+  {
+    "trip": "france",
+    "at": "20261116-095418",
+    "video_id": "make:Accepted"
   }
 ]

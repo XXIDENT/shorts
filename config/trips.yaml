@@ -246,3 +246,153 @@ trips:
   answer_big: 약 1,900원
   answer_sub: 1.2유로 안팎 (1유로 ≈ 1,600원)
   source: 가격은 2025년 로마 바 기준 대략값, 1유로 ≈ 1,600원
+- id: spain
+  num: 7
+  country: spain
+  city: 마드리드
+  tease: 스페인 사람들, 저녁밥은 보통 몇 시에 먹을까? 정답은 마지막에!
+  tease_top: ["스페인 저녁 식사", "보통 몇 시에?"]
+  tease_big: "?시"
+  hook: 마드리드 도착! 해가 엄청 길어.
+  quests:
+  - title: 저녁 7시에 식당 가기
+    scene: restaurant
+    spot: counter
+    face_after: sad
+    say:
+    - 배고파! 저녁 7시니까 딱 저녁 시간이지. 식당 문을 열어 볼까?
+    result: fail
+    after: 아직 저녁 장사 준비 중이래. 여기선 저녁을 훨씬 늦게 먹는대.
+  - title: 바에서 타파스 먹기
+    scene: bar
+    spot: counter
+    cost: 5000
+    fx: [steam]
+    say:
+    - 기다리는 동안 바에서 타파스! 작은 접시에 조금씩 나오는 안주야.
+    result: clear
+    after: 감자 오믈렛 한 조각에 올리브까지. 여러 개 시켜서 나눠 먹는대.
+  - title: 지하철 타고 광장 가기
+    scene: train
+    spot: door
+    cost: 2500
+    say:
+    - 마드리드 지하철 1회권을 사서 솔 광장까지 가 보자!
+    result: clear
+    after: 도착! 광장에 사람이 가득하고 밤이 될수록 더 붐벼.
+  answer_say: 정답 공개! 스페인은 보통 밤 9시에서 10시쯤 저녁을 먹어. 한국보다 2~3시간 늦어!
+  answer_big: 밤 9~10시
+  answer_sub: 한국보다 2~3시간 늦게
+  source: 스페인의 일반적인 식사 시간 관습, 1유로 ≈ 1,600원
+- id: germany
+  num: 8
+  country: germany
+  city: 베를린
+  tease: 독일 마트에 빈 페트병을 돌려주면, 한국 돈으로 얼마 받을까? 정답은 마지막에!
+  tease_top: ["독일 빈 페트병 하나", "돌려주면 얼마?"]
+  tease_big: "?원"
+  hook: 베를린 도착! 자전거가 정말 많아.
+  quests:
+  - title: 빨간 길로 걸어가기
+    scene: street
+    spot: center
+    face_after: shock
+    say:
+    - 인도가 좁네. 옆에 빨간 길이 넓으니까 저기로 걸어가야지!
+    result: fail
+    after: 따릉따릉! 빨간 길은 자전거 도로래. 사람은 걸으면 안 돼.
+  - title: 빵집에서 브레첼 사기
+    scene: bakery
+    spot: counter
+    cost: 2000
+    say:
+    - 독일 빵집 하면 브레첼이지! 매듭 모양 짭짤한 빵 하나 주세요.
+    result: clear
+    after: 겉은 쫄깃하고 굵은 소금이 톡톡. 아침으로 딱이야.
+  - title: 빈 병 기계에 넣기
+    scene: store
+    spot: shelf
+    fx_after: [coins]
+    say:
+    - 마셨던 페트병을 마트 기계에 쏙! 그러면 영수증이 나온대.
+    result: clear
+    after: 이 영수증을 계산대에 내면 그만큼 돈을 빼 줘. 판트라고 부른대.
+  answer_say: 정답 공개! 일회용 페트병 하나에 0.25유로. 한국 돈으로 약 400원이야!
+  answer_big: 약 400원
+  answer_sub: 0.25유로 (1유로 ≈ 1,600원)
+  source: 독일 빈 용기 보증금(Pfand) 제도, 일회용 병 기준, 1유로 ≈ 1,600원
+- id: turkey
+  num: 9
+  country: turkey
+  city: 이스탄불
+  tease: 이스탄불 찻집 홍차 한 잔, 한국 돈으로 얼마일까? 정답은 마지막에!
+  tease_top: ["이스탄불 홍차 한 잔", "한국 돈으로 얼마?"]
+  tease_big: "?원"
+  hook: 이스탄불 도착! 바다 건너편이 아시아래.
+  quests:
+  - title: 찻집에서 차이 마시기
+    scene: cafe
+    spot: register
+    cost: 700
+    fx: [steam]
+    say:
+    - 튀르키예 사람들은 하루에도 차이를 몇 잔씩 마신대. 나도 한 잔!
+    result: clear
+    after: 튤립 모양 작은 유리잔에 나왔어. 각설탕 하나 퐁당!
+  - title: 신발 신고 모스크 들어가기
+    scene: street
+    spot: center
+    face_after: sad
+    say:
+    - 커다란 모스크다! 구경하러 바로 들어가 볼까?
+    result: fail
+    after: 입구에서 멈췄어. 모스크에선 신발을 벗고 들어가야 한대.
+  - title: 그랜드 바자르 구경하기
+    scene: market
+    spot: stall
+    fx_after: [sparkle]
+    say:
+    - 지붕 덮인 시장 그랜드 바자르! 가게가 끝도 없이 이어져.
+    result: clear
+    after: 가게가 4천 개가 넘는대. 길을 잃을 뻔했어!
+  answer_say: 정답 공개! 찻집 홍차 한 잔은 보통 20리라 안팎. 한국 돈으로 약 700원이야!
+  answer_big: 약 700원
+  answer_sub: 20리라 안팎 (1리라 ≈ 35원)
+  source: 가격은 2025년 이스탄불 찻집 기준 대략값(물가 변동 큼), 1리라 ≈ 35원
+- id: singapore
+  num: 10
+  country: singapore
+  city: 싱가포르
+  tease: 싱가포르 치킨라이스 한 접시, 한국 돈으로 얼마일까? 정답은 마지막에!
+  tease_top: ["싱가포르 치킨라이스", "한국 돈으로 얼마?"]
+  tease_big: "?원"
+  hook: 싱가포르 도착! 덥고 습하고 정말 깨끗해.
+  quests:
+  - title: 지하철에서 물 마시기
+    scene: train
+    spot: seat
+    face_after: shock
+    say:
+    - 너무 더워! 지하철 자리에 앉아서 물 한 모금만 마셔야지.
+    result: fail
+    after: 안내판을 봤어. 지하철에선 먹고 마시면 벌금이래!
+  - title: 휴지로 자리 맡기
+    scene: restaurant
+    spot: seat
+    say:
+    - 호커센터는 엄청 붐벼. 식탁에 휴지를 올려 두면 자리 있다는 뜻이래.
+    result: clear
+    after: 휴지 한 통으로 자리 확보! 이걸 '초프'라고 부른대.
+  - title: 치킨라이스 주문하기
+    scene: market
+    spot: stall2
+    cost: 5300
+    fx: [steam]
+    say:
+    - 싱가포르 대표 음식 치킨라이스! 닭 육수로 지은 밥이랑 같이 나와.
+    result: clear
+    after: 부드러운 닭고기에 고소한 밥. 소스 세 가지를 찍어 먹어!
+  answer_say: 정답 공개! 호커센터 치킨라이스는 보통 5싱가포르달러 안팎. 약 5천 원이야!
+  answer_big: 약 5,000원
+  answer_sub: 5싱가포르달러 안팎 (1달러 ≈ 1,060원)
+  source: 가격은 2025년 싱가포르 호커센터 기준 대략값, 1싱가포르달러 ≈ 1,060원

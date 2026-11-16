@@ -72,9 +72,13 @@ TITLES = [
     "AI한테 {job}를 시켜봤다 #Shorts",
     "{job}, AI가 하면 몇 점? #Shorts",
 ]
-SHORT_OUTROS = ["구독하고 다음 편도 봐 줘!", "다음 편이 궁금하면 구독!", "구독, 좋아요 꾹!"]
+# 짧은 편 끝인사: 댓글을 부르는 질문 + 구독(좋아요·댓글이 1천 회당 1~2개라 반응 신호가 약했음)
+SHORT_OUTROS = ["너라면 이 일, AI한테 맡길래? 댓글 주고 구독!", "AI가 더 잘할까, 사람이 더 잘할까? 댓글로! 구독도 꾹!",
+                "다음엔 무슨 직업 해 볼까? 댓글로 골라 주고 구독!"]
 if L.EN:
-    SHORT_OUTROS = ["Subscribe for the next one!", "Like and subscribe!", "Follow for more!"]
+    SHORT_OUTROS = ["Would you let an AI do this job? Comment and subscribe!",
+                    "AI or human, who does it better? Tell me below and subscribe!",
+                    "Which job should I try next? Comment and subscribe!"]
     DATA_LINES = [
         "An Oxford study put the odds of {label} being automated at {p}.",
         "Oxford researchers in 2013 said {label}: {p} chance of automation.",

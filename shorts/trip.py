@@ -36,7 +36,12 @@ OUTROS = ["다음 여행지는 댓글로 정해 줘! 구독이랑 좋아요도 �
           "너는 이 퀘스트 성공할 수 있어? 댓글로 알려 줘! 구독이랑 좋아요도!"]
 TITLES = ["AI 로봇이 {c}에서 살아남기 #Shorts", "{c} 가면 꼭 해 봐야 할 것 #Shorts",
           "{c}에서 이거 하면 안 돼?! #Shorts", "모니의 {c} 여행 퀘스트 #Shorts"]
+SHORT_OUTROS = ["다음 나라는 어디로 갈까? 댓글로 골라 주고 구독!", "너라면 이 퀘스트 성공했을까? 댓글로! 구독도 꾹!",
+                "가 본 나라 있으면 댓글로 알려 줘! 구독도!"]
 if L.EN:
+    SHORT_OUTROS = ["Where should I go next? Comment and subscribe!",
+                    "Could you beat this quest? Tell me below and subscribe!",
+                    "Been there? Tell me in the comments and subscribe!"]
     OUTROS = ["Where should I go next? Tell me in the comments, and hit subscribe!",
               "Pick my next country in the comments! Like and subscribe!",
               "Could you pass these quests? Comment below, and subscribe for more!"]
@@ -78,7 +83,7 @@ def build_segments(ep: dict, seed: int) -> list[Seg]:
         segs.append(Seg("data", f"The answer: about {ans}!" if L.EN else f"정답! {ep['answer_big'].replace('~', '에서 ')}!"))
     else:
         segs.append(Seg("data", ep["answer_say"]))
-    segs.append(Seg("outro", rnd.choice(J.SHORT_OUTROS) if J.CUT else (ep.get("outro") or rnd.choice(OUTROS))))
+    segs.append(Seg("outro", rnd.choice(SHORT_OUTROS) if J.CUT else (ep.get("outro") or rnd.choice(OUTROS))))
     return segs
 
 

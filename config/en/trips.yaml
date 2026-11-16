@@ -137,3 +137,108 @@ trips:
   answer_big: about $1.40
   answer_sub: around €1.20 ($1 ≈ €0.87)
   source: Rough 2025 Rome bar prices, $1 ≈ €0.87
+- id: spain
+  num: 6
+  name: Spain
+  city: Madrid
+  tease: What time do people in Spain usually eat dinner? Answer at the end!
+  tease_top: ["Dinner in Spain", "What time?"]
+  tease_big: "?pm"
+  hook: Madrid! The sun stays up forever here.
+  quests:
+  - title: Go to a restaurant at 7 pm
+    say:
+    - I'm starving! It's 7 pm, perfect dinner time. Let's go in.
+    after: They're still getting ready. Dinner here starts way later.
+  - title: Eat tapas at a bar
+    cost: 3.5
+    say:
+    - While I wait, tapas at the bar! Little plates of snacks to share.
+    after: Potato omelette and olives. You order a few and share them.
+  - title: Ride the metro to the plaza
+    cost: 1.8
+    say:
+    - One single metro ticket to Puerta del Sol, please!
+    after: Made it! The plaza gets busier the later it gets.
+  answer_say: The answer! In Spain, dinner is usually around 9 or 10 pm. Hours later than most places!
+  answer_big: 9-10 pm
+  answer_sub: a typical Spanish dinner time
+  source: Common Spanish meal-time customs, $1 ≈ €0.87
+- id: germany
+  num: 7
+  name: Germany
+  city: Berlin
+  tease: Return one empty plastic bottle in Germany. How much do you get back? Answer at the end!
+  tease_top: ["One empty bottle", "How much back?"]
+  tease_big: "$?"
+  hook: Berlin! So many bikes everywhere.
+  quests:
+  - title: Walk on the red path
+    say:
+    - The sidewalk is narrow. That wide red path looks much better!
+    after: Ring ring! The red path is a bike lane. No walking there.
+  - title: Buy a pretzel at a bakery
+    cost: 1.4
+    say:
+    - A German bakery means pretzels! One salty knot, please.
+    after: Chewy outside, big crunchy salt on top. Perfect breakfast.
+  - title: Feed bottles to the machine
+    say:
+    - Empty bottles go into this supermarket machine. Out comes a receipt!
+    after: Hand the receipt in at checkout and they take it off your bill. It's called Pfand.
+  answer_say: The answer! You get back 25 euro cents per single-use bottle. About 29 US cents!
+  answer_big: about $0.29
+  answer_sub: €0.25 deposit per bottle
+  source: German Pfand bottle deposit, single-use bottles, $1 ≈ €0.87
+- id: turkey
+  num: 8
+  name: Turkey
+  city: Istanbul
+  tease: A glass of tea at an Istanbul tea house. How much in dollars? Answer at the end!
+  tease_top: ["Tea in Istanbul", "How many cents?"]
+  tease_big: "$?"
+  hook: Istanbul! Across the water, that's Asia.
+  quests:
+  - title: Drink çay at a tea house
+    cost: 0.5
+    say:
+    - People here drink tea many times a day. One for me too!
+    after: It comes in a tiny tulip-shaped glass. One sugar cube, plop!
+  - title: Walk into a mosque with shoes on
+    say:
+    - Look at that huge mosque! Let's walk right in.
+    after: Stopped at the door. You take your shoes off before going in.
+  - title: Explore the Grand Bazaar
+    say:
+    - The Grand Bazaar, a market with a roof! The shops never end.
+    after: Over four thousand shops, they say. I almost got lost!
+  answer_say: The answer! A tea-house tea is usually around 20 lira. About 50 US cents!
+  answer_big: about $0.50
+  answer_sub: around 20 lira (prices change fast)
+  source: Rough 2025 Istanbul tea house prices, high inflation
+- id: singapore
+  num: 9
+  name: Singapore
+  city: Singapore
+  tease: A plate of chicken rice in Singapore. How much in US dollars? Answer at the end!
+  tease_top: ["Singapore chicken rice", "How many dollars?"]
+  tease_big: "$?"
+  hook: Singapore! Hot, humid and super clean.
+  quests:
+  - title: Drink water on the train
+    say:
+    - So hot! Just one sip of water on the train seat.
+    after: Then I saw the sign. Eating or drinking on the train means a fine!
+  - title: Save a seat with tissues
+    say:
+    - The hawker center is packed. A tissue pack on the table means taken!
+    after: Seat saved with one tissue pack. They call it choping.
+  - title: Order chicken rice
+    cost: 3.8
+    say:
+    - Singapore's famous chicken rice! The rice is cooked in chicken broth.
+    after: Soft chicken, fragrant rice, and three sauces to dip!
+  answer_say: The answer! Hawker chicken rice is usually around 5 Singapore dollars. About 4 US dollars!
+  answer_big: about $4
+  answer_sub: around S$5 at a hawker center
+  source: Rough 2025 Singapore hawker prices, $1 ≈ S$1.30

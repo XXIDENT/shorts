@@ -396,3 +396,154 @@ trips:
   answer_big: 약 5,000원
   answer_sub: 5싱가포르달러 안팎 (1달러 ≈ 1,060원)
   source: 가격은 2025년 싱가포르 호커센터 기준 대략값, 1싱가포르달러 ≈ 1,060원
+- id: mexico
+  num: 11
+  country: mexico
+  city: 멕시코시티
+  tease: 멕시코시티 길거리 타코 하나, 한국 돈으로 얼마일까? 정답은 마지막에!
+  tease_top: ["멕시코 길거리 타코", "한국 돈으로 얼마?"]
+  tease_big: "?원"
+  hook: 멕시코시티 도착! 하늘이 가깝고 공기가 얇아.
+  quests:
+  - title: 수돗물 바로 마시기
+    scene: kitchen
+    spot: sink
+    face_after: sad
+    say:
+    - 목말라! 숙소 수도꼭지에서 물 한 컵 받아 마셔야지.
+    result: fail
+    after: 숙소 주인이 말렸어. 여기선 수돗물 대신 생수를 사 마신대.
+  - title: 지하철 타고 시내 가기
+    scene: train
+    spot: door
+    cost: 400
+    say:
+    - 멕시코시티 지하철은 엄청 싸대. 표 한 장 사서 시내로 출발!
+    result: clear
+    after: 역마다 그림 표지판이 있어서 글을 몰라도 찾아갈 수 있어.
+  - title: 노점에서 타코 먹기
+    scene: market
+    spot: stall
+    cost: 1500
+    fx: [steam]
+    say:
+    - 길거리 노점에서 타코 주문! 고기 위에 고수랑 양파를 듬뿍.
+    result: clear
+    after: 라임 즙을 짜서 한입에 쏙. 서서 여러 개 먹는 게 기본이래.
+  answer_say: 정답 공개! 길거리 타코는 보통 하나에 20페소 안팎. 한국 돈으로 약 1,500원이야!
+  answer_big: 약 1,500원
+  answer_sub: 20페소 안팎 (1페소 ≈ 75원)
+  source: 가격은 2025년 멕시코시티 노점 기준 대략값, 지하철 1회 5페소, 1페소 ≈ 75원
+- id: portugal
+  num: 12
+  country: portugal
+  city: 리스본
+  tease: 리스본 에그타르트 하나, 한국 돈으로 얼마일까? 정답은 마지막에!
+  tease_top: ["리스본 에그타르트", "한국 돈으로 얼마?"]
+  tease_big: "?원"
+  hook: 리스본 도착! 언덕이 많고 바닥이 반짝반짝해.
+  quests:
+  - title: 비 오는 날 돌길 뛰기
+    scene: street
+    spot: center
+    face_after: shock
+    say:
+    - 비가 오네! 하얀 돌이 깔린 언덕길을 후다닥 뛰어 내려가자!
+    result: fail
+    after: 미끌! 리스본 돌바닥은 젖으면 엄청 미끄럽대. 천천히 걸어야 해.
+  - title: 노란 트램 타기
+    scene: train
+    spot: seat
+    cost: 5000
+    say:
+    - 리스본 명물 노란 트램! 좁은 골목을 덜컹덜컹 지나가.
+    result: clear
+    after: 창밖으로 빨간 지붕이 가득해. 차 안에서 표를 사면 조금 비싸대.
+  - title: 에그타르트 먹기
+    scene: bakery
+    spot: counter
+    fx: [steam]
+    say:
+    - 갓 구운 에그타르트 하나 주세요! 위에 계피 가루를 솔솔.
+    result: clear
+    after: 바삭한 겉에 따뜻한 커스터드. 포르투갈에선 파스텔 드 나타라고 불러.
+  answer_say: 정답 공개! 에그타르트 하나는 보통 1.4유로 안팎. 한국 돈으로 약 2,200원이야!
+  answer_big: 약 2,200원
+  answer_sub: 1.4유로 안팎 (1유로 ≈ 1,600원)
+  source: 가격은 2025년 리스본 빵집 기준 대략값, 트램 차내 구매 약 3유로, 1유로 ≈ 1,600원
+- id: greece
+  num: 13
+  country: greece
+  city: 아테네
+  tease: 그리스에서 고개를 위로 까딱하면, 무슨 뜻일까? 정답은 마지막에!
+  tease_top: ["그리스에서 고개를", "위로 까딱하면?"]
+  tease_big: "?"
+  hook: 아테네 도착! 언덕 위에 하얀 신전이 보여.
+  quests:
+  - title: 휴지를 변기에 버리기
+    scene: home
+    spot: center
+    face_after: sad
+    say:
+    - 숙소 화장실에서 쓴 휴지를 변기에 넣고 물을 내리려는데...
+    result: fail
+    after: 안내문이 붙어 있어. 배관이 좁아서 휴지는 옆 휴지통에 버리래.
+  - title: 아크로폴리스 오르기
+    scene: street
+    spot: right
+    fx_after: [sparkle]
+    say:
+    - 언덕 꼭대기 파르테논 신전까지 올라가 보자! 생각보다 가파르네.
+    result: clear
+    after: 2천 년도 더 된 기둥이 그대로 서 있어. 아테네가 한눈에 보여!
+  - title: 기로스 사 먹기
+    scene: market
+    spot: stall2
+    cost: 6000
+    fx: [steam]
+    say:
+    - 그리스 길거리 음식 기로스! 빵에 고기랑 감자튀김까지 돌돌.
+    result: clear
+    after: 요거트 소스가 상큼해. 한 손에 들고 먹기 딱 좋아!
+  answer_say: 정답 공개! 그리스에서 고개를 위로 까딱하면 '아니요'라는 뜻이야. 헷갈리지 마!
+  answer_big: 아니요
+  answer_sub: 고개를 위로 까딱 = No
+  source: 그리스의 널리 알려진 몸짓 관습, 기로스 가격은 2025년 아테네 기준 대략값(1유로 ≈ 1,600원)
+- id: netherlands
+  num: 14
+  country: netherlands
+  city: 암스테르담
+  tease: 네덜란드엔 사람이 많을까, 자전거가 많을까? 정답은 마지막에!
+  tease_top: ["네덜란드엔", "사람 vs 자전거?"]
+  tease_big: "?"
+  hook: 암스테르담 도착! 집들이 좁고 키가 커.
+  quests:
+  - title: 기차에서 그냥 내리기
+    scene: train
+    spot: door
+    face_after: shock
+    say:
+    - 카드 찍고 탔으니 도착하면 그냥 내리면 되겠지? 바로 출구로!
+    result: fail
+    after: 내릴 때도 카드를 꼭 찍어야 한대. 안 찍으면 요금이 훨씬 많이 나가.
+  - title: 스트룹와플 먹기
+    scene: market
+    spot: stall
+    cost: 3000
+    fx: [steam]
+    say:
+    - 시장에서 갓 만든 스트룹와플! 얇은 와플 사이에 시럽이 쏙.
+    result: clear
+    after: 따뜻해서 시럽이 쭉 늘어나. 커피잔 위에 올려 데워 먹기도 한대.
+  - title: 운하 따라 걷기
+    scene: street
+    spot: left
+    fx_after: [sparkle]
+    say:
+    - 도시를 둘러싼 운하를 따라 산책! 다리가 정말 많아.
+    result: clear
+    after: 다리 난간마다 자전거가 빼곡해. 물 위엔 집처럼 생긴 배도 있어!
+  answer_say: 정답 공개! 네덜란드는 자전거가 사람보다 많아. 약 2,300만 대로 인구보다 500만 대쯤 더 많아!
+  answer_big: 자전거 승!
+  answer_sub: 자전거 약 2,300만 대, 인구 약 1,800만 명
+  source: 네덜란드 자전거 협회(BOVAG/RAI) 추정 자전거 약 2,300만 대, 인구 약 1,800만 명(CBS)

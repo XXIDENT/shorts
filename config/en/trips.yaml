@@ -8,8 +8,8 @@ trips:
   name: Japan
   city: Tokyo
   tease: How much is a bowl of ramen in Tokyo, in US dollars? Answer at the end!
-  tease_top: ["A bowl of ramen in Tokyo", "How many dollars?"]
-  tease_big: "$?"
+  tease_top: ["Ramen in Tokyo", "How much?"]
+  tease_big: "$???"
   hook: Tokyo! Three quests. Let's go!
   quests:
   - title: Buy a convenience store bento
@@ -36,8 +36,8 @@ trips:
   name: Thailand
   city: Bangkok
   tease: How much is street pad thai in Bangkok, in US dollars? Answer at the end!
-  tease_top: ["Street pad thai in Bangkok", "How many dollars?"]
-  tease_big: "$?"
+  tease_top: ["Pad thai, Bangkok", "How much?"]
+  tease_big: "$???"
   hook: Bangkok! So hot! Quests start now!
   quests:
   - title: Buy pad thai at a street stall
@@ -63,8 +63,8 @@ trips:
   name: Vietnam
   city: Hanoi
   tease: How much is a bowl of pho in Hanoi, in US dollars? Answer at the end!
-  tease_top: ["A bowl of pho in Hanoi", "How many dollars?"]
-  tease_big: "$?"
+  tease_top: ["Pho in Hanoi", "How much?"]
+  tease_big: "$???"
   hook: Hanoi! So many motorbikes!
   quests:
   - title: Cross the street through motorbikes
@@ -89,8 +89,8 @@ trips:
   name: France
   city: Paris
   tease: How much is a baguette in Paris, in US dollars? Answer at the end!
-  tease_top: ["A baguette in Paris", "How many dollars?"]
-  tease_big: "$?"
+  tease_top: ["Baguette, Paris", "How much?"]
+  tease_big: "$???"
   hook: Paris! I can smell the bread already.
   quests:
   - title: Say hello and buy a baguette
@@ -116,8 +116,8 @@ trips:
   name: Italy
   city: Rome
   tease: How much is an espresso at a bar in Italy, in US dollars? Answer at the end!
-  tease_top: ["An espresso in Italy", "How many dollars?"]
-  tease_big: "$?"
+  tease_top: ["Espresso, Italy", "How much?"]
+  tease_big: "$???"
   hook: Rome! Ancient ruins on every corner.
   quests:
   - title: Drink espresso standing up
@@ -143,7 +143,7 @@ trips:
   city: Madrid
   tease: What time do people in Spain usually eat dinner? Answer at the end!
   tease_top: ["Dinner in Spain", "What time?"]
-  tease_big: "?pm"
+  tease_big: "??pm"
   hook: Madrid! The sun stays up forever here.
   quests:
   - title: Go to a restaurant at 7 pm
@@ -169,8 +169,8 @@ trips:
   name: Germany
   city: Berlin
   tease: Return one empty plastic bottle in Germany. How much do you get back? Answer at the end!
-  tease_top: ["One empty bottle", "How much back?"]
-  tease_big: "$?"
+  tease_top: ["1 empty bottle", "Worth how much?"]
+  tease_big: "$???"
   hook: Berlin! So many bikes everywhere.
   quests:
   - title: Walk on the red path
@@ -195,8 +195,8 @@ trips:
   name: Turkey
   city: Istanbul
   tease: A glass of tea at an Istanbul tea house. How much in dollars? Answer at the end!
-  tease_top: ["Tea in Istanbul", "How many cents?"]
-  tease_big: "$?"
+  tease_top: ["Tea in Istanbul", "How much?"]
+  tease_big: "$???"
   hook: Istanbul! Across the water, that's Asia.
   quests:
   - title: Drink çay at a tea house
@@ -221,8 +221,8 @@ trips:
   name: Singapore
   city: Singapore
   tease: A plate of chicken rice in Singapore. How much in US dollars? Answer at the end!
-  tease_top: ["Singapore chicken rice", "How many dollars?"]
-  tease_big: "$?"
+  tease_top: ["Chicken rice, SG", "How much?"]
+  tease_big: "$???"
   hook: Singapore! Hot, humid and super clean.
   quests:
   - title: Drink water on the train

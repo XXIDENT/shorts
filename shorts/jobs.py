@@ -348,11 +348,13 @@ COVER_T = 0.4      # 영상 맨 앞 표지가 보이는 시간(초). 쇼츠 피�
 def big_title(img, y, s, font, fill, max_w=W - 80, max_scale=2.0, cx=W // 2):
     """픽셀 글씨를 크게 키워 가운데에 찍는다(검은 테두리)."""
     d0 = ImageDraw.Draw(img)
-    l, t, r, b = d0.textbbox((0, 0), s, font=font, stroke_width=6)
+    # 테두리가 두꺼우면 '?'의 점이 몸통에 붙어 '7'로 보였다(??% → 77%). 글자 한 칸(크기/16)의 3/8만 두른다.
+    sw = max(2, font.size * 3 // 128)
+    l, t, r, b = d0.textbbox((0, 0), s, font=font, stroke_width=sw)
     tmp = Image.new("RGBA", (r - l + 16, b - t + 16), (0, 0, 0, 0))
     td = ImageDraw.Draw(tmp)
-    td.text((8 - l + 6, 8 - t + 6), s, font=font, fill=C["black"] + (255,), stroke_width=6, stroke_fill=C["black"] + (255,))
-    td.text((8 - l, 8 - t), s, font=font, fill=fill + (255,), stroke_width=6, stroke_fill=C["black"] + (255,))
+    td.text((8 - l + 6, 8 - t + 6), s, font=font, fill=C["black"] + (255,), stroke_width=sw, stroke_fill=C["black"] + (255,))
+    td.text((8 - l, 8 - t), s, font=font, fill=fill + (255,), stroke_width=sw, stroke_fill=C["black"] + (255,))
     k = min(max_scale, max_w / tmp.width)
     tmp = tmp.resize((int(tmp.width * k), int(tmp.height * k)), Image.NEAREST)
     img.paste(tmp, (cx - tmp.width // 2, y), tmp)

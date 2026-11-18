@@ -2,7 +2,7 @@ name: 조회수 리포트
 
 on:
   schedule:
-    - cron: "30 13 * * *"     # 매일 22:30 KST (21시 업로드 뒤)
+    - cron: "7 14 * * *"      # 매일 23:07 KST (21시 업로드 뒤). Claude 없이 리포트·편 수 점검까지 여기서 끝낸다
   workflow_dispatch:
 
 permissions:
@@ -44,6 +44,17 @@ jobs:
                   | grep -o '[0-9]*$')
           fi
           gh issue comment "$N" --body-file out/views.md
+          # 이슈 본문도 항상 최신 리포트로 바꿔 둔다(이슈만 열어 봐도 지금 숫자가 보이게)
+          gh issue edit "$N" --body-file out/views.md
+
+      - name: 오늘 업로드 편 수 점검 (빠지면 이슈)
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/check_uploads.py && exit 0
+          gh label create upload-failure --color D93F0B --description "자동 업로드 실패" 2>/dev/null || true
+          gh issue create --title "🚨 업로드 빠짐: $(TZ=Asia/Seoul date +%m/%d) KST" --body-file out/missing.md --label upload-failure
 
       - name: 조회수 기록 저장
         run: |

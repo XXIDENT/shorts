@@ -1,7 +1,12 @@
 name: 모니 세계여행 쇼츠 (픽셀 3D)
 
 on:
-  # 예약 실행은 GitHub 지연(최대 몇 시간) 때문에 쓰지 않고, Claude 예약 작업이 정시에 workflow_dispatch로 실행함
+  # 정시 업로드(2026-11-18부터 GitHub 예약으로 직접 실행, Claude 사용 한도 절약). 시각은 UTC.
+  # 늦게 돌아도 '같은 시리즈 4시간 안 중복 금지'(shorts/once.py)가 있어 두 번 올라가지 않는다.
+  schedule:
+    - cron: "52 1 * * *"   # KST 10:52 영어
+    - cron: "52 2 * * *"   # KST 11:52 한국어
+    - cron: "52 9 * * *"   # KST 18:52 한국어
   workflow_dispatch:
     inputs:
       country:
@@ -28,9 +33,10 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
-  group: travel-shorts-${{ github.event_name }}-${{ github.event.inputs.lang || 'ko' }}
+  group: travel-shorts-${{ github.event_name == 'pull_request' && 'pr' || 'upload' }}-${{ (github.event.inputs.lang || (github.event.schedule == '52 1 * * *' && 'en') || 'ko') }}
   cancel-in-progress: false
 
 jobs:
@@ -55,15 +61,15 @@ jobs:
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           # 영어 채널은 영어 채널 전용 비밀값만 쓴다(한국어 채널로 잘못 올라가지 않게)
-          YT_REFRESH_TOKEN: ${{ github.event.inputs.lang == 'en' && secrets.YT_REFRESH_TOKEN_EN || (github.event.inputs.lang != 'en' && secrets.YT_REFRESH_TOKEN || '') }}
+          YT_REFRESH_TOKEN: ${{ (github.event.inputs.lang || (github.event.schedule == '52 1 * * *' && 'en') || 'ko') == 'en' && secrets.YT_REFRESH_TOKEN_EN || ((github.event.inputs.lang || (github.event.schedule == '52 1 * * *' && 'en') || 'ko') != 'en' && secrets.YT_REFRESH_TOKEN || '') }}
           YT_PRIVACY: ${{ vars.YT_PRIVACY || 'private' }}
-          MAKE_WEBHOOK_URL: ${{ github.event.inputs.lang == 'en' && secrets.MAKE_WEBHOOK_URL_EN || (github.event.inputs.lang != 'en' && secrets.MAKE_WEBHOOK_URL || '') }}
+          MAKE_WEBHOOK_URL: ${{ (github.event.inputs.lang || (github.event.schedule == '52 1 * * *' && 'en') || 'ko') == 'en' && secrets.MAKE_WEBHOOK_URL_EN || ((github.event.inputs.lang || (github.event.schedule == '52 1 * * *' && 'en') || 'ko') != 'en' && secrets.MAKE_WEBHOOK_URL || '') }}
           MAKE_PRIVACY: ${{ vars.MAKE_PRIVACY || 'public' }}
-          MAKE_IG_WEBHOOK_URL: ${{ github.event.inputs.lang != 'en' && secrets.MAKE_IG_WEBHOOK_URL || '' }}
-          SHORTS_LANG: ${{ github.event.inputs.lang || 'ko' }}
+          MAKE_IG_WEBHOOK_URL: ${{ (github.event.inputs.lang || (github.event.schedule == '52 1 * * *' && 'en') || 'ko') != 'en' && secrets.MAKE_IG_WEBHOOK_URL || '' }}
+          SHORTS_LANG: ${{ (github.event.inputs.lang || (github.event.schedule == '52 1 * * *' && 'en') || 'ko') }}
           GITHUB_TOKEN: ${{ github.token }}
           JOB: ${{ github.event.inputs.country }}
-          NO_UPLOAD: ${{ github.event.inputs.no_upload }}
+          NO_UPLOAD: ${{ github.event_name == 'schedule' && 'false' || github.event.inputs.no_upload }}
           # PR 샘플은 짧은 편집(25~30초)으로 미리 만들어 본다. 실제 업로드는 코드의 기본값을 따른다.
           SHORTS_CUT: ${{ github.event_name == 'pull_request' && '1' || '' }}
         run: |
@@ -78,7 +84,8 @@ jobs:
               ARGS="$ARGS --no-upload"
             fi
           fi
-          python -m shorts.trip $ARGS   # 2026-11-14부터 여행 퀘스트판 (통계판은 shorts.travel)
+          # 실패하면 1분 뒤 한 번 더(편을 직접 지정하지 않은 경우만: 이미 올라갔으면 중복 방지가 건너뜀)
+          python -m shorts.trip $ARGS || { [ -z "$JOB" ] && [ "${{ github.event_name }}" != "pull_request" ] && echo "1분 뒤 다시 시도" && sleep 60 && python -m shorts.trip $ARGS; }   # 2026-11-14부터 여행 퀘스트판 (통계판은 shorts.travel)
 
       - name: 영상 파일 보관 (14일)
         uses: actions/upload-artifact@v4
@@ -96,3 +103,14 @@ jobs:
           git commit -m "기록: 세계여행 쇼츠 $(date -u +%F)" || exit 0
           git pull --rebase
           git push
+
+      - name: 실패하면 이슈로 알림
+        if: failure() && github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WHAT: "세계여행 (${{ (github.event.inputs.lang || (github.event.schedule == '52 1 * * *' && 'en') || 'ko') }}, ${{ github.event_name }})"
+        run: |
+          TITLE="🚨 업로드 실패: $WHAT $(TZ=Asia/Seoul date +'%m/%d %H:%M') KST"
+          BODY="실행 로그: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          gh label create upload-failure --color D93F0B --description "자동 업로드 실패" 2>/dev/null || true
+          gh issue create --title "$TITLE" --body "$BODY" --label upload-failure

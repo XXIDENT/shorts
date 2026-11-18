@@ -547,3 +547,227 @@ trips:
   answer_big: 자전거 승!
   answer_sub: 자전거 약 2,300만 대, 인구 약 1,800만 명
   source: 네덜란드 자전거 협회(BOVAG/RAI) 추정 자전거 약 2,300만 대, 인구 약 1,800만 명(CBS)
+- id: egypt
+  num: 15
+  country: egypt
+  city: 카이로
+  tease: 이집트 사람들의 주말, 무슨 요일일까? 정답은 마지막에!
+  tease_top: ["이집트의 주말은", "무슨 요일?"]
+  tease_big: "?요일"
+  hook: 카이로 도착! 저 멀리 피라미드가 보여.
+  quests:
+  - title: 시장에서 첫 가격에 사기
+    scene: market
+    spot: stall
+    face_after: sad
+    say:
+    - 기념품 가게다! 처음 부른 가격 그대로 바로 살게요!
+    result: fail
+    after: 옆 사람은 반값에 샀대. 여기 시장은 흥정이 기본이야.
+  - title: 코샤리 먹기
+    scene: restaurant
+    spot: counter
+    cost: 1500
+    fx: [steam]
+    say:
+    - 이집트 국민 음식 코샤리! 밥, 마카로니, 렌틸콩을 한 그릇에.
+    result: clear
+    after: 위에 바삭한 양파 튀김이랑 토마토소스. 든든해!
+  - title: 피라미드 앞에 서기
+    scene: street
+    spot: right
+    fx_after: [sparkle]
+    say:
+    - 기자의 피라미드에 도착! 돌 하나가 나보다 훨씬 커.
+    result: clear
+    after: 4천5백 년 전에 지었대. 사진으로 볼 때보다 훨씬 거대해!
+  answer_say: 정답 공개! 이집트는 금요일과 토요일이 주말이야. 일요일엔 다시 출근해!
+  answer_big: 금·토요일
+  answer_sub: 일요일부터 한 주 시작
+  source: 이집트 정부·공공기관의 주말(금·토) 기준, 코샤리 가격은 2025년 카이로 기준 대략값
+- id: india
+  num: 16
+  country: india
+  city: 뭄바이
+  tease: 인도 길거리 짜이 한 잔, 한국 돈으로 얼마일까? 정답은 마지막에!
+  tease_top: ["인도 짜이 한 잔", "한국 돈으로 얼마?"]
+  tease_big: "?원"
+  hook: 뭄바이 도착! 경적 소리가 쉬지 않아.
+  quests:
+  - title: 왼손으로 밥 먹기
+    scene: restaurant
+    spot: seat
+    face_after: sad
+    say:
+    - 탈리 정식이 나왔어! 손으로 먹는대. 왼손으로 집어 볼까?
+    result: fail
+    after: 식사는 오른손으로 하는 게 예의래. 얼른 바꿨어!
+  - title: 오토릭샤 타기
+    scene: street
+    spot: center
+    cost: 1500
+    say:
+    - 세 바퀴 달린 오토릭샤! 타기 전에 미터기를 켜 달라고 하자.
+    result: clear
+    after: 차 사이를 요리조리! 미터 요금으로 바닷가까지 갔어.
+  - title: 짜이 마시기
+    scene: cafe
+    spot: register
+    fx: [steam]
+    say:
+    - 길거리 짜이 가게! 우유에 홍차랑 생강을 넣고 팔팔 끓여.
+    result: clear
+    after: 작은 잔에 달달하고 따끈해. 하루에 몇 잔씩 마신대.
+  answer_say: 정답 공개! 길거리 짜이는 보통 한 잔에 15루피 안팎. 한국 돈으로 약 250원이야!
+  answer_big: 약 250원
+  answer_sub: 15루피 안팎 (1루피 ≈ 16원)
+  source: 가격은 2025년 뭄바이 길거리 기준 대략값, 1루피 ≈ 16원
+- id: china
+  num: 17
+  country: china
+  city: 베이징
+  tease: 베이징 지하철 기본요금, 한국 돈으로 얼마일까? 정답은 마지막에!
+  tease_top: ["베이징 지하철", "기본요금은?"]
+  tease_big: "?원"
+  hook: 베이징 도착! 길이 정말 넓고 반듯해.
+  quests:
+  - title: 노점에서 큰 지폐 내기
+    scene: market
+    spot: stall2
+    face_after: sad
+    say:
+    - 꼬치 하나 주세요! 100위안짜리 지폐로 계산할게요.
+    result: fail
+    after: 거스름돈이 없대. 다들 휴대폰 QR 코드로 계산하더라.
+  - title: 지하철 보안검색 통과
+    scene: train
+    spot: door
+    say:
+    - 지하철 타려면 가방을 검색대에 올려야 한대. 공항 같아!
+    result: clear
+    after: 통과! 개찰구 지나서 바로 열차에 탔어.
+  - title: 베이징 오리구이 먹기
+    scene: restaurant
+    spot: counter
+    cost: 30000
+    fx: [steam]
+    say:
+    - 베이징 오리구이! 얇은 전병에 껍질이랑 파를 싸 먹어.
+    result: clear
+    after: 껍질이 바삭바삭. 요리사가 앞에서 썰어 줬어!
+  answer_say: 정답 공개! 베이징 지하철은 3위안부터 시작해. 한국 돈으로 약 600원이야!
+  answer_big: 약 600원
+  answer_sub: 3위안부터 (1위안 ≈ 190원)
+  source: 베이징 지하철 거리 비례 요금(최저 3위안), 오리구이는 반 마리 기준 대략값, 1위안 ≈ 190원
+- id: canada
+  num: 18
+  country: canada
+  city: 토론토
+  tease: 캐나다 1달러 동전엔 무슨 새가 있을까? 정답은 마지막에!
+  tease_top: ["캐나다 1달러 동전", "무슨 새가 있을까?"]
+  tease_big: "?"
+  hook: 토론토 도착! 공기가 차갑고 상쾌해.
+  quests:
+  - title: 팁 없이 식당 나오기
+    scene: restaurant
+    spot: counter
+    face_after: shock
+    say:
+    - 맛있게 먹었다! 밥값만 딱 내고 바로 나가야지.
+    result: fail
+    after: 여기 식당에선 보통 밥값의 15~20%를 팁으로 더 낸대!
+  - title: 푸틴 먹기
+    scene: bar
+    spot: counter
+    cost: 12000
+    fx: [steam]
+    say:
+    - 캐나다 대표 음식 푸틴! 감자튀김에 치즈랑 그레이비를 듬뿍.
+    result: clear
+    after: 치즈가 쫀득쫀득해. 칼로리는 생각하지 않기로 했어.
+  - title: 아침 커피 사기
+    scene: cafe
+    spot: register
+    cost: 2500
+    say:
+    - 캐나다 사람들 아침 단골 커피 가게! 커피 한 잔 주세요.
+    result: clear
+    after: 출근길 줄이 엄청 길어. 다들 큰 컵을 들고 가!
+  answer_say: 정답 공개! 캐나다 1달러 동전엔 물새 '아비'가 있어. 그래서 이름도 루니야!
+  answer_big: 아비 (loon)
+  answer_sub: 1달러 동전 = '루니'
+  source: 캐나다 왕립조폐국 1달러 동전 도안, 가격은 2025년 토론토 기준 대략값(1캐나다달러 ≈ 1,000원)
+- id: morocco
+  num: 19
+  country: morocco
+  city: 마라케시
+  tease: 모로코 민트 차, 어떻게 따라야 맛있을까? 정답은 마지막에!
+  tease_top: ["모로코 민트 차", "어떻게 따를까?"]
+  tease_big: "?"
+  hook: 마라케시 도착! 온 도시가 붉은색이야.
+  quests:
+  - title: 지도 없이 골목 걷기
+    scene: street
+    spot: left
+    face_after: shock
+    say:
+    - 옛 시가지 메디나! 골목이 재밌어 보이니까 감으로 걸어 보자.
+    result: fail
+    after: 같은 자리를 세 번 지났어. 골목이 미로처럼 얽혀 있대.
+  - title: 타진 먹기
+    scene: restaurant
+    spot: seat
+    cost: 6000
+    fx: [steam]
+    say:
+    - 고깔 뚜껑 냄비 요리 타진! 뚜껑을 열면 김이 확.
+    result: clear
+    after: 고기랑 채소가 푹 익어서 부드러워. 빵으로 찍어 먹어!
+  - title: 광장 구경하기
+    scene: market
+    spot: center
+    fx_after: [sparkle]
+    say:
+    - 제마 엘프나 광장! 해가 지면 노점이 잔뜩 생긴대.
+    result: clear
+    after: 음악 소리랑 음식 냄새가 가득해. 밤이 더 시끌벅적해!
+  answer_say: 정답 공개! 주전자를 높이 들고 따라. 거품이 생기고 차가 더 맛있어진대!
+  answer_big: 높이 들고!
+  answer_sub: 높이서 따라 거품을 낸다
+  source: 모로코의 널리 알려진 차 따르는 관습, 타진 가격은 2025년 마라케시 기준 대략값
+- id: peru
+  num: 20
+  country: peru
+  city: 쿠스코
+  tease: 마추픽추는 해발 몇 m에 있을까? 정답은 마지막에!
+  tease_top: ["마추픽추는", "해발 몇 m?"]
+  tease_big: "?m"
+  hook: 쿠스코 도착! 하늘이 엄청 가까워.
+  quests:
+  - title: 도착하자마자 뛰기
+    scene: street
+    spot: center
+    face_after: sad
+    say:
+    - 신난다! 광장까지 전력 질주!
+    result: fail
+    after: 숨이 턱 막혀. 쿠스코는 해발 3,400m라서 천천히 걸어야 한대.
+  - title: 기차 타고 마추픽추 가기
+    scene: train
+    spot: seat
+    say:
+    - 마추픽추 가는 기차! 창문이 천장까지 나 있어.
+    result: clear
+    after: 계곡을 따라 달려. 산이 점점 초록색으로 변해!
+  - title: 시장에서 옥수수 먹기
+    scene: market
+    spot: stall
+    cost: 2000
+    say:
+    - 페루 옥수수는 알이 엄지손톱만 하대. 하나 주세요!
+    result: clear
+    after: 알이 정말 커! 치즈 한 조각이랑 같이 먹어.
+  answer_say: 정답 공개! 마추픽추는 해발 약 2,430m야. 쿠스코보다는 낮아!
+  answer_big: 약 2,430m
+  answer_sub: 쿠스코(약 3,400m)보다 낮다
+  source: 페루 문화부·유네스코 자료의 마추픽추 해발 약 2,430m, 쿠스코 약 3,400m, 가격은 대략값

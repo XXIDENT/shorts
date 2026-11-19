@@ -48,5 +48,10 @@
     "trip": "turkey",
     "at": "20261118-182723",
     "video_id": "make:Accepted"
+  },
+  {
+    "trip": "singapore",
+    "at": "20261119-105123",
+    "video_id": "make:Accepted"
   }
 ]

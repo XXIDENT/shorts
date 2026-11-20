@@ -58,5 +58,10 @@
     "trip": "mexico",
     "at": "20261119-184238",
     "video_id": "make:Accepted"
+  },
+  {
+    "trip": "portugal",
+    "at": "20261120-103750",
+    "video_id": "make:Accepted"
   }
 ]

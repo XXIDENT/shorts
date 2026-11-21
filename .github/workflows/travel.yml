@@ -1,4 +1,111 @@
 name: 모니 세계여행 쇼츠 (픽셀 3D)
 
 on:
-  # 정시 업로드는 slots.yml(스케줄러)이 workflow_dispatch로 실행한다. GitHub 예약이 4~8시간 늦어서 직접 예약은 쓰지 않음.
+  # 정시 업로드는 slots.yml(스케줄러)이 workflow_dispatch로 실행한다(GitHub 예약이 4~8시간 늦어서 직접 예약은 안 씀).
+  workflow_dispatch:
+    inputs:
+      country:
+        description: "나라 id (비우면 다음 차례, config/trips.yaml 참고)"
+        required: false
+      no_upload:
+        description: "true면 영상만 만들고 업로드하지 않음"
+        required: false
+        default: "true"
+      lang:
+        description: "ko(모니의 하루) 또는 en(영어 채널, MAKE_WEBHOOK_URL_EN 필요)"
+        required: false
+        default: "ko"
+  # 대본이나 그림을 고치는 PR마다 샘플 영상을 만든다 (업로드 안 함)
+  pull_request:
+    paths:
+      - "shorts/travel.py"
+      - "shorts/pixel/voxel.py"
+      - "shorts/pixel/world.py"
+      - "config/travel.yaml"
+      - "config/trips.yaml"
+      - "shorts/trip.py"
+      - ".github/workflows/travel.yml"
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: travel-shorts-${{ github.event_name == 'pull_request' && 'pr' || 'upload' }}-${{ (github.event.inputs.lang || (github.event.schedule == '52 1 * * *' && 'en') || 'ko') }}
+  cancel-in-progress: false
+
+jobs:
+  make:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: 픽셀 폰트(Unifont)·FFmpeg 설치
+        run: sudo apt-get update -q && sudo apt-get install -y -q fonts-unifont ffmpeg
+
+      - run: pip install -r requirements.txt
+
+      - name: 영상 만들기 (+ 업로드)
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          # 영어 채널은 영어 채널 전용 비밀값만 쓴다(한국어 채널로 잘못 올라가지 않게)
+          YT_REFRESH_TOKEN: ${{ (github.event.inputs.lang || (github.event.schedule == '52 1 * * *' && 'en') || 'ko') == 'en' && secrets.YT_REFRESH_TOKEN_EN || ((github.event.inputs.lang || (github.event.schedule == '52 1 * * *' && 'en') || 'ko') != 'en' && secrets.YT_REFRESH_TOKEN || '') }}
+          YT_PRIVACY: ${{ vars.YT_PRIVACY || 'private' }}
+          MAKE_WEBHOOK_URL: ${{ (github.event.inputs.lang || (github.event.schedule == '52 1 * * *' && 'en') || 'ko') == 'en' && secrets.MAKE_WEBHOOK_URL_EN || ((github.event.inputs.lang || (github.event.schedule == '52 1 * * *' && 'en') || 'ko') != 'en' && secrets.MAKE_WEBHOOK_URL || '') }}
+          MAKE_PRIVACY: ${{ vars.MAKE_PRIVACY || 'public' }}
+          MAKE_IG_WEBHOOK_URL: ${{ (github.event.inputs.lang || (github.event.schedule == '52 1 * * *' && 'en') || 'ko') != 'en' && secrets.MAKE_IG_WEBHOOK_URL || '' }}
+          SHORTS_LANG: ${{ (github.event.inputs.lang || (github.event.schedule == '52 1 * * *' && 'en') || 'ko') }}
+          GITHUB_TOKEN: ${{ github.token }}
+          JOB: ${{ github.event.inputs.country }}
+          NO_UPLOAD: ${{ github.event_name == 'schedule' && 'false' || github.event.inputs.no_upload }}
+          # PR 샘플은 짧은 편집(25~30초)으로 미리 만들어 본다. 실제 업로드는 코드의 기본값을 따른다.
+          SHORTS_CUT: ${{ github.event_name == 'pull_request' && '1' || '' }}
+        run: |
+          ARGS=""
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            ARGS="--no-upload --country ${JOB:-japan}"
+          else
+            if [ "$NO_UPLOAD" = "true" ]; then ARGS="--no-upload"; fi
+            if [ -n "$JOB" ]; then ARGS="$ARGS --country $JOB"; fi
+            if [ "$SHORTS_LANG" = "en" ] && [ -z "$MAKE_WEBHOOK_URL" ] && [ "$NO_UPLOAD" != "true" ]; then
+              echo "영어 채널 웹훅(MAKE_WEBHOOK_URL_EN)이 없어 업로드 없이 만들기만 해요."
+              ARGS="$ARGS --no-upload"
+            fi
+          fi
+          # 실패하면 1분 뒤 한 번 더(편을 직접 지정하지 않은 경우만: 이미 올라갔으면 중복 방지가 건너뜀)
+          python -m shorts.trip $ARGS || { [ -z "$JOB" ] && [ "${{ github.event_name }}" != "pull_request" ] && echo "1분 뒤 다시 시도" && sleep 60 && python -m shorts.trip $ARGS; }   # 2026-11-14부터 여행 퀘스트판 (통계판은 shorts.travel)
+
+      - name: 영상 파일 보관 (14일)
+        uses: actions/upload-artifact@v4
+        with:
+          name: travel-shorts-${{ github.run_id }}
+          path: out/*.*
+          retention-days: 14
+
+      - name: 다녀온 나라 기록 저장
+        if: github.event_name != 'pull_request'
+        run: |
+          git config user.name "shorts-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/trip_history.json data/en/trip_history.json 2>/dev/null || git add data/trip_history.json 2>/dev/null || exit 0
+          git commit -m "기록: 세계여행 쇼츠 $(date -u +%F)" || exit 0
+          git pull --rebase
+          git push
+
+      - name: 실패하면 이슈로 알림
+        if: failure() && github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WHAT: "세계여행 (${{ (github.event.inputs.lang || (github.event.schedule == '52 1 * * *' && 'en') || 'ko') }}, ${{ github.event_name }})"
+        run: |
+          TITLE="🚨 업로드 실패: $WHAT $(TZ=Asia/Seoul date +'%m/%d %H:%M') KST"
+          BODY="실행 로그: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          gh label create upload-failure --color D93F0B --description "자동 업로드 실패" 2>/dev/null || true
+          gh issue create --title "$TITLE" --body "$BODY" --label upload-failure

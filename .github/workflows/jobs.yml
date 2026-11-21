@@ -1,12 +1,7 @@
 name: 픽셀 직업체험 쇼츠
 
 on:
-  # 정시 업로드(2026-11-18부터 GitHub 예약으로 직접 실행, Claude 사용 한도 절약). 시각은 UTC.
-  # 늦게 돌아도 '같은 시리즈 4시간 안 중복 금지'(shorts/once.py)가 있어 두 번 올라가지 않는다.
-  schedule:
-    - cron: "52 22 * * *"   # KST 07:52 한국어
-    - cron: "52 23 * * *"   # KST 08:52 영어
-    - cron: "52 11 * * *"   # KST 20:52 한국어
+  # 정시 업로드는 slots.yml(스케줄러)이 workflow_dispatch로 실행한다(GitHub 예약이 4~8시간 늦어서 직접 예약은 안 씀).
   workflow_dispatch:
     inputs:
       job:

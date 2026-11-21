@@ -1,0 +1,28 @@
+name: 정시 업로드 스케줄러
+
+# GitHub 예약은 4~8시간씩 늦게 돌아서(2026-11-18~21), 매시간 이 스케줄러를 깨우고
+# 스케줄러가 다음 정시까지 기다렸다가 jobs.yml / travel.yml을 workflow_dispatch로 실행한다.
+# 한 번에 하나만 살아 있게 하고(새 실행이 오면 이전 것은 취소), 지난 3시간 안에 빠진 편은 바로 따라잡는다.
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: slot-scheduler
+  cancel-in-progress: true
+
+jobs:
+  wait-and-dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    steps:
+      - uses: actions/checkout@v4
+      - name: 다음 정시까지 기다렸다가 실행
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/slot_scheduler.py

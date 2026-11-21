@@ -31,7 +31,9 @@ def count_today(path: Path, today) -> int:
 
 
 def main() -> int:
-    today = datetime.now(KST).date()
+    # 예약 리포트가 몇 시간 늦게(다음 날 새벽·아침) 돌 수 있어서, 정오 전이면 전날을 점검한다
+    now = datetime.now(KST)
+    today = (now - timedelta(days=1)).date() if now.hour < 12 else now.date()
     missing = []
     for name, (rel, want) in EXPECTED.items():
         got = count_today(ROOT / rel, today)

@@ -269,3 +269,79 @@ episodes:
     - 2 a.m. closing. Wash a hundred glasses and count the stock.
     after: First time the inventory sheet ever matched.
   verdict_say: I make drinks precisely. But people don't come to a bar just for drinks.
+- id: referee
+  num: 15
+  job: Soccer Referee
+  data: {label: sports officials}
+  hook: Today I'm a soccer referee. The study gave this job a 98% chance.
+  quests:
+  - title: Offside call
+    say:
+    - Offside check. His shoulder was three centimeters ahead!
+    after: Nobody could argue with that.
+  - title: The big dive
+    say:
+    - A player falls and screams. Contact lasted 0.2 seconds.
+    after: I said no foul, and both teams got mad at me.
+  - title: Calm the game down
+    say:
+    - Things got rough, so I paused the game and played the team song.
+    after: Everyone laughed and went back to playing.
+  verdict_say: I can see every inch. Reading the room is still the hard part.
+- id: waiter
+  num: 16
+  job: Waiter
+  data: {label: waiters and waitresses}
+  hook: Today I'm a waiter. Let's see how many plates I can carry.
+  quests:
+  - title: Remember the order
+    say:
+    - A table of twelve, no notepad. No onions, extra spicy, I got it all.
+    after: The whole table clapped.
+  - title: Carry four plates
+    say:
+    - Four plates at once. Small problem, I only have two arms.
+    after: Two of them became today's free floor special.
+  - title: Birthday surprise
+    say:
+    - A birthday table! Lights off, and I put a cake on my screen.
+    after: Everyone blew out the candles on my face.
+  verdict_say: I never forget an order. But I still drop plates.
+- id: dentist
+  num: 17
+  job: Dentist
+  data: {label: general dentists}
+  hook: Today I'm a dentist. The study said AI almost can't do this one.
+  quests:
+  - title: Read the X-ray
+    say:
+    - I found three cavities on the X-ray in 0.2 seconds.
+    after: Even the tiny ones got a red circle.
+  - title: Cleaning
+    say:
+    - I made the drill sound, and the patient jumped out of the chair.
+    after: Honestly, that sound scares me too.
+  - title: Teach brushing
+    say:
+    - I made a three-minute toothbrush song for the kids.
+    after: A little patient sang along!
+  verdict_say: I'm great at spotting cavities. Steady hands are a human thing.
+- id: pharmacist
+  num: 18
+  job: Pharmacist
+  data: {label: pharmacists}
+  hook: Today I'm a pharmacist. Counting pills is my kind of job.
+  quests:
+  - title: Check drug mixes
+    say:
+    - Five medicines at once. Are they safe together? Checked in 0.1 seconds.
+    after: I caught one risky combo.
+  - title: Count the pills
+    say:
+    - I counted two thousand pills. Then one rolled away.
+    after: Ten minutes under the shelf to find it.
+  - title: Explain the schedule
+    say:
+    - A grandma asked when to take her pills, so I printed a schedule.
+    after: I made the letters big, and she smiled.
+  verdict_say: I can check every pill. Patients still want a person to ask.

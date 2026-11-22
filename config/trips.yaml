@@ -771,3 +771,153 @@ trips:
   answer_big: 약 2,430m
   answer_sub: 쿠스코(약 3,400m)보다 낮다
   source: 페루 문화부·유네스코 자료의 마추픽추 해발 약 2,430m, 쿠스코 약 3,400m, 가격은 대략값
+- id: norway
+  num: 21
+  country: norway
+  city: 트롬쇠
+  tease: 노르웨이 북쪽 여름, 밤 12시에 하늘은 어떨까? 정답은 마지막에!
+  tease_top: ["노르웨이 여름밤", "12시 하늘은?"]
+  tease_big: "?"
+  hook: 트롬쇠 도착! 북극에 엄청 가까운 도시야.
+  quests:
+  - title: 밤 9시에 마트에서 맥주 사기
+    scene: store
+    spot: shelf
+    face_after: sad
+    say:
+    - 마트에서 시원한 음료랑 맥주 하나 사 가야지. 지금 밤 9시!
+    result: fail
+    after: 계산대에서 막혔어. 마트 맥주는 평일 밤 8시까지만 판대.
+  - title: 연어 먹기
+    scene: restaurant
+    spot: counter
+    cost: 25000
+    fx: [steam]
+    say:
+    - 노르웨이 하면 연어! 갓 구운 연어 한 접시 주세요.
+    result: clear
+    after: 살이 두툼하고 부드러워. 대신 물가가 진짜 비싸!
+  - title: 피오르 배 타기
+    scene: street
+    spot: right
+    fx_after: [sparkle]
+    say:
+    - 바다가 산 사이로 깊이 들어온 피오르! 배 타고 구경 가자.
+    result: clear
+    after: 절벽에서 폭포가 쏟아져. 물이 거울처럼 맑아!
+  answer_say: 정답 공개! 한여름 노르웨이 북쪽은 밤 12시에도 해가 떠 있어. 백야라고 불러!
+  answer_big: 해가 떠 있다!
+  answer_sub: 한여름 북쪽의 백야
+  source: 노르웨이 북부의 한여름 백야(미드나잇 선), 주류 판매 시간 규정(평일 20시), 가격은 대략값
+- id: switzerland
+  num: 22
+  country: switzerland
+  city: 취리히
+  tease: 스위스 기차, 몇 분까지 늦어야 '정시'로 칠까? 정답은 마지막에!
+  tease_top: ["스위스 기차", "몇 분까지 정시?"]
+  tease_big: "?분"
+  hook: 취리히 도착! 호수가 정말 파래.
+  quests:
+  - title: 일요일에 장 보기
+    scene: store
+    spot: door
+    face_after: sad
+    say:
+    - 일요일이니까 느긋하게 마트에서 장 봐야지!
+    result: fail
+    after: 문이 닫혀 있어. 스위스는 일요일에 대부분 가게가 쉰대.
+  - title: 퐁뒤 먹기
+    scene: restaurant
+    spot: seat
+    cost: 40000
+    fx: [steam]
+    say:
+    - 녹인 치즈에 빵을 찍어 먹는 퐁뒤! 냄비째 나와.
+    result: clear
+    after: 치즈가 쭉쭉 늘어나. 빵을 냄비에 빠뜨리면 안 된대!
+  - title: 기차로 산 넘기
+    scene: train
+    spot: seat
+    say:
+    - 알프스를 넘는 기차! 출발 시각에 딱 맞춰 문이 닫혀.
+    result: clear
+    after: 창밖으로 눈 덮인 산이 계속 지나가. 도착도 딱 정시!
+  answer_say: 정답 공개! 스위스 철도는 3분 안에 도착하면 정시로 쳐. 그래도 대부분 제시간이야!
+  answer_big: 3분 미만
+  answer_sub: 스위스 연방철도 정시 기준
+  source: 스위스 연방철도(SBB) 고객 정시율 기준(3분 미만), 가격은 2025년 대략값(1프랑 ≈ 1,650원)
+- id: malaysia
+  num: 23
+  country: malaysia
+  city: 쿠알라룸푸르
+  tease: 말레이시아 나시르막 한 접시, 한국 돈으로 얼마일까? 정답은 마지막에!
+  tease_top: ["말레이시아 나시르막", "한국 돈으로 얼마?"]
+  tease_big: "?원"
+  hook: 쿠알라룸푸르 도착! 쌍둥이 빌딩이 반짝반짝해.
+  quests:
+  - title: 반바지로 모스크 들어가기
+    scene: street
+    spot: center
+    face_after: sad
+    say:
+    - 예쁜 모스크다! 반바지 차림 그대로 들어가 볼까?
+    result: fail
+    after: 입구에서 긴 옷을 빌려줬어. 팔다리를 가려야 들어갈 수 있대.
+  - title: 테타릭 마시기
+    scene: cafe
+    spot: register
+    cost: 700
+    fx: [steam]
+    say:
+    - 밀크티를 높이서 부어 거품을 내는 테타릭! 한 잔 주세요.
+    result: clear
+    after: 컵 두 개 사이로 차가 날아다녀. 부드럽고 달달해!
+  - title: 나시르막 먹기
+    scene: market
+    spot: stall
+    fx: [steam]
+    say:
+    - 코코넛 밥에 멸치, 땅콩, 계란, 매운 삼발 소스까지!
+    result: clear
+    after: 고소하고 매콤해. 말레이시아 사람들 아침밥이래.
+  answer_say: 정답 공개! 노점 나시르막은 보통 5링깃 안팎. 한국 돈으로 약 1,600원이야!
+  answer_big: 약 1,600원
+  answer_sub: 5링깃 안팎 (1링깃 ≈ 320원)
+  source: 가격은 2025년 쿠알라룸푸르 노점 기준 대략값, 1링깃 ≈ 320원
+- id: uae
+  num: 24
+  country: uae
+  city: 두바이
+  tease: 두바이 부르즈 할리파는 몇 m일까? 정답은 마지막에!
+  tease_top: ["부르즈 할리파", "높이는 몇 m?"]
+  tease_big: "?m"
+  hook: 두바이 도착! 사막 위에 빌딩 숲이야.
+  quests:
+  - title: 아무 칸에나 타기
+    scene: train
+    spot: door
+    face_after: shock
+    say:
+    - 두바이 지하철! 비어 있는 맨 앞 칸에 쏙 타야지.
+    result: fail
+    after: 여성·어린이 전용 칸이었어. 잘못 타면 벌금이래!
+  - title: 수상택시 아브라 타기
+    scene: street
+    spot: left
+    cost: 400
+    say:
+    - 나무배 아브라를 타고 운하를 건너자. 뱃삯은 동전 하나!
+    result: clear
+    after: 바람이 시원해. 건너편엔 향신료 시장이 있어.
+  - title: 대추야자 맛보기
+    scene: market
+    spot: stall2
+    fx_after: [sparkle]
+    say:
+    - 시장에서 대추야자 시식! 종류가 수십 가지야.
+    result: clear
+    after: 캐러멜처럼 달콤해. 손님한테 커피랑 같이 내준대.
+  answer_say: 정답 공개! 부르즈 할리파는 약 828m야. 세계에서 제일 높은 건물이야!
+  answer_big: 약 828m
+  answer_sub: 세계에서 가장 높은 건물
+  source: 부르즈 할리파 공식 높이 828m, 아브라 요금 1디르함(≈ 370원), 두바이 메트로 여성·어린이 전용칸 규정

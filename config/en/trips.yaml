@@ -242,3 +242,161 @@ trips:
   answer_big: about $4
   answer_sub: around S$5 at a hawker center
   source: Rough 2025 Singapore hawker prices, $1 ≈ S$1.30
+- id: mexico
+  num: 10
+  name: Mexico
+  city: Mexico City
+  tease: How much is one street taco in Mexico City, in US dollars? Answer at the end!
+  tease_top: ["Taco in Mexico", "How much?"]
+  tease_big: "$???"
+  hook: Mexico City! The air feels thin up here.
+  quests:
+  - title: Drink tap water
+    say:
+    - So thirsty! I'll just fill a glass from the sink.
+    after: The host stopped me. People here buy bottled water instead.
+  - title: Ride the metro
+    cost: 0.3
+    say:
+    - The metro here is super cheap. One ticket into the city!
+    after: Every station has a picture sign, so you can find it without reading.
+  - title: Eat street tacos
+    cost: 1.1
+    say:
+    - Tacos from a street stand! Cilantro and onion on top.
+    after: Squeeze some lime and eat it in two bites. Order more!
+  answer_say: The answer! A street taco is usually around 20 pesos. That's about a dollar!
+  answer_big: about $1
+  answer_sub: around 20 pesos
+  source: Rough 2025 Mexico City street prices, metro 5 pesos, $1 ≈ 18 pesos
+- id: portugal
+  num: 11
+  name: Portugal
+  city: Lisbon
+  tease: How much is one custard tart in Lisbon, in US dollars? Answer at the end!
+  tease_top: ["Egg tart, Lisbon", "How much?"]
+  tease_big: "$???"
+  hook: Lisbon! Hills everywhere and shiny stone streets.
+  quests:
+  - title: Run down wet stones
+    say:
+    - It's raining! Let's run down this white stone hill!
+    after: Slip! These stone sidewalks get really slippery when wet.
+  - title: Ride the yellow tram
+    cost: 3.5
+    say:
+    - Lisbon's famous yellow tram! It squeezes through tiny streets.
+    after: Red roofs everywhere. Tickets cost more if you buy on board.
+  - title: Eat a custard tart
+    say:
+    - One warm custard tart, please! With cinnamon on top.
+    after: Crispy outside, warm custard inside. They call it pastel de nata.
+  answer_say: The answer! A custard tart is usually about 1.40 euros. That's around $1.60!
+  answer_big: about $1.60
+  answer_sub: around €1.40
+  source: Rough 2025 Lisbon bakery prices, tram on-board ticket about €3, $1 ≈ €0.87
+- id: greece
+  num: 12
+  name: Greece
+  city: Athens
+  tease: In Greece, what does tilting your head up mean? Answer at the end!
+  tease_top: ["Greece: head up", "What does it mean?"]
+  tease_big: "?"
+  hook: Athens! There's a white temple up on the hill.
+  quests:
+  - title: Flush the paper
+    say:
+    - Done in the bathroom. Toilet paper goes in, and flush...
+    after: A sign says the pipes are narrow. Paper goes in the bin.
+  - title: Climb the Acropolis
+    say:
+    - All the way up to the Parthenon! Steeper than I thought.
+    after: Columns over two thousand years old. All of Athens below!
+  - title: Grab a gyro
+    cost: 4.5
+    say:
+    - Greek street food, the gyro! Meat and fries rolled in bread.
+    after: The yogurt sauce is so fresh. Perfect one-hand food!
+  answer_say: The answer! A quick upward head tilt in Greece means "no." Don't mix it up!
+  answer_big: "No!"
+  answer_sub: head up = no
+  source: Widely known Greek gesture, gyro price is a rough 2025 Athens figure, $1 ≈ €0.87
+- id: netherlands
+  num: 13
+  name: the Netherlands
+  city: Amsterdam
+  tease: Does the Netherlands have more people or more bikes? Answer at the end!
+  tease_top: ["Netherlands", "People or bikes?"]
+  tease_big: "?"
+  hook: Amsterdam! The houses are tall and skinny.
+  quests:
+  - title: Hop off the train
+    say:
+    - I tapped my card to get on. So I just walk out at the end, right?
+    after: You have to tap out too. If you don't, they charge you way more.
+  - title: Eat a stroopwafel
+    cost: 2.2
+    say:
+    - A fresh stroopwafel at the market! Syrup between thin waffles.
+    after: Warm and stretchy. Some people warm it on top of their coffee.
+  - title: Walk the canals
+    say:
+    - A walk along the canals! There are bridges everywhere.
+    after: Bikes on every railing. Some boats here are actual houses!
+  answer_say: The answer! Bikes win. About 23 million bikes, millions more than people!
+  answer_big: Bikes win!
+  answer_sub: ~23M bikes vs ~18M people
+  source: BOVAG/RAI estimate of about 23 million bikes, population about 18 million (CBS)
+- id: egypt
+  num: 14
+  name: Egypt
+  city: Cairo
+  tease: What days is the weekend in Egypt? Answer at the end!
+  tease_top: ["Egypt's weekend", "Which days?"]
+  tease_big: "?"
+  hook: Cairo! I can see the pyramids from here.
+  quests:
+  - title: Pay the first price
+    say:
+    - A souvenir shop! I'll pay the first price they say.
+    after: The guy next to me paid half. Bargaining is normal here.
+  - title: Eat koshari
+    cost: 1
+    say:
+    - Egypt's favorite dish, koshari! Rice, pasta and lentils in one bowl.
+    after: Crispy onions and tomato sauce on top. So filling!
+  - title: Stand by the pyramids
+    say:
+    - The pyramids of Giza! One stone block is bigger than me.
+    after: Built about 4,500 years ago. Way bigger than in photos!
+  answer_say: The answer! In Egypt the weekend is Friday and Saturday. Sunday is a work day!
+  answer_big: Fri & Sat
+  answer_sub: the week starts on Sunday
+  source: Egypt's official Friday-Saturday weekend, koshari price is a rough 2025 Cairo figure
+- id: canada
+  num: 15
+  name: Canada
+  city: Toronto
+  tease: What bird is on Canada's one-dollar coin? Answer at the end!
+  tease_top: ["Canada's $1 coin", "Which bird?"]
+  tease_big: "?"
+  hook: Toronto! The air is cold and fresh.
+  quests:
+  - title: Leave without a tip
+    say:
+    - That was tasty! I'll pay exactly the bill and head out.
+    after: At restaurants here, people usually add a 15 to 20% tip!
+  - title: Eat poutine
+    cost: 9
+    say:
+    - Canada's classic, poutine! Fries with cheese curds and gravy.
+    after: The cheese is squeaky. I'm not counting calories today.
+  - title: Morning coffee
+    cost: 1.8
+    say:
+    - The coffee shop everyone stops at in the morning! One coffee, please.
+    after: The line is huge. Everyone walks out with a big cup!
+  answer_say: The answer! It's a loon, a water bird. That's why the coin is called a loonie!
+  answer_big: A loon
+  answer_sub: the $1 coin = the "loonie"
+  source: Royal Canadian Mint one-dollar coin design, prices are rough 2025 Toronto figures (US dollars)

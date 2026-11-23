@@ -83,5 +83,10 @@
     "trip": "india",
     "at": "20261122-095241",
     "video_id": "make:Accepted"
+  },
+  {
+    "trip": "china",
+    "at": "20261123-025249",
+    "video_id": "make:Accepted"
   }
 ]

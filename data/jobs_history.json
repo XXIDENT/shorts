@@ -98,5 +98,10 @@
     "job": "translator",
     "at": "20261122-225249",
     "video_id": "make:Accepted"
+  },
+  {
+    "job": "model",
+    "at": "20261123-145230",
+    "video_id": "make:Accepted"
   }
 ]

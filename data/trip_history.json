@@ -93,5 +93,10 @@
     "trip": "canada",
     "at": "20261124-025240",
     "video_id": "make:Accepted"
+  },
+  {
+    "trip": "morocco",
+    "at": "20261125-025241",
+    "video_id": "make:Accepted"
   }
 ]

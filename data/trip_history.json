@@ -98,5 +98,10 @@
     "trip": "morocco",
     "at": "20261125-025241",
     "video_id": "make:Accepted"
+  },
+  {
+    "trip": "peru",
+    "at": "20261125-095257",
+    "video_id": "make:Accepted"
   }
 ]

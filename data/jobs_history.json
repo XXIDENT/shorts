@@ -113,5 +113,10 @@
     "job": "dentist",
     "at": "20261124-233101",
     "video_id": "make:Accepted"
+  },
+  {
+    "job": "pharmacist",
+    "at": "20261125-115244",
+    "video_id": "make:Accepted"
   }
 ]
